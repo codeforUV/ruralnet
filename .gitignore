@@ -5,3 +5,6 @@
 
 # Local Netlify folder
 .netlify
+
+__sapper__/dev/service-worker.js
+src/node_modules/@sapper/service-worker.js
