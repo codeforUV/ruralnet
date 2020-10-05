@@ -18,7 +18,7 @@ Files added:
 * in static:
     * speedtest.json
     * speedtest_worker.json - both are json files that allow us to easily plug-and-play a self-hosted speed test frontend. 
-* LICENSE - to comply with the LGPL3 License that the Speedtest code is provided under
+* LICENSE - SHOULD BE ADDED to comply with the LGPL3 License that the Speedtest code is provided under
 
 --- 
 
