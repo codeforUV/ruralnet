@@ -9,6 +9,17 @@ This branch uses code from [Librespeed's speedtest.js](https://github.com/libres
 
 Using this implementation for yourself is easy - go to the "Custom Test" tab and click the only button. 
 
+Files added:
+* In src/routes:
+    * custom.svelte - a super basic UI for this speedtest implementation
+    * garbage.json.js - backend to generate random binary blobs to measure download speed
+    * empty.json.js - backend to test ping and upload speed, replys with nothing
+    * getIP.json.js - backend to produce info about client's IP, and distance to server (but not over local network)
+* in static:
+    * speedtest.json
+    * speedtest_worker.json - both are json files that allow us to easily plug-and-play a self-hosted speed test frontend. 
+* LICENSE - to comply with the LGPL3 License that the Speedtest code is provided under
+
 --- 
 
 ## Project Goals
@@ -46,6 +57,6 @@ Logs and messages from the backend (server) will print out in the terminal windo
 
 ### Editing files
 
-The main files we want to edit are in `src/routes`. Each frontend route (page) should have a file named like: `filename.svelte`. The backend logic for that *specific* route should be in a file called `filename.json.js` and contain a `get()` function and a `post()`  function. These functions should contain the server logic for when the frontend makes GET or POST [HTTP requests](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods) to that specific route. To make a request from the frontend you can use the `fetch` function available in most modern web browsers, e.g. `fetch(filename.json')` from within the frontend route file (e.g. from within `src/routes/filename.svelte`).  
+The main files we want to edit are in `src/routes`. Each frontend route (page) should have a file named like: `filename.svelte`. The backend logic for that *specific* route should be in a file called `filename.json.js` and contain a `get()` function and a `post()`  function. These functions should contain the server logic for when the frontend makes GET or POST [HTTP requests](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods) to that specific route. To make a request from the frontend you can use the `fetch` function available in most modern web browsers, e.g. `fetch('filename.json')` from within the frontend route file (e.g. from within `src/routes/filename.svelte`).  
 
 See `src/routes/about.svelte` and `src/routes/about.json.js` for an example.
