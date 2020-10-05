@@ -16,7 +16,10 @@
     "cli-progress": "^3.8.2",
     "compression": "^1.7.1",
     "fast-speed-test": "^1.1.0",
+    "gps-distance": "0.0.4",
+    "node-fetch": "^2.6.1",
     "polka": "next",
+    "random-bytes": "^1.0.0",
     "sirv": "^0.4.0",
     "speedtest-net": "^2.1.1"
   },

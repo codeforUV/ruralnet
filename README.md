@@ -1,5 +1,16 @@
 # RuralNet
 
+## About this Branch
+
+This branch uses code from [Librespeed's speedtest.js](https://github.com/librespeed/speedtest) to create a custom speedtest with the server. The frontend uses `speedtest.js` and `speedtest_worker.js` to interface with a server and estimate internet speed. The backend is based off the [`node` branch](https://github.com/librespeed/speedtest/tree/node) of the speedtest repo, which the creators advise against using, without specifying any reasoning. So far, this is very much "proof of concept" - not sure how accurate the speed results are, but here are the preliminary results over my local home network: 
+
+* testing from the same laptop that ruralnet is running on: Ping: 8.41 ms, Down: 1018.42 Mbps, Up: 5226.52 Mbps (wildly innacurate results, but mildly funny and worth sharing)
+* testing from a remote laptop: Ping: 6.16 ms, Down: 219.84 Mbps, Up: 301.55 Mbps (My router has a bandwidth of 400 Mbps on the frequency the server laptop was connceted to, so these results seem reasonable with room for improvement)
+
+Using this implementation for yourself is easy - go to the "Custom Test" tab and click the only button. 
+
+--- 
+
 ## Project Goals
 
 The main goals of this project are to develop a web app that measures a user's internet speed and allows us to visualize this speed against the reported speed of their Internet Service Provider (ISP). At the same time we would like to survey users about how they typically use their internet and how satisfied they are with their current service.

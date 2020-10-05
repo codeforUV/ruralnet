@@ -52,5 +52,6 @@
 	<ul>
 		<li><a aria-current='{segment === undefined ? "page" : undefined}' href='.'>home</a></li>
 		<li><a aria-current='{segment === "about" ? "page" : undefined}' href='about'>REST</a></li>
+		<li><a aria-current='{segment === "custom" ? "page" : undefined}' href='custom'>Custom Test</a></li>
 	</ul>
 </nav>

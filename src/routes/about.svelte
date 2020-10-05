@@ -4,7 +4,12 @@
   const getData = async () => {
     clicked = true;
     try {
+      //let ipInfoRes = await fetch("https://json.geoiplookup.io");  // this is a free api that allows 10,000 requests per hour
+      //let ipInfo = await ipInfoRes.json();
       let res = await fetch("about.json");
+      let testResp = await fetch("garbage.json");
+      let testjson = await testResp.json();
+      console.log(testjson.success);
       let { speed } = await res.json();
       console.log("Server response object:");
       console.log(res);
