@@ -1,10 +1,12 @@
 /node_modules/
 # /public/build/
 
-.DS_Store
+.DS_Store  
 
 # Local Netlify folder
 .netlify
 
 __sapper__/dev/service-worker.js
 src/node_modules/@sapper/service-worker.js
+npm-debug.log
+static/speedtest*
