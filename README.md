@@ -51,8 +51,9 @@ Open up a terminal and copy or type the following commands:
 1. `git clone https://github.com/codeforUV/ruralnet.git` (download the codebase)
 2. `cd ruralnet` (move into the downloaded folder)
 3. `npm install` (install all the project dependencies in this folder)
-4. `npm run dev` (launch the server)
-5. Open `http://localhost:3000` in your web browser to see the app
+4. `./submoduleUpdate.sh` (set up the speedtest submodule and move some files)
+5. `npm run dev` (launch the server)
+6. Open `http://localhost:3000` in your web browser to see the app
 
 You can inspect variables and logs from the frontend by opening your browser's javascript console (View > Developer > Javascript Console on Chrome-based browsers).
 
