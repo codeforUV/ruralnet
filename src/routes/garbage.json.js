@@ -1,7 +1,9 @@
 const randomBytes = require('random-bytes');
 
+var cache = null;
+
 export async function get(req, res, next) {
-    console.log('DOING DOWNLOAD TEST');  // debug line to ensure the speed test was going to the node server
+    console.log(`DOING DOWNLOAD TEST ${req.query.ckSize}`);  // debug line to ensure the speed test was going to the node server
     res.writeHead(200, {
         'Content-Type': 'application/octet-stream',
         'Content-Description': 'File Transfer',
@@ -12,7 +14,14 @@ export async function get(req, res, next) {
     })
     // insert action code
     const requestedSize = (req.query.ckSize || 100);
-    let b = await randomBytes(1048576);  // generate 1 Mb of random binary data
+    let b;
+    if (!cache) {
+        b = await randomBytes(1048576);  // generate 1 Mb of random binary data
+        cache = b;
+    } else {
+        b = cache;
+    }
+    
     for (let i = 0; i < requestedSize; i++) {
         res.write(b);  // write 1-100 Mb of random data 
     }

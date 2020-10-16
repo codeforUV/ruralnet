@@ -1,0 +1,4 @@
+[submodule "speedtest"]
+	path = speedtest
+	url = https://github.com/librespeed/speedtest.git
+    
