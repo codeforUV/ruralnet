@@ -2,7 +2,7 @@
 
 ## About this Branch
 
-This branch uses code from [Librespeed's speedtest.js](https://github.com/librespeed/speedtest) to create a custom speedtest with the server. The frontend uses `speedtest.js` and `speedtest_worker.js` to interface with a server and estimate internet speed. The backend is based off the [`node` branch](https://github.com/librespeed/speedtest/tree/node) of the speedtest repo, which the creators advise against using, without specifying any reasoning. So far, this is very much "proof of concept" - not sure how accurate the speed results are, but here are the preliminary results over my local home network: 
+This branch uses code from [Librespeed's speedtest.js](https://github.com/librespeed/speedtest) to create a custom speedtest with the server. The frontend uses `speedtest.js` and `speedtest_worker.js` to interface with a server and estimate internet speed. The backend is based off the [`node` branch](https://github.com/librespeed/speedtest/tree/node) of the speedtest repo, which the creators advise against using, without specifying any reasoning. So far, this is very much "proof of concept" - not sure how accurate the speed results are, but here are the preliminary results over a local home network: 
 
 Using this implementation for yourself is easy - go to the "Custom Test" tab and click the only button after installing the repository
 
@@ -11,14 +11,14 @@ Using this implementation for yourself is easy - go to the "Custom Test" tab and
 * For comparison, [librespeed.org](https://librespeed.org) can be used to compare with their speedtest setup
     * they always send a "chunk size" of 100 MB
     * Although 100MB is requested, 100MB is almost never downloaded. they cancel the download partway through
-    * the point above is at least true on a 25Mb/5Mb connection - on faster connections they probably download by cancelling later/ not at all
-* browser geolocation does not work on unsecure connections - such as over local wireless. however, to prove that I know how browser geolocation works and is accurate, I put a demo page [on my personal website](https://natedimick.com/geolocation.html)
+    * the point above is at least true on a 25Mb/5Mb connection - on faster connections they probably download more data by cancelling later/ not at all
+* browser geolocation does not work on unsecure connections - such as over local wireless. however, to prove that I know how browser geolocation works and is *sometimes* more accurate than [ipinfo.io](ipinfo.io)'s location database, I put a demo page [on my personal website](https://natedimick.com/geolocation.html)
 * testing over local network will not test internet speed, only router bandwidth
     * furthermore, the results will be wildly innaccurate testing through localhost:3000
 * I've hooked librespeed/speedtest as a submodule - **read "getting started" instructions below, a new step has been added**
     * legally we should probably accept their license in order to use their code?
 * src/routes/custom.svelte is where all the new magic is happening 
-* test data is stored in test.json
+* test data is stored in tests.json - with a handful of completed tests included. the backend custom.json's POST route can be adapted in the future to insert data to a database
 
 --- 
 
