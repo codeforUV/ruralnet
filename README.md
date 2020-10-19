@@ -2,26 +2,23 @@
 
 ## About this Branch
 
-**IMPORTANT**: some features do not fully work while testing on a local network. namely:
-
-1. local network speed will be tested, rather than internet speed
-    * additionally, these results will be very innaccurate if connecting via localhost:3000 on the same device. connect from a remote device (smartphone, etc) to get better results
-2. browser geolocation will not be premitted
-
 This branch uses code from [Librespeed's speedtest.js](https://github.com/librespeed/speedtest) to create a custom speedtest with the server. The frontend uses `speedtest.js` and `speedtest_worker.js` to interface with a server and estimate internet speed. The backend is based off the [`node` branch](https://github.com/librespeed/speedtest/tree/node) of the speedtest repo, which the creators advise against using, without specifying any reasoning. So far, this is very much "proof of concept" - not sure how accurate the speed results are, but here are the preliminary results over my local home network: 
 
-Using this implementation for yourself is easy - go to the "Custom Test" tab and click the only button. 
+Using this implementation for yourself is easy - go to the "Custom Test" tab and click the only button after installing the repository
 
-Files added:
-* In src/routes:
-    * custom.svelte - a super basic UI for this speedtest implementation
-    * garbage.json.js - backend to generate random binary blobs to measure download speed
-    * empty.json.js - backend to test ping and upload speed, replys with nothing
-    * getIP.json.js - backend to produce info about client's IP, and distance to server (but not over local network)
-* in static:
-    * speedtest.json
-    * speedtest_worker.json - both are json files that allow us to easily plug-and-play a self-hosted speed test frontend. 
-* LICENSE - SHOULD BE ADDED to comply with the LGPL3 License that the Speedtest code is provided under
+## Noteworthy Notes
+
+* For comparison, [librespeed.org](https://librespeed.org) can be used to compare with their speedtest setup
+    * they always send a "chunk size" of 100 MB
+    * Although 100MB is requested, 100MB is almost never downloaded. they cancel the download partway through
+    * the point above is at least true on a 25Mb/5Mb connection - on faster connections they probably download by cancelling later/ not at all
+* browser geolocation does not work on unsecure connections - such as over local wireless. however, to prove that I know how browser geolocation works and is accurate, I put a demo page [on my personal website](https://natedimick.com/geolocation.html)
+* testing over local network will not test internet speed, only router bandwidth
+    * furthermore, the results will be wildly innaccurate testing through localhost:3000
+* I've hooked librespeed/speedtest as a submodule - **read "getting started" instructions below, a new step has been added**
+    * legally we should probably accept their license in order to use their code?
+* src/routes/custom.svelte is where all the new magic is happening 
+* test data is stored in test.json
 
 --- 
 
@@ -53,7 +50,8 @@ Open up a terminal and copy or type the following commands:
 3. `npm install` (install all the project dependencies in this folder)
 4. `./submoduleUpdate.sh` (set up the speedtest submodule and move some files)
 5. `npm run dev` (launch the server)
-6. Open `http://localhost:3000` in your web browser to see the app
+6. Open `http://localhost:3000` in your web browser to see the app. 
+    * alternatively, run `ifconfig | grep inet` to find your local ip address on the third line. It will probably look like `192.168.1.x`, where x is a real number. Go to `192.168.1.x:3000` on the web browser of another device to visit the app
 
 You can inspect variables and logs from the frontend by opening your browser's javascript console (View > Developer > Javascript Console on Chrome-based browsers).
 

@@ -16,14 +16,14 @@ export async function get(req, res, next) {
     const requestedSize = (req.query.ckSize || 100);
     let b;
     if (!cache) {
-        b = await randomBytes(1048576);  // generate 1 Mb of random binary data
+        b = await randomBytes(1048576);  // generate about 1 MB of random binary data
         cache = b;
     } else {
         b = cache;
     }
     
     for (let i = 0; i < requestedSize; i++) {
-        res.write(b);  // write 1-100 Mb of random data 
+        res.write(b);  // write 1 MB of random data for each loop, up to requestedSize 
     }
     // on end of action
     
