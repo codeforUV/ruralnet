@@ -1,20 +1,6 @@
 <script>
     var lat, long, ispName, ipAddr, today, ul, dl, ping, ckSize;
     var finished = false;
-    const options = {
-        enableHighAccuracy: true,
-        timeout: 5000,
-        maximumAge: 10000
-    };
-    function successCallback (position) {
-        lat = position.coords.latitude;
-        long = position.coords.longitude;
-    };
-    function errorCallback (message) {
-        console.log("There was an error with geolocation " + message);
-        lat = null;
-        long = null;
-    };
     async function getIPinfo () {
         try {
             let req = await fetch("https://ipinfo.io/json");
@@ -25,6 +11,32 @@
             ipAddr = null;
             ispName = null;
         }
+    };
+    function getBrowserLocation (accuracy) {
+        let geo = navigator.geolocation;  // geolocation gets more accurate over time once enabled??? so by placing this line ahead of geo.getCurrentPosition buys time (milliseconds) for the browser to be accurate
+        return new Promise((resolve, reject) => {
+            function successCallback(position) {
+                let pos = position.coords;
+                if (pos.accuracy < accuracy) {
+                    resolve(pos);
+                } else {
+                    console.log("bad accuracy", pos.accuracy);
+                    resolve(getBrowserLocation(accuracy * 1.5));  // recursive locationing - bad idea or terrible idea???
+                }
+            }
+            function errorCallback(error) {
+                reject(error.message);
+            }
+            const options = {
+                enableHighAccuracy: true // removed timeout and max age because browsers like Edge are SLOW on geoloaction
+            }
+            try {
+                geo.getCurrentPosition(successCallback, errorCallback, options);
+            } catch (error) {
+                reject(error);
+            }
+            
+        })
     };
     async function postTestResults (results) {
         const res = await fetch("custom.json", {
@@ -65,20 +77,25 @@
         finished = true;
     };
 
-    function doSpeedTest (chunkSize) {
+    async function doSpeedTest (chunkSize) {
         // Date information - date and time
         today = new Date();
 
         // Location information - latitude and longitude, town/state/country
         try {
-            let geo = navigator.geolocation;  // this will prompt a browser pop-up
-            geo.getCurrentPosition(successCallback, errorCallback, options);
+            let browserLocation = await getBrowserLocation(500);
+            if (typeof browserLocation !== "string") {
+                lat = browserLocation.latitude;
+                long = browserLocation.longitude;
+            } else {
+                throw new Error("Browser Location Didn't Work");
+            }
         } catch (error) {
             lat = null;
             long = null;
         }
         // ISP information - ip address and isp name
-        getIPinfo();
+        await getIPinfo();
 
         // Speed information
         const s = new Speedtest(); 
@@ -95,6 +112,7 @@
         s.onupdate = speedtestUpdate;
         s.onend = speedtestEnd;
         s.start();
+        // NOTE: we could promisify the speedtest to make runnign sequential tests possible (obvious statements are obvious but hey)
     };
     function retestSpeedtest() {
         // the general idea here was to run two extra speed tests with different chunk sizes if the user was unhappy with their first test
