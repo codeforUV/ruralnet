@@ -13,6 +13,7 @@ Using this implementation for yourself is easy - go to the "Custom Test" tab and
     * Although 100MB is requested, 100MB is almost never downloaded. they cancel the download partway through
     * the point above is at least true on a 25Mb/5Mb connection - on faster connections they probably download more data by cancelling later/ not at all
 * browser geolocation does not work on unsecure connections - such as over local wireless. however, to prove that I know how browser geolocation works and is *sometimes* more accurate than [ipinfo.io](ipinfo.io)'s location database, I put a demo page [on my personal website](https://natedimick.com/geolocation.html)
+   * Browser geolocation is unpredictable - *sometimes* it hits the nail on the head - others it is wildly inaccurate (up to 7000 meters - maybe more)
 * testing over local network will not test internet speed, only router bandwidth
     * furthermore, the results will be wildly innaccurate testing through localhost:3000
 * I've hooked librespeed/speedtest as a submodule - **read "getting started" instructions below, a new step has been added**
