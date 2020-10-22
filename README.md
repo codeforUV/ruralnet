@@ -3,6 +3,7 @@
 - [RuralNet](#ruralnet)
   - [Project Goals](#project-goals)
   - [Todos](#todos)
+  - [Running Locally](#running-locally)
   - [App Development](#app-development)
     - [Setting up your development environment](#setting-up-your-development-environment)
     - [Working with the codebase](#working-with-the-codebase)
@@ -19,6 +20,16 @@ This information would allow municipalities to apply for grants and funding to i
 
 For simplicity and tracking checkout the [Taskboard](https://github.com/codeforUV/ruralnet/projects/1) on Github.
 
+## Running Locally
+
+To run the app locally you need to:  
+
+1. Clone this repo: `git clone https://github.com/codeforUV/ruralnet.git`  
+3. Install dependencies: `npm install`  
+4. Configure the mongo connection: `mv .env-example .env` and paste in the mongodb connection string for `MONGODB_URI` (ask @ejolly)  
+5. `npm run dev` (launch the server)
+6. Open `http://localhost:3000` in your web browser to see the app
+
 ## App Development 
 
 The current version of the app is built using HTML, CSS, Javascript, and NodeJS (a Javascript based web-server). It uses [SvelteJS](https://svelte.dev/) as a frontend framework for the UI and [SapperJS](https://svelte.dev/) as a backend framework (built on top of NodeJS). 
@@ -30,17 +41,9 @@ You will need to make sure that you have [NodeJS](https://nodejs.org/en/) setup 
 
 ### Working with the codebase
 
-Open up a terminal and copy or type the following commands:
-
-1. `git clone https://github.com/codeforUV/ruralnet.git` (download the codebase)
-2. `cd ruralnet` (move into the downloaded folder)
-3. `npm install` (install all the project dependencies in this folder)
-4. `npm run dev` (launch the server)
-5. Open `http://localhost:3000` in your web browser to see the app
-
 You can inspect variables and logs from the frontend by opening your browser's javascript console (View > Developer > Javascript Console on Chrome-based browsers).
 
-Logs and messages from the backend (server) will print out in the terminal window you used to run the `npm run dev` command
+Logs and messages from the backend (server) will print out in the terminal window you used to run the `npm run dev` command.
 
 ### Editing files
 
