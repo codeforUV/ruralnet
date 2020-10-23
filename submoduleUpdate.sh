@@ -10,3 +10,5 @@ then
 else
     echo "tests already exists"
 fi
+ls static
+ls speedtest
