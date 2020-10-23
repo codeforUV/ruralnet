@@ -11,4 +11,5 @@ else
     echo "tests already exists"
 fi
 ls static
+echo "---"
 ls speedtest

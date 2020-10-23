@@ -28,7 +28,7 @@ export async function get(req, res, next) {
         respString += ` - ${ipData.org}, ${ipData.country}`;
     }
     if (ipData.loc && serverData.loc) {
-        const d = helpers.calcDistance(ipData.loc.split(','), serverData.loc.split(','));
+        const d = calcDistance(ipData.loc.split(','), serverData.loc.split(','));
         respString += ` ${d}km`;
     }
         // on end of action

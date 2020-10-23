@@ -8,4 +8,4 @@ src/package-lock.json
 .vscode
 .env
 npm-debug.log
-static/speedtest*
+#static/speedtest*
