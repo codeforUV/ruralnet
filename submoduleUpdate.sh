@@ -1,4 +1,6 @@
 # pull repo updates
+chmod +rw src
+chmod +rw src/routes  # git only tracks the executable bit
 git submodule init
 git submodule update
 cp speedtest/speedtest.js static/speedtest.js

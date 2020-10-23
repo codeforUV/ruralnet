@@ -58,6 +58,7 @@
         ul = data.ulStatus;
         ping = data.pingStatus;
         document.getElementById('result').textContent = `Ping: ${ping} ms, Down: ${dl} Mbps, Up: ${ul} Mbps`;
+        document.getElementById('done').textContent = `${["not started", "started", "download", "ping and jitter", "upload", "finished", "aborted"][data.testState + 1]}`;
     };
     function speedtestEnd (aborted) {
         document.getElementById('result').textContent += `, Location ${lat},${long}`;
@@ -115,6 +116,7 @@
         } else {
             chunkSize = 100;
         }
+        s.setParameter("test_order","P_D_U");  // no need for IP check
         s.setSelectedServer(SPEEDTEST_SERVERS[0]);  // see template.html for SPEEDTEST_SERVERS - there is only one server
         console.log('testing!\n', s._selectedServer);
         // Speedtest has a number of callbacks that can be useful
