@@ -7,9 +7,22 @@
 
     %sapper.base%
 
-    <link rel="stylesheet" href="global.css" />
-    <link rel="manifest" href="manifest.json" crossorigin="use-credentials" />
-    <link rel="icon" type="image/png" href="favicon.png" />
+	<link rel='stylesheet' href='global.css'>
+	<link rel='manifest' href='manifest.json' crossorigin='use-credentials'>
+	<link rel='icon' type='image/png' href='favicon.png'>
+	<script type="text/javascript" src="speedtest.js"></script>
+	<script>
+		var SPEEDTEST_SERVERS = [
+			{
+				"name": "RuralNet Server",
+				"server": "/", //"https://192.168.1.13:3000/",  // major assumption here that / will point to this website
+				"dlURL": "garbage.json",
+				"ulURL": "empty.json",
+				"pingURL": "empty.json",
+				"getIpURL": "getIP.json"
+			}
+		];
+	</script>
 
     <!-- Sapper generates a <style> tag containing critical CSS
 	     for the current page. CSS for the rest of the app is
