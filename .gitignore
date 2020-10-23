@@ -5,5 +5,5 @@
 __sapper__
 src/node_modules
 src/package-lock.json
-
+.vscode
 .env
