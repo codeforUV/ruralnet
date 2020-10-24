@@ -73,7 +73,7 @@
             document.getElementById('result').innerHTML += `, <a href="https://google.com/maps/search/${lat},${long}">Location: ${lat},${long}</a>`;
         }
         if (ispName) {
-            ispname = ispName.split(" ").slice(1).join(" "); // ispName is always "ASxyz123 Company Name", so throw away the first word
+            ispName = ispName.split(" ").slice(1).join(" "); // ispName is always "ASxyz123 Company Name", so throw away the first word
         }
         let finalDataJson = {
             date: `${today.getMonth()+1}/${today.getDate()}/${today.getFullYear()}`,   // might b nice to guarantee MM/DD/YYYY eventually
