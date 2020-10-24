@@ -26,10 +26,11 @@ To run the app locally you need to:
 
 1. Clone this repo: `git clone https://github.com/codeforUV/ruralnet.git`  
 2. Install dependencies: `npm install`  
-3. Configure the mongo connection: `mv .env-example .env` and paste in the mongodb connection string for `MONGODB_URI` (ask @ejolly)  
-4. `./submoduleUpdate.sh` (set up the speedtest submodule and move some files)
-5. `npm run dev` (launch the server)
-6. Open `http://localhost:3000` in your web browser to see the app
+3. Configure the mongo connection: `mv .env-example .env` and paste in the mongodb connection string for `MONGODB_URI` (ask @ejolly)
+4. Configure mapquest API key - add `MAPQUEST_KEY` with api key to .env or config vars on heroku 
+5. `./submoduleUpdate.sh` (set up the speedtest submodule and move some files)
+6. `npm run dev` (launch the server)
+7. Open `http://localhost:3000` in your web browser to see the app
 
 ## App Development 
 

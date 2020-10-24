@@ -57,13 +57,22 @@
         dl = data.dlStatus;  
         ul = data.ulStatus;
         ping = data.pingStatus;
-        document.getElementById('result').textContent = `Ping: ${ping} ms, Down: ${dl} Mbps, Up: ${ul} Mbps`;
+        document.getElementById('result').innerHTML = `Ping: ${ping} ms, Down: ${dl} Mbps, Up: ${ul} Mbps`;
         document.getElementById('done').textContent = `${["not started", "started", "download", "ping and jitter", "upload", "finished", "aborted"][data.testState + 1]}`;
     };
-    function speedtestEnd (aborted) {
-        document.getElementById('result').textContent += `, Location ${lat},${long}`;
+    async function speedtestEnd (aborted) {
+        document.getElementById('result').innerHTML += `, <a href="https://google.com/maps/search/${lat},${long}">Location ${lat},${long}</a>`;
         document.getElementById('done').textContent = 'Finished!' + (aborted ? ' - Aborted' : ''); 
-        // this would be a great place to collect up and down speeds, bundle with GIS info and POST to a server
+        // convert coords to city
+        let cityLocation = null;
+        if (lat && long){
+            let cityreq = await fetch(`/city.json?latlng=${lat},${long}`);
+            let cityJson = await cityreq.json();
+            cityLocation = `${cityJson.city}, ${cityJson.state}`;
+        }
+        if (ispName) {
+            ispname = ispName.split(" ").slice(1).join(" "); // ispName is always "ASxyz123 Company Name", so throw away the first word
+        }
         let finalDataJson = {
             date: `${today.getMonth()+1}/${today.getDate()}/${today.getFullYear()}`,   // might b nice to guarantee MM/DD/YYYY eventually
             time: `${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}.${today.getMilliseconds()}`,  // same here - should be HH:MM:SS.MS
@@ -71,10 +80,10 @@
             uploadSpeed: ul,
             downloadSpeed: dl,
             ping: ping,
-            city: null,  // TODO choose an adequate API for deriving city/town from lat/long
+            city: cityLocation, 
             latitude: lat,
             longitude: long,
-            isp: ispName.split(" ").slice(1).join(" "),  // ispName is always "ASxyz123 Company Name", so throw away the first word
+            isp: ispName,  
             chunkSize: chunkSize  // this is good for testing but can be discarded later
         };
         console.log(finalDataJson);
