@@ -61,7 +61,6 @@
         document.getElementById('done').textContent = `${["not started", "started", "download", "ping and jitter", "upload", "finished", "aborted"][data.testState + 1]}`;
     };
     async function speedtestEnd (aborted) {
-        document.getElementById('result').innerHTML += `, <a href="https://google.com/maps/search/${lat},${long}">Location ${lat},${long}</a>`;
         document.getElementById('done').textContent = 'Finished!' + (aborted ? ' - Aborted' : ''); 
         // convert coords to city
         let cityLocation = null;
@@ -69,6 +68,9 @@
             let cityreq = await fetch(`/city.json?latlng=${lat},${long}`);
             let cityJson = await cityreq.json();
             cityLocation = `${cityJson.city}, ${cityJson.state}`;
+            document.getElementById('result').innerHTML += `, <a href="https://google.com/maps/search/${lat},${long}">Location: ${cityLocation}</a>`;
+        } else {
+            document.getElementById('result').innerHTML += `, <a href="https://google.com/maps/search/${lat},${long}">Location: ${lat},${long}</a>`;
         }
         if (ispName) {
             ispname = ispName.split(" ").slice(1).join(" "); // ispName is always "ASxyz123 Company Name", so throw away the first word
