@@ -19,6 +19,6 @@ export async function post(req, res, next) {
         'Content-Type': 'application/json',
         "Pragma": "no-cache",
         "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0, post-check=0, pre-check=0"
-    })
+    });
     res.end(JSON.stringify({}))
 }
