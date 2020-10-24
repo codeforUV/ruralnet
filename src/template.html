@@ -17,7 +17,7 @@
 				"name": "RuralNet Server",
 				"server": "/", //"https://192.168.1.13:3000/",  // major assumption here that / will point to this website
 				"dlURL": "garbage.json",
-				"ulURL": "empty.json",
+				"ulURL": "empty.bin", // in speedtest docs, an empty file can be a suitable replacement for a real backend - perhaps this gets around heroku h18 503 error "empty.json",
 				"pingURL": "empty.json",
 				"getIpURL": "getIP.json"
 			}
