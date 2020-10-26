@@ -74,7 +74,7 @@
             cityLocation = `${cityJson.city}, ${cityJson.state}`;
             document.getElementById('result').innerHTML += `, <a href="https://google.com/maps/search/${lat},${long}">Location: ${cityLocation}</a>`;
         } else {
-            document.getElementById('result').innerHTML += `, <a href="https://google.com/maps/search/${lat},${long}">Location: ${lat},${long}</a>`;
+            document.getElementById('result').innerHTML += ", Location Unknown";
         }
         if (ispName) {
             ispName = ispName.split(" ").slice(1).join(" "); // ispName is always "ASxyz123 Company Name", so throw away the first word
@@ -131,7 +131,7 @@
         } else {
             chunkSize = 100;
         }
-        s.setParameter("test_order","P_D_U");  // no need for IP check
+        s.setParameter("test_order","P_D");  // no need for IP check, removed upload test from Heroku deploy because it doesn't work w/ heroku
         s.setSelectedServer(SPEEDTEST_SERVERS[0]);  // see template.html for SPEEDTEST_SERVERS - there is only one server
         console.log('testing!\n', s._selectedServer);
         // Speedtest has a number of callbacks that can be useful
@@ -155,6 +155,7 @@
   <title>Speed Test</title>
 </svelte:head>
 
+<h1>Take a Speed Test</h1>
 <button id='test' on:click={doSpeedTest}>Click to Test</button>
 <p id='result'></p>
 <p id='done'></p>

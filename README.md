@@ -27,7 +27,7 @@ To run the app locally you need to:
 1. Clone this repo: `git clone https://github.com/codeforUV/ruralnet.git`  
 2. Install dependencies: `npm install`  
 3. Configure the mongo connection: `mv .env-example .env` and paste in the mongodb connection string for `MONGODB_URI` (ask @ejolly)
-4. Configure mapquest API key - add `MAPQUEST_KEY` with api key to .env or config vars on heroku 
+4. Configure mapquest API key - paste an api key string for `MAPQUEST_KEY` in `.env` (@NateDimick has one)
 5. `./submoduleUpdate.sh` (set up the speedtest submodule and move some files)
 6. `npm run dev` (launch the server)
 7. Open `http://localhost:3000` in your web browser to see the app
@@ -40,6 +40,12 @@ To conduct the speedtest itself, we have several options. Currently, we're using
 ### Setting up your development environment
 
 You will need to make sure that you have [NodeJS](https://nodejs.org/en/) setup on your computer. This will give you access to several command line programs. The primary one we'll be using is `npm` which a package manager and application runner for NodeJS web applications. 
+
+### Working with the codebase
+
+You can inspect variables and logs from the frontend by opening your browser's javascript console (View > Developer > Javascript Console on Chrome-based browsers).
+
+Logs and messages from the backend (server) will print out in the terminal window you used to run the `npm run dev` command.
 
 ### Editing files
 

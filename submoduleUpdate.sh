@@ -1,4 +1,5 @@
 # pull repo updates
+# to use w/ heroku, add this line to Procfile: release: ./submoduleUpdate.sh
 chmod +rw src
 chmod +rw src/routes  # git only tracks the executable bit
 git submodule init
