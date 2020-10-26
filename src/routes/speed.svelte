@@ -1,9 +1,10 @@
 <script>
     var lat, long, ispName, ipAddr, today, ul, dl, ping, chunkSize;
     chunkSize = 100;  // speedtest default
-    const saveResults = false;
+    const saveResults = true;
     async function getIPinfo () {
         try {
+            // TODO: check if ip is in database already, only make req if not bc rate limit on non-auth requests
             let req = await fetch("https://ipinfo.io/json");
             let ipInfo = await req.json();
             ipAddr = ipInfo.ip;
@@ -42,15 +43,17 @@
     };
     async function postTestResults (results) {
         // pass in a results json object to be posted to the server
-        const res = await fetch("speed.json", {
+        const res = await fetch("speedDatabase.json", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(results)
         });
+        /*
         const success = await res.json();
         document.getElementById("done").style.backgroundColor = success.success ? "green" : "red";
+        */
     };
     function speedtestUpdate (data) {
         // data stores multiple useful attributes related to the test underway
@@ -61,6 +64,7 @@
         document.getElementById('done').textContent = `${["not started", "started", "download", "ping and jitter", "upload", "finished", "aborted"][data.testState + 1]}`;
     };
     async function speedtestEnd (aborted) {
+        // TODO: handle aborted test (Also TODO: enable test abortion)
         document.getElementById('done').textContent = 'Finished!' + (aborted ? ' - Aborted' : ''); 
         // convert coords to city
         let cityLocation = null;
@@ -76,17 +80,17 @@
             ispName = ispName.split(" ").slice(1).join(" "); // ispName is always "ASxyz123 Company Name", so throw away the first word
         }
         let finalDataJson = {
-            date: `${today.getMonth()+1}/${today.getDate()}/${today.getFullYear()}`,   // might b nice to guarantee MM/DD/YYYY eventually
-            time: `${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}.${today.getMilliseconds()}`,  // same here - should be HH:MM:SS.MS
-            ip: ipAddr,
+            date: today.toISOString().split("T")[0],
+            time: today.toISOString().split("T")[1].slice(0, -1),  // not correct timezone time...
+            ipAddress: ipAddr,
             uploadSpeed: ul,
             downloadSpeed: dl,
             ping: ping,
             city: cityLocation, 
             latitude: lat,
             longitude: long,
-            isp: ispName,  
-            chunkSize: chunkSize  // this is good for testing but can be discarded later
+            internetProvider: ispName  
+            //chunkSize: chunkSize  // this is good for testing but can be discarded later
         };
         console.log(finalDataJson);
         // POST final JSON to a new route that adds a new line to a csv file

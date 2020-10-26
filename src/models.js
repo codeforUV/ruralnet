@@ -11,13 +11,20 @@ const DummySchema = new Schema({
 });
 
 const SpeedTestSchema = new Schema({
+  // these keys match the keys of finalDataJson in speed.svelte - hopefully that makes adding data super easy as demoed in database.json.js
   ipAddress: String,
-  download: Number,
-  upload: Number,
+  internetProvider: String,
+  downloadSpeed: Number,
+  uploadSpeed: Number,
   date: {
     type: String,
     default: Date.now(),
   },
+  time: String,
+  city: String,
+  ping: Number,
+  latitude: Number,
+  longitude: Number
 });
 
 const Dummy = mongoose.model('Dummy', DummySchema);
