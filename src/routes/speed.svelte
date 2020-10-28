@@ -1,5 +1,5 @@
 <script>
-    var lat, long, ispName, ipAddr, today, ul, dl, ping, chunkSize, userLocation, testId;
+    var lat, long, ispName, ipAddr, today, ul, dl, ping, chunkSize, userLocation, testId, trimISPName;
     chunkSize = 100;  // speedtest default
     const saveResults = true;
     var finished = false;
@@ -11,6 +11,7 @@
             if (req.ok) {  // both values returned on ok
                 ipAddr = ipInfo.ipAddress;
                 ispName = ipInfo.internetProvider;
+                trimISPName = false;
                 console.log("got ip from database")
             } else {  // only ip address returned on error
                 ipAddr = ipInfo.ipAddress;
@@ -26,6 +27,7 @@
                 let ipInfo = await req.json();
                 ipAddr = ipAddr || ipInfo.ip;
                 ispName = ipInfo.org;
+                trimISPName = true;
                 console.log("got ip from ipinfo.io")
             } catch (error) {
                 ispName = null;
@@ -99,7 +101,7 @@
         } else {
             document.getElementById('result').innerHTML += ", Location Unknown";
         }
-        if (ispName) {
+        if (ispName && trimISPName) {
             ispName = ispName.split(" ").slice(1).join(" "); // ispName is always "ASxyz123 Company Name", so throw away the first word
         }
         let finalDataJson = {
