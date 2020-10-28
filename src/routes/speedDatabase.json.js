@@ -31,13 +31,19 @@ export async function del (req, res, next) {
 export async function post (req, res, next) {
     const data = req.body;
     try {
-        const newTest = new SpeedTest(data);
-        const saved = await newTest.save();
+        let newTest, saved;
+        if (data._id) {
+          await SpeedTest.updateOne({_id: data._id}, { $set: data}).exec();
+          // newTest and saved will both be undefined
+        } else {
+          newTest = new SpeedTest(data);
+          saved = await newTest.save();
+        }
         if (saved === newTest) {
             res.writeHead(200, {
                 'Content-Type': 'application/json',
             });
-            res.end(JSON.stringify({ msg: 'Data saved successfully', entryId: newtest._id }));  // possibly not smart but stick with me or rembember this spot
+            res.end(JSON.stringify({ msg: 'Data saved successfully', entryId: newTest._id }));  // possibly not smart but stick with me or rembember this spot
         } else {
             res.writeHead(500, {
                 'Content-Type': 'application/json',

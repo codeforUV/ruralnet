@@ -1,18 +1,37 @@
 <script>
-    var lat, long, ispName, ipAddr, today, ul, dl, ping, chunkSize;
+    var lat, long, ispName, ipAddr, today, ul, dl, ping, chunkSize, userLocation, testId;
     chunkSize = 100;  // speedtest default
     const saveResults = true;
+    var finished = false;
     async function getIPinfo () {
+        // first try seeing if this IP has done a speed test before
         try {
-            // TODO: check if ip is in database already, only make req if not bc rate limit on non-auth requests
-            let req = await fetch("https://ipinfo.io/json");
-            let ipInfo = await req.json();
-            ipAddr = ipInfo.ip;
-            ispName = ipInfo.org;
-        } catch (error) {
-            ipAddr = null;
-            ispName = null;
+            let req = await fetch("/ipCache.json");
+            let ipInfo = await req.json()
+            if (req.ok) {  // both values returned on ok
+                ipAddr = ipInfo.ipAddress;
+                ispName = ipInfo.internetProvider;
+                console.log("got ip from database")
+            } else {  // only ip address returned on error
+                ipAddr = ipInfo.ipAddress;
+            }
+        } catch {
+            console.log("problem with ipCache")
         }
+        // if not, then use ipinfo.io
+        if (!ipAddr || !ispName) {
+            try {
+                // TODO: check if ip is in database already, only make req if not bc rate limit on non-auth requests
+                let req = await fetch("https://ipinfo.io/json");
+                let ipInfo = await req.json();
+                ipAddr = ipAddr || ipInfo.ip;
+                ispName = ipInfo.org;
+                console.log("got ip from ipinfo.io")
+            } catch (error) {
+                ispName = null;
+            }
+        }
+        
     };
     function getBrowserLocation (accuracy) {
         let geo = navigator.geolocation;  // geolocation gets more accurate over time once enabled??? so by placing this line ahead of geo.getCurrentPosition buys time (milliseconds) for the browser to be accurate
@@ -51,9 +70,13 @@
             body: JSON.stringify(results)
         });
         /*
-        const success = await res.json();
+        
         document.getElementById("done").style.backgroundColor = success.success ? "green" : "red";
         */
+       if (res.ok) {
+            const success = await res.json();
+            testId = success.entryId;
+       }
     };
     function speedtestUpdate (data) {
         // data stores multiple useful attributes related to the test underway
@@ -69,7 +92,7 @@
         // convert coords to city
         let cityLocation = null;
         if (lat && long){
-            let cityreq = await fetch(`/city.json?latlng=${lat},${long}`);
+            let cityreq = await fetch(`/location/city.json?latlng=${lat},${long}`);
             let cityJson = await cityreq.json();
             cityLocation = `${cityJson.city}, ${cityJson.state}`;
             document.getElementById('result').innerHTML += `, <a href="https://google.com/maps/search/${lat},${long}">Location: ${cityLocation}</a>`;
@@ -97,6 +120,7 @@
         if (saveResults) {
             postTestResults(finalDataJson);
         }
+        finished = true;
     };
 
     async function doSpeedTest () {
@@ -141,13 +165,49 @@
         document.getElementById("test").disabled = true;
         // NOTE: we could promisify the speedtest to make running sequential tests possible (obvious statements are obvious but hey)
     };
-    function fixLocation () {
-        /* TODO! How should this function work?
-        * should it ask if the location looks right?
-        * should it ask for a town regardless?
-        * each test should likely generate a unique id to make location updating simple
-        * 
-        */
+    async function fixLocation () {
+        // pre-request screening - 5 digit zip code or properly comma'd string
+        let good = false;
+        try {
+            let n = parseInt(userLocation);
+            if (n < 100000) good = true;
+        } catch (error) {
+            console.log("not a zip code")
+        }
+        if (! good) {
+            if (userLocation.split(',').length === 2) {
+                good = true;
+                userLocation = userLocation.replace(/\s+/g, "");  // strip whitespace -> town,ST
+            }
+        }
+        // passed pre request screening, verify with server
+        if (good) {
+            let verifyReq = await fetch(`/location/verify.json?location=${userLocation}`);
+            let verification = await verifyReq.json();
+            if (verification.verified) {
+                let update = {  // update keys need to match schema
+                    _id: testId,
+                    city: verification.city,
+                    latitude: verification.latlng.lat,
+                    longitude: verification.latlng.lng
+                }
+                let updateReq = await fetch("/speedDatabase.json", { // speedDatabase upgraded to handle updates through POST, given known ID
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(update)
+                });
+                // this is a debugging line - delete it later
+                document.getElementById("chastise").innerText = `verified ${update.city} @ ${update.latitude}, ${update.longitude} for test #${update._id}`;
+            } else {
+                // if not verified, then user gave garbage. advise to retry
+                document.getElementById("chastise").innerText = "Not a real town or zip code, check spelling and try again";
+            }
+
+        } else {
+            document.getElementById("chastise").innerText = "please separate town + state with a comma, or enter a valid 5-digit zip code";
+        }
     }
 </script>
 
@@ -159,3 +219,11 @@
 <button id='test' on:click={doSpeedTest}>Click to Test</button>
 <p id='result'></p>
 <p id='done'></p>
+{#if finished}
+    <h2>Location Look Wrong?</h2>
+    <p><small>Location estimation works best on mobile devices</small></p>
+    <p><strong>Tell us where you are - city, state or zip code</strong></p>
+    <input type="text" bind:value={userLocation} placeholder="example: Barre, VT">
+    <button on:click={fixLocation}>That's where I am</button>
+    <p id="chastise"></p>
+{/if}

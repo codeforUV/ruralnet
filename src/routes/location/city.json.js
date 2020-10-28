@@ -1,3 +1,4 @@
+import { SpeedTest } from '../../models';
 const fetch = require("node-fetch");
 export async function get (req, res, next) {
     /* This route takes a coordinate pair and will return the name of the town + state that the coordinate is (probably) in
@@ -45,7 +46,8 @@ export async function get (req, res, next) {
         });
         res.end(JSON.stringify({reason: "please provide coordinates"}));
     }
-    
+}
 
+async function post (req, res, next) {
     
 }
