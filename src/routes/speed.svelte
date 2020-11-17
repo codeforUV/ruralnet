@@ -1,8 +1,11 @@
 <script>
+    import { onMount } from 'svelte';
     var lat, long, ispName, ipAddr, today, ul, dl, ping, chunkSize, userLocation, testId, trimISPName;
     chunkSize = 100;  // speedtest default
     const saveResults = true;
+    const milliDay = 86400000; // the number of milliseconds in a day
     var finished = false;
+    const storage = window.localStorage;  // will store some information about the most recent speedtest (1 day)
     async function getIPinfo () {
         // first try seeing if this IP has done a speed test before
         try {
@@ -118,6 +121,8 @@
             //chunkSize: chunkSize  // this is good for testing but can be discarded later
         };
         console.log(finalDataJson);
+        storage.setItem('recentTest', JSON.stringify(finalDataJson));
+        storage.setItem('recentTestDate', Date.now());
         // POST final JSON to a new route that adds a new line to a csv file
         if (saveResults) {
             postTestResults(finalDataJson);
@@ -193,6 +198,12 @@
                     latitude: verification.latlng.lat,
                     longitude: verification.latlng.lng
                 }
+                // update local copy 
+                let finalData = JSON.parse(storage.getItem('recentTest'));
+                Object.keys(update).forEach(k => {
+                    finalData[k] = update[k];
+                })
+                storage.setItem('recentTest', JSON.stringify(finalData));
                 let updateReq = await fetch("/speedDatabase.json", { // speedDatabase upgraded to handle updates through POST, given known ID
                     method: "POST",
                     headers: {
@@ -211,6 +222,30 @@
             document.getElementById("chastise").innerText = "please separate town + state with a comma, or enter a valid 5-digit zip code";
         }
     }
+
+    // get most recent test results
+    function getLastTest () {    
+        var lastTest = storage.getItem('recentTest');
+        console.log(lastTest);
+        if (lastTest) {
+            var lastTestTime = parseInt(storage.getItem('recentTestDate'));
+            if (Date.now() < milliDay + lastTestTime) {
+                // last test was taken within 24 hours, show the results
+                try {
+                    lastTest = JSON.parse(lastTest);
+                    document.getElementById('result').innerHTML = `Ping: ${lastTest.ping} ms, Down: ${lastTest.downloadSpeed} Mbps, Up: ${lastTest.uploadSpeed} Mbps, <a href="https://google.com/maps/search/${lastTest.latitude},${lastTest.longitude}">Location: ${lastTest.city}</a>`
+                    document.getElementById('done').innerHTML = `Test taken on ${new Date(lastTestTime)}`;
+                } catch (error) {
+                    // if bad json parse, then just wipe localStorage
+                    storage.clear();
+                }
+                
+            } else {
+                storage.clear();
+            }
+        }
+    }
+    onMount(getLastTest);  // onmount runs when the window comes into focus
 </script>
 
 <svelte:head>
