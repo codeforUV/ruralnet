@@ -1,39 +1,60 @@
 <script>
     import { onMount } from 'svelte';
-    var lat, long, ispName, ipAddr, today, ul, dl, ping, chunkSize, userLocation, testId, trimISPName;
-    chunkSize = 100;  // speedtest default
+    var testInfo = {
+        date: null,
+        time: null,
+        ipAddress: null,
+        uploadSpeed: null,
+        downloadSpeed: null,
+        ping: null,
+        city: null, 
+        latitude: null,
+        longitude: null,
+        internetProvider: null
+    };
+    var today, userLocation, testId, trimISPName;
+    const chunkSize = 100;  // speedtest default
     const saveResults = true;
     const milliDay = 86400000; // the number of milliseconds in a day
+    var inProgress = false;
     var finished = false;
     const storage = window.localStorage;  // will store some information about the most recent speedtest (1 day)
+    const s = new Speedtest(); 
+    s.setParameter("garbagePhp_chunkSize", chunkSize);
+    s.setParameter("test_order","P_D");  // no need for IP check, removed upload test from Heroku deploy because it doesn't work w/ heroku
+    s.setSelectedServer(SPEEDTEST_SERVERS[0]);  // see template.html for SPEEDTEST_SERVERS - there is only one server
+    // Speedtest has a number of callbacks that can be useful
+    s.onupdate = speedtestUpdate;
+    s.onend = speedtestEnd;
+
     async function getIPinfo () {
         // first try seeing if this IP has done a speed test before
         try {
             let req = await fetch("/ipCache.json");
             let ipInfo = await req.json()
             if (req.ok) {  // both values returned on ok
-                ipAddr = ipInfo.ipAddress;
-                ispName = ipInfo.internetProvider;
+                testInfo.ipAddress = ipInfo.ipAddress;
+                testInfo.internetProvider = ipInfo.internetProvider;
                 trimISPName = false;
                 console.log("got ip from database")
             } else {  // only ip address returned on error
-                ipAddr = ipInfo.ipAddress;
+                testInfo.ipAddress = ipInfo.ipAddress;
             }
         } catch {
             console.log("problem with ipCache")
         }
         // if not, then use ipinfo.io
-        if (!ipAddr || !ispName) {
+        if (!testInfo.ipAddress || !testInfo.internetProvider) {
             try {
                 // TODO: check if ip is in database already, only make req if not bc rate limit on non-auth requests
                 let req = await fetch("https://ipinfo.io/json");
                 let ipInfo = await req.json();
-                ipAddr = ipAddr || ipInfo.ip;
-                ispName = ipInfo.org;
+                testInfo.ipAddress = testInfo.ipAddress || ipInfo.ip;
+                testInfo.internetProvider = ipInfo.org;
                 trimISPName = true;
                 console.log("got ip from ipinfo.io")
             } catch (error) {
-                ispName = null;
+                testInfo.internetProvider = null;
             }
         }
         
@@ -85,52 +106,50 @@
     };
     function speedtestUpdate (data) {
         // data stores multiple useful attributes related to the test underway
-        dl = data.dlStatus;  
-        ul = data.ulStatus;
-        ping = data.pingStatus;
-        document.getElementById('result').innerHTML = `Ping: ${ping} ms, Down: ${dl} Mbps, Up: ${ul} Mbps`;
+        testInfo.downloadSpeed = data.dlStatus;  
+        testInfo.uploadSpeed = data.ulStatus;
+        testInfo.ping = data.pingStatus;
+        document.getElementById('result').innerHTML = `Ping: ${testInfo.ping} ms, Down: ${testInfo.downloadSpeed || "N/A"} Mbps, Up: ${testInfo.uploadSpeed || "N/A"} Mbps`;
         document.getElementById('done').textContent = `${["not started", "started", "download", "ping and jitter", "upload", "finished", "aborted"][data.testState + 1]}`;
     };
     async function speedtestEnd (aborted) {
-        // TODO: handle aborted test (Also TODO: enable test abortion)
-        document.getElementById('done').textContent = 'Finished!' + (aborted ? ' - Aborted' : ''); 
-        // convert coords to city
-        let cityLocation = null;
-        if (lat && long){
-            let cityreq = await fetch(`/location/city.json?latlng=${lat},${long}`);
-            let cityJson = await cityreq.json();
-            cityLocation = `${cityJson.city}, ${cityJson.state}`;
-            document.getElementById('result').innerHTML += `, <a href="https://google.com/maps/search/${lat},${long}">Location: ${cityLocation}</a>`;
-        } else {
-            document.getElementById('result').innerHTML += ", Location Unknown";
+        document.getElementById('done').textContent = 'Finished' + (aborted ? ' - Aborted' : '!'); 
+        if (!aborted) {
+            document.getElementById('title').innerHTML = 'Speedtest results';
+            // convert coords to city
+            if (testInfo.latitude && testInfo.longitude){
+                let cityreq = await fetch(`/location/city.json?latlng=${testInfo.latitude},${testInfo.longitude}`);
+                let cityJson = await cityreq.json();
+                testInfo.city = `${cityJson.city}, ${cityJson.state}`;
+                document.getElementById('result').innerHTML += `, <a href="https://google.com/maps/search/${testInfo.latitude},${testInfo.longitude}">Location: ${testInfo.city}</a>`;
+            } else {
+                document.getElementById('result').innerHTML += ", Location Unknown";
+            }
+            if (testInfo.internetProvider && trimISPName) {
+                testInfo.internetProvider = testInfo.internetProvider.split(" ").slice(1).join(" "); // ispName is always "ASxyz123 Company Name", so throw away the first word
+            }
+            testInfo.date = today.toISOString().split("T")[0];
+            testInfo.time = today.toISOString().split("T")[1].slice(0, -1);
+            console.log(testInfo);
+            storage.setItem('recentTest', JSON.stringify(testInfo));
+            storage.setItem('recentTestDate', Date.now());
+            // POST final JSON to a new route that adds a new line to a csv file
+            if (saveResults) {
+                postTestResults(testInfo);
+            }
+            finished = true;
+            document.getElementById('cancel').disabled = true;
         }
-        if (ispName && trimISPName) {
-            ispName = ispName.split(" ").slice(1).join(" "); // ispName is always "ASxyz123 Company Name", so throw away the first word
-        }
-        let finalDataJson = {
-            date: today.toISOString().split("T")[0],
-            time: today.toISOString().split("T")[1].slice(0, -1),  // not correct timezone time...
-            ipAddress: ipAddr,
-            uploadSpeed: ul,
-            downloadSpeed: dl,
-            ping: ping,
-            city: cityLocation, 
-            latitude: lat,
-            longitude: long,
-            internetProvider: ispName  
-            //chunkSize: chunkSize  // this is good for testing but can be discarded later
-        };
-        console.log(finalDataJson);
-        storage.setItem('recentTest', JSON.stringify(finalDataJson));
-        storage.setItem('recentTestDate', Date.now());
-        // POST final JSON to a new route that adds a new line to a csv file
-        if (saveResults) {
-            postTestResults(finalDataJson);
-        }
-        finished = true;
     };
-
+    function cancelSpeedTest() {
+        s.abort();
+        document.getElementById('cancel').disabled = true;
+        document.getElementById('test').disabled = false;
+        document.getElementById('title').innerHTML = 'Speedtest cancelled';
+    };
     async function doSpeedTest () {
+        inProgress = true;
+        document.getElementById('title').innerHTML = 'Speedtest in progress';
         let r = document.getElementById("result");
         // Date information - date and time
         today = new Date();
@@ -140,14 +159,14 @@
         try {
             let browserLocation = await getBrowserLocation(500);
             if (typeof browserLocation !== "string") {
-                lat = browserLocation.latitude;
-                long = browserLocation.longitude;
+                testInfo.latitude = browserLocation.latitude;
+                testInfo.longitude = browserLocation.longitude;
             } else {
                 throw new Error("Browser Location Didn't Work");
             }
         } catch (error) {
-            lat = null;
-            long = null;
+            testInfo.latitude = null;
+            testInfo.longitude = null;
         }
         // ISP information - ip address and isp name
         r.innerHTML = "getting ISP information...";
@@ -155,21 +174,10 @@
 
         // Speed information
         r.innerHTML = "Beginning speedtest...";
-        const s = new Speedtest(); 
-        if (typeof chunkSize === "number") {
-            console.log(chunkSize);
-            s.setParameter("garbagePhp_chunkSize", chunkSize);
-        } else {
-            chunkSize = 100;
-        }
-        s.setParameter("test_order","P_D");  // no need for IP check, removed upload test from Heroku deploy because it doesn't work w/ heroku
-        s.setSelectedServer(SPEEDTEST_SERVERS[0]);  // see template.html for SPEEDTEST_SERVERS - there is only one server
         console.log('testing!\n', s._selectedServer);
-        // Speedtest has a number of callbacks that can be useful
-        s.onupdate = speedtestUpdate;
-        s.onend = speedtestEnd;
         s.start();
         document.getElementById("test").disabled = true;
+        document.getElementById('cancel').disabled = false;
         // NOTE: we could promisify the speedtest to make running sequential tests possible (obvious statements are obvious but hey)
     };
     async function fixLocation () {
@@ -221,30 +229,30 @@
         } else {
             document.getElementById("chastise").innerText = "please separate town + state with a comma, or enter a valid 5-digit zip code";
         }
-    }
+    };
 
     // get most recent test results
     function getLastTest () {    
-        var lastTest = storage.getItem('recentTest');
+        let lastTest = storage.getItem('recentTest');
         console.log(lastTest);
         if (lastTest) {
-            var lastTestTime = parseInt(storage.getItem('recentTestDate'));
+            let lastTestTime = parseInt(storage.getItem('recentTestDate'));
             if (Date.now() < milliDay + lastTestTime) {
                 // last test was taken within 24 hours, show the results
                 try {
-                    lastTest = JSON.parse(lastTest);
-                    document.getElementById('result').innerHTML = `Ping: ${lastTest.ping} ms, Down: ${lastTest.downloadSpeed} Mbps, Up: ${lastTest.uploadSpeed} Mbps, <a href="https://google.com/maps/search/${lastTest.latitude},${lastTest.longitude}">Location: ${lastTest.city}</a>`
+                    testInfo = JSON.parse(lastTest);
+                    document.getElementById('result').innerHTML = `Ping: ${testInfo.ping} ms, Down: ${testInfo.downloadSpeed || "N/A"} Mbps, Up: ${testInfo.uploadSpeed || "N/A"} Mbps`;
                     document.getElementById('done').innerHTML = `Test taken on ${new Date(lastTestTime)}`;
+                    document.getElementById('test').innerHTML = 'Click to test again';
                 } catch (error) {
                     // if bad json parse, then just wipe localStorage
                     storage.clear();
                 }
-                
             } else {
                 storage.clear();
             }
         }
-    }
+    };
     onMount(getLastTest);  // onmount runs when the window comes into focus
 </script>
 
@@ -252,8 +260,13 @@
   <title>Speed Test</title>
 </svelte:head>
 
-<h1>Take a Speed Test</h1>
-<button id='test' on:click={doSpeedTest}>Click to Test</button>
+<h1 id='title'>Take a Speed Test</h1>
+{#if !finished}
+    <button id='test' on:click={doSpeedTest}>Click to Test</button>
+    {#if inProgress}
+        <button id='cancel' on:click={cancelSpeedTest}>Cancel Test</button>
+    {/if}
+{/if}
 <p id='result'></p>
 <p id='done'></p>
 {#if finished}
