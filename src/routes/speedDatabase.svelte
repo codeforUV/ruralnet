@@ -46,6 +46,9 @@
   <div class="button-container">
     <button on:click={refreshData}>Refresh messages</button>
   </div>
+  <div class="button-container">
+    <a href="/export.json" download><button>Export TSV of data</button></a>
+  </div>
   
   <div>
     {#await promise}

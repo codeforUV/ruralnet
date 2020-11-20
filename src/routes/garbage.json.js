@@ -7,7 +7,7 @@ export async function get(req, res, next) {
     res.writeHead(200, {
         'Content-Type': 'application/octet-stream',
         'Content-Description': 'File Transfer',
-        'Content-Disposition': 'attachement; filename=random.dat',
+        'Content-Disposition': 'attachment; filename=random.dat',
         'Content-Transfer-Encoding': 'binary',
         'Pragma': 'no-cache',
         "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0, post-check=0, pre-check=0"

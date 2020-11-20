@@ -45,4 +45,4 @@
   <figcaption>HIGH FIVE!</figcaption>
 </figure>
 
-<p><strong>This is The Beta site of ruralnet - high voltage - rated R - toxic waste disposal</strong></p>
+<p><strong>This is a testing deployment of RuralNet. Expect errors and incompletion.</strong></p>
