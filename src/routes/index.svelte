@@ -45,4 +45,4 @@
   <figcaption>HIGH FIVE!</figcaption>
 </figure>
 
-<p><strong>This is some new text </strong></p>
+<p><strong>This is a testing deployment of RuralNet. Expect errors and incompletion.</strong></p>

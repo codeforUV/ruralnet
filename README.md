@@ -25,10 +25,12 @@ For simplicity and tracking checkout the [Taskboard](https://github.com/codeforU
 To run the app locally you need to:  
 
 1. Clone this repo: `git clone https://github.com/codeforUV/ruralnet.git`  
-3. Install dependencies: `npm install`  
-4. Configure the mongo connection: `mv .env-example .env` and paste in the mongodb connection string for `MONGODB_URI` (ask @ejolly)  
-5. `npm run dev` (launch the server)
-6. Open `http://localhost:3000` in your web browser to see the app
+2. Install dependencies: `npm install`  
+3. Configure the mongo connection: `mv .env-example .env` and paste in the mongodb connection string for `MONGODB_URI` (ask @ejolly)
+4. Configure mapquest API key - paste an api key string for `MAPQUEST_KEY` in `.env` (@NateDimick has one)
+5. `./submoduleUpdate.sh` (set up the speedtest submodule and move some files)
+6. `npm run dev` (launch the server)
+7. Open `http://localhost:3000` in your web browser to see the app
 
 ## App Development 
 
@@ -47,7 +49,7 @@ Logs and messages from the backend (server) will print out in the terminal windo
 
 ### Editing files
 
-The main files we want to edit are in `src/routes`. Each frontend route (page) should have a file named like: `filename.svelte`. The backend logic for that *specific* route should be in a file called `filename.json.js` and contain a `get()` function and a `post()`  function. These functions should contain the server logic for when the frontend makes GET or POST [HTTP requests](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods) to that specific route. To make a request from the frontend you can use the `fetch` function available in most modern web browsers, e.g. `fetch(filename.json')` from within the frontend route file (e.g. from within `src/routes/filename.svelte`).  
+The main files we want to edit are in `src/routes`. Each frontend route (page) should have a file named like: `filename.svelte`. The backend logic for that *specific* route should be in a file called `filename.json.js` and contain a `get()` function and a `post()`  function. These functions should contain the server logic for when the frontend makes GET or POST [HTTP requests](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods) to that specific route. To make a request from the frontend you can use the `fetch` function available in most modern web browsers, e.g. `fetch('filename.json')` from within the frontend route file (e.g. from within `src/routes/filename.svelte`).  
 
 See `src/routes/about.svelte` and `src/routes/about.json.js` for an example.
 

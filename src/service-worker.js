@@ -42,6 +42,9 @@ self.addEventListener('fetch', (event) => {
   // ignore dev server requests
   if (url.hostname === self.location.hostname && url.port !== self.location.port) return;
 
+  // ignore fetches to garbage and empty for the speedtest
+  if (url.pathname === '/garbage.json' || url.pathname === '/empty.json') return;
+
   // always serve static files and bundler-generated assets from cache
   if (url.host === self.location.host && cached.has(url.pathname)) {
     event.respondWith(caches.match(event.request));

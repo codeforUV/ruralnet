@@ -17,8 +17,12 @@
     "compression": "^1.7.1",
     "dotenv": "^8.2.0",
     "fast-speed-test": "^1.1.0",
+    "gps-distance": "0.0.4",
+    "json2csv": "^5.0.5",
     "mongoose": "^5.10.9",
+    "node-fetch": "^2.6.1",
     "polka": "next",
+    "random-bytes": "^1.0.0",
     "sirv": "^0.4.0",
     "speedtest-net": "^2.1.1"
   },
