@@ -12,6 +12,7 @@
 - Current Approach
 - Contribution needs
 - Resources
+- Quick walkthrough
 
 ---
 
