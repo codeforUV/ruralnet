@@ -61,7 +61,7 @@
       <a aria-current={segment === 'speedDatabase' ? 'page' : undefined} href="speedDatabase">Speed Test Results</a>
     </li>
     <li>
-      <a aria-current={segment === 'survey' ? 'page' : undefinted} href="survey>Survey</a>
+      <a aria-current={segment === 'survey' ? 'page' : undefined} href="survey">Survey</a>
     </li>
   </ul>
 </nav>

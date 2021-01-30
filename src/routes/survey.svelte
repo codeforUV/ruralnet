@@ -16,6 +16,7 @@
 	let begin = document.getElementById('survey');
 	begin.remove();
         inProgress = true;
+        surveyInfo.answers = fill_array(surveyInfo.questions.length,'');
 	document.getElementById('question').innerHTML = surveyInfo.questions[questionNumber];
 	document.getElementById('prev').disabled = true;
 	document.getElementById('question-number').hidden = false;
@@ -27,9 +28,20 @@
 	document.getElementById('abandon').hidden = false;
 	document.getElementById('exit').hidden = false;
     };
+    function fill_array(size,content) {
+        var arr = [];
+        for(var i=0;i<size;i++){
+            arr.push(content);
+        }
+        return arr;
+    };
     async function nextQuestion() {
-        surveyInfo.answers.push(document.getElementById('answer').innerHTML);
+        questionNumber++;
+        surveyInfo.answers[questionNumber - 1] = answer;
+        console.log(surveyInfo.answers[questionNumber]);
+        answer = surveyInfo.answers[questionNumber];
 	if(questionNumber >= surveyInfo.questions.length - 1) {
+            console.log('Question number greater than or equal to the question array length.');
             document.getElementById('next').disabled = true;
             questionNumber = surveyInfo.questions.length - 1;
         }
@@ -37,14 +49,16 @@
             if(document.getElementById('prev').disabled === true) {
                 document.getElementById('prev').disabled = false;
             }
-            questionNumber++;
             document.getElementById('question').innerHTML = surveyInfo.questions[questionNumber];
+            document.getElementById('answer').innerHTML = surveyInfo.answers[questionNumber];
 	}
     };
     async function prevQuestion() {
-        surveyInfo.answers.push(document.getElementById('answer').innerHTML);
-	document.getElementById('answer').innerHTML = surveyInfo.answers[questionNumber];
+        questionNumber--;
+        surveyInfo.answers[questionNumber + 1] = answer;
+        answer = surveyInfo.answers[questionNumber];
 	if(questionNumber <= 0) {
+            console.log('Question number less than or equal to 0.');
             document.getElementById('prev').disabled = true;
             questionNumber = 0;
         }
@@ -52,13 +66,9 @@
             if(document.getElementById('next').disabled === true) {
                 document.getElementById('next').disabled = false;
             }
-            questionNumber--;
             document.getElementById('question').innerHTML = surveyInfo.questions[questionNumber];
+            document.getElementById('answer').innerHTML = surveyInfo.answers[questionNumber];
 	}
-	console.log(surveyInfo.questions[questionNumber]);
-	console.log(surveyInfo.questions.length);
-	console.log(questionNumber);
-        console.log(document.getElementById('prev').disabled);
     };
     async function saveSurvey() {
         // save the survey locally and on the database
@@ -101,15 +111,14 @@
     <button id='survey' on:click={beginSurvey}>Click to takey survey</button>
     <h2 id='question-number' hidden>Question {questionNumber + 1} of {surveyInfo.questions.length}</h2>
     <h3 id='question' hidden>Question {questionNumber}</h3>
-    <input id='answer' type="text" value={answer} placeholder="answer" hidden>
+    <input id='answer' type="text" bind:value={answer} placeholder="answer" hidden>
     <button id='prev' on:click={prevQuestion} hidden>Prev Question</button>
     <button id='next' on:click={nextQuestion} hidden>Next Question</button>
     <button id='save' on:click={saveSurvey} hidden>Save Survey</button>
     <button id='abandon' on:click={deleteSurvey} hidden>Delete Survey</button>
     <button id='exit' on:click={exitSurvey} hidden>Exit Survey</button>
 {/if}
-<p id='result'></p>
-<p id='done'></p>
 {#if finished}
-
+   <p id='result'></p>
+   <p id='done'></p>
 {/if}
