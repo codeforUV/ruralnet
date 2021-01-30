@@ -12,7 +12,6 @@ export async function get(req, res, next) {
         'Pragma': 'no-cache',
         "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0, post-check=0, pre-check=0"
     })
-    // insert action code
     const requestedSize = (req.query.ckSize || 100);
     let b;
     if (!cache) {
@@ -25,15 +24,12 @@ export async function get(req, res, next) {
     for (let i = 0; i < requestedSize; i++) {
         res.write(b);  // write 1 MB of random data for each loop, up to requestedSize 
     }
-    // on end of action
     
     res.end()
 }
 
 export async function post(req, res, next) {
-    // insert action code
-
-    // on end of action
+    // do nothing
     res.writeHead(200, {
         'Content-Type': 'application/json'
     })

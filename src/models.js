@@ -12,6 +12,7 @@ const DummySchema = new Schema({
 
 const SpeedTestSchema = new Schema({
   // these keys match the keys of finalDataJson in speed.svelte - hopefully that makes adding data super easy as demoed in database.json.js
+  userID: String,
   ipAddress: String,
   internetProvider: String,
   downloadSpeed: Number,

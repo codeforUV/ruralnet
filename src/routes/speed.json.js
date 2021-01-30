@@ -6,6 +6,8 @@ export function get (req, res, next) {
     res.end(JSON.stringify({success: true}));
 }
 
+// this route appends info from a single test to a json file stored in the project directory... an artifact frombefore we used Mongo?
+// TODO: delete this endpoint.
 export function post (req, res, next) {
     try {
         console.log(req.body);

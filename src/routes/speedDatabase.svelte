@@ -2,7 +2,7 @@
 
     const deleteItem = async (id) => {
       console.log(id);
-      const resp = await fetch('speedDatabase.json', {
+      const resp = await fetch('speedDB/speedTestCRUD.json', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -16,7 +16,7 @@
     };
   
     const findData = async () => {
-      const resp = await fetch('speedDatabase.json');
+      const resp = await fetch('speedDB/speedTestCRUD.json');
       const data = await resp.json();
       if (resp.ok) {
         // console.log('Server response object:');
@@ -35,13 +35,13 @@
     const getTSV = async () => {
       // this is a hairbrained attempt at protecting the data from non-hackers - easily 
       var pw = prompt("Enter the Password");
-      let pwCheck = await fetch(`/export.json?r=${pw}`, {
+      let pwCheck = await fetch(`speedDB/export.json?r=${pw}`, {
         method: 'POST'
       })
       pwCheck = await pwCheck.json();
       if (pwCheck.trust) {
         let downloadAnchor = document.createElement('a');
-        downloadAnchor.href = `/export.json?r=${pw}`;
+        downloadAnchor.href = `speedDB/export.json?r=${pw}`;
         downloadAnchor.download = true;
         downloadAnchor.click();
       } else {

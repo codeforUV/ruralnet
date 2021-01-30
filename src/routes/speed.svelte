@@ -10,7 +10,8 @@
         city: null, 
         latitude: null,
         longitude: null,
-        internetProvider: null
+        internetProvider: null,
+        userID: null
     };
     var today, userLocation, testId, trimISPName;
     const chunkSize = 100;  // speedtest default
@@ -20,6 +21,7 @@
     var finished = false;
     const storage = window.localStorage;  // will store some information about the most recent speedtest (1 day)
     const s = new Speedtest(); 
+    const cookieTool = new CookieUtility();
     s.setParameter("garbagePhp_chunkSize", chunkSize);
     s.setParameter("test_order","P_D");  // no need for IP check, removed upload test from Heroku deploy because it doesn't work w/ heroku
     s.setSelectedServer(SPEEDTEST_SERVERS[0]);  // see template.html for SPEEDTEST_SERVERS - there is only one server
@@ -30,7 +32,7 @@
     async function getIPinfo () {
         // first try seeing if this IP has done a speed test before
         try {
-            let req = await fetch("/ipCache.json");
+            let req = await fetch("/speedDB/constInfoCache.json");
             let ipInfo = await req.json()
             if (req.ok) {  // both values returned on ok
                 testInfo.ipAddress = ipInfo.ipAddress;
@@ -88,7 +90,8 @@
     };
     async function postTestResults (results) {
         // pass in a results json object to be posted to the server
-        const res = await fetch("speedDatabase.json", {
+        results.userID = cookieTool.getValue("user");
+        const res = await fetch("speedDB/speedTestCRUD.json", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -212,7 +215,7 @@
                     finalData[k] = update[k];
                 })
                 storage.setItem('recentTest', JSON.stringify(finalData));
-                let updateReq = await fetch("/speedDatabase.json", { // speedDatabase upgraded to handle updates through POST, given known ID
+                let updateReq = await fetch("/speedDB/speedTestCRUD.json", { // speedDatabase upgraded to handle updates through POST, given known ID
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -253,7 +256,13 @@
             }
         }
     };
-    onMount(getLastTest);  // onmount runs when the window comes into focus
+    let cookie = "No Cookie";
+    onMount(() => {
+        getLastTest();
+        cookie = cookieTool.getValue("user");
+    });  // onmount runs when the window comes into focus
+
+    
 </script>
 
 <svelte:head>
@@ -261,6 +270,7 @@
 </svelte:head>
 
 <h1 id='title'>Take a Speed Test</h1>
+<h2>Welcome, {cookie}</h2>
 {#if !finished}
     <button id='test' on:click={doSpeedTest}>Click to Test</button>
     {#if inProgress}
