@@ -58,7 +58,10 @@
       <a aria-current={segment === 'speed' ? 'page' : undefined} href="speed">Measure Speed</a>
     </li>
     <li>
-      <a aria-current={segment === 'speedDatabase' ? 'page' : undefined} href="speedDatabase">Speed Test Results</a>
+      <a aria-current={segment === 'speedDatabase' ? 'page' : undefined} href="speedDatabase">All Speed Test Results</a>
+    </li>
+    <li>
+      <a aria-current={segment === 'yourTests' ? 'page' : undefined} href="yourTests">Your Speed Test Results</a>
     </li>
   </ul>
 </nav>

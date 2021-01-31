@@ -3,13 +3,6 @@ import { parse } from 'json2csv';
 
 // returns aggregated speedtest info in a tsv file (because some fields have commas)
 export async function get (req, res, next) {
-    if (req.headers.cookie) {
-        console.log("DB GET FOUND COOKIE");
-        console.log(req.headers.cookie);
-    }
-    else{
-        console.log("NO COOKIE :(");
-    }
     // GET still requires password
     if (req.query.r === process.env.TSV_RELEASE) {  // requires TSV_RELEASE environment variable
         const rawData = await SpeedTest.find({}).exec();

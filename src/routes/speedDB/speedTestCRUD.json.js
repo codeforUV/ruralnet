@@ -2,10 +2,6 @@ import { SpeedTest } from '../../models';
 
 // get all speedtests
 export async function get (req, res, next) {
-    if (req.headers.cookie) {
-      console.log("DB GET FOUND COOKIE");
-      console.log(req.headers.cookie);
-    }
     try {
         const data = await SpeedTest.find({}).exec();
         res.writeHead(200).end(JSON.stringify({ docs: data }));

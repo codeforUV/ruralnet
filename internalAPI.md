@@ -18,6 +18,7 @@ Back-end API's are separated into groups of similar responsibility/domain. These
 - [API Documentation](#Internal-API-Documentation)
     - [Identification](#Identification-/id/)
         - [Cookies](#Cookie-Monster)
+        - [IP Proxy](#ipinfo)
         - [Deployment](#Deployment-Info)
     - [Location](#Location-/location/)
         - [City](#City)
@@ -41,6 +42,12 @@ Cookie Monster assigns a user a unique indentifier, stored as a cookie, for the 
 Cookie assignment is done automatically when the user visits the site. See template.html.
 
 This unique identifier is attached to each speed test the user takes, allowing them to see a unique history of only their tests. This is of course limited to their current device and browser.
+
+### IpInfo
+
+This endpoint provides a stable proxy for users (and developers...) to retrieve information from ipinfo.io reliably thanks to... an API token. so add `API_TOKEN` to your environment variables and enjoy 50k requests per month for free.
+
+*NB* this route should only be called once per user per device, as the info obtained from it should be stored and accessible from our database once they test once
 
 ### Deployment Info
 
