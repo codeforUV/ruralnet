@@ -3,4 +3,4 @@
 -->
 
 <h1>Your Speed Tests</h1>
-
+<p>Your past speed test results will be displayed below. You may delete them, or update the location if it is inaccurate.</p>

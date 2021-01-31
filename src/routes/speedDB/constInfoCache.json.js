@@ -11,7 +11,13 @@ export async function get (req, res, next) {
         res.writeHead(200, {
             'Content-Type': 'application/json'
         });
-        res.end(JSON.stringify({ ipAddress: requestIP, internetProvider: prevTest.internetProvider, city: prevTest.city, cookie: prevTest.userID || "no userID", err: null}));  // include ip, ISP, and city string (which can be used to obtain lat/long later)
+        res.end(JSON.stringify({ ipAddress: requestIP, 
+            internetProvider: prevTest.internetProvider, 
+            city: prevTest.city, 
+            latitude: prevTest.latitude,
+            longitude: prevTest.longitude,
+            cookie: prevTest.userID || "no userID", 
+            err: null}));  // include ip, ISP, and city string (which can be used to obtain lat/long later)
     } else {
         res.writeHead(404, {
             'Content-Type': 'application/json'

@@ -271,6 +271,7 @@
 
 <h1 id='title'>Take a Speed Test</h1>
 <h2>Welcome, {cookie}</h2>
+<a href="/newSpeed">NEW speed test</a>
 {#if !finished}
     <button id='test' on:click={doSpeedTest}>Click to Test</button>
     {#if inProgress}

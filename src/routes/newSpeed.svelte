@@ -9,15 +9,18 @@
     import { onMount } from 'svelte';
     var st; // = new RuralTest();
     onMount(() => {
-        st = new RuralTest({log: "log"});
-        st.prepare();
+        st = new RuralTest();
     })
 
 </script>
 
 
-<h1>New Speed Test</h1>
-
+<h1 id='title'>New Speed Test</h1>
+<a href="/shortcuts">Debugging Shortcuts</a>
+<button id='test' on:click={() => {st.startTest()}}>Click to begin Speedtest</button>
+<button disabled='true' id='cancel' on:click={() => {st.abortTest()}}>Cancel Test</button>
+<p id='result'></p>
+<p id='done'></p>
 <h2>Test Log</h2>
 <ol id="log">
 

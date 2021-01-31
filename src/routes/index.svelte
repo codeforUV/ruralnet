@@ -8,7 +8,6 @@
   var headline, about;
   onMount(async () => {
     let deets = await populateInfo();
-    console.log(deets);
     headline = deets.headline;
     about = deets.about;
   });
