@@ -366,8 +366,10 @@ class SpeedTestPageInterface {
     }
     onPageLoad() {
         let prevResults = new RuralTestResult({}, true);
-        this.elements.result.textContent = prevResults.toString();
-        this.elements.done.textContent = `Last test taken on ${new Date(`${prevResults._content.date}T${prevResults._content.time}Z`)}`//${prevResults._content.date} at ${prevResults._content.time}`
+        if (prevResults._content) {
+            this.elements.result.textContent = prevResults.toString();
+            this.elements.done.textContent = `Last test taken on ${new Date(`${prevResults._content.date}T${prevResults._content.time}Z`)}`;    
+        }
     }
     onStart() {
         this.elements.title.textContent = "Speedtest in progress";
