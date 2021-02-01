@@ -63,7 +63,6 @@ class RuralTest {
         this._state = 0;
         this.chunkSize = 100;
         this.testOrder = "P_D";
-        this.logging = logs;
         if(!componentIds) {
             componentIds = {
                 // ids of elements that that speedtest wents to write information to
@@ -75,11 +74,8 @@ class RuralTest {
                 cancelBtn: 'cancel'
             };
         }
-        this.components = {};
-        Object.keys(componentIds).forEach(key => {
-            this.components[key] = document.getElementById(componentIds[key]);
-        })
-        console.log(this.components);
+        this.pageInterface = new SpeedTestPageInterface(componentIds, logs);
+        this.pageInterface.onPageLoad();
         this.testData = RuralTest.emptyTestJson;
     }
     get state() {
@@ -107,36 +103,38 @@ class RuralTest {
     }
     async prepare() {
         // get ip, isp, time and location
-        this.addLogMsg("Preparing Speedtest...");
+        this.pageInterface.addLogMsg("Preparing Speedtest...");
         let previousTestReq = await fetch('speedDB/constInfoCache.json');
         let prevTestMeta = await previousTestReq.json();
         if (!prevTestMeta.err) {
-            this.addLogMsg("Welcome back! Thanks for testing again");
+            this.pageInterface.addLogMsg("Welcome back! Thanks for testing again");
             this.testData.ipAddress = prevTestMeta.ipAddress;
             this.testData.internetProvider = prevTestMeta.internetProvider;
             this.testData.city = prevTestMeta.city;
-            // TODO: include lat/lng in that json
+            this.testData.latitude = prevTestMeta.latitude;
+            this.testData.longitude = prevTestMeta.longitude;
+            this.pageInterface.addLogMsg("Metadata copied from last test");
         } else {
-            this.addLogMsg("Welcome first time tester!");
+            this.pageInterface.addLogMsg("Welcome first time tester!");
             let ipInfoReq = await fetch('id/ipInfo.json');
             let ipInfo = await ipInfoReq.json();
             
-            this.addLogMsg("Gathering ISP information...");
+            this.pageInterface.addLogMsg("Gathering ISP information...");
             this.testData.ipAddress = ipInfo.ip;
             this.testData.internetProvider = ipInfo.org.split(" ").slice(1).join(" ");
             
-            this.addLogMsg("Trying to figure out your location...");
-            this.addLogMsg("(If your browser asks to access your location, please click \"Allow\"");
+            this.pageInterface.addLogMsg("Trying to figure out your location...");
+            this.pageInterface.addLogMsg("(If your browser asks to access your location, please click \"Allow\"");
             var ipLatLng = ipInfo.loc.replace(" ", "");
             var browserLatLng = await LocationUtility.browserLocation();
             
             let cityreq, chosenLatLng;
             if (browserLatLng !== "geolocationFailed") {
-                this.addLogMsg("Using browser geolocation...");
+                this.pageInterface.addLogMsg("Using browser geolocation...");
                 cityreq = await fetch("location/city.json?latlng=" + browserLatLng);
                 chosenLatLng = browserLatLng;
             } else {
-                this.addLogMsg("Using IP geolocation...");
+                this.pageInterface.addLogMsg("Using IP geolocation...");
                 cityreq = await fetch("location/city.json?latlng=" + ipLatLng);
                 chosenLatLng = ipLatLng;
             }
@@ -147,7 +145,7 @@ class RuralTest {
             this.testData.city = `${cityInfo.city}, ${cityInfo.state}`;
         }
 
-        this.addLogMsg("Finishing preparations...");
+        this.pageInterface.addLogMsg("Finishing preparations...");
         this.testData.date = this.today.toISOString().split("T")[0];
         this.testData.time = this.today.toISOString().split("T")[1].slice(0, -1);
         this.testData.userID = new CookieUtility().getValue("user");
@@ -160,52 +158,39 @@ class RuralTest {
             await this.prepare();
         }
         this.inProgress = true;
-        this.addLogMsg("Finalizing Speedtest Configuration");
+        this.pageInterface.addLogMsg("Finalizing Speedtest Configuration");
         this.s.setParameter("garbagePhp_chunkSize", this.chunkSize);
         this.s.setParameter("test_order", this.testOrder);  // no need for IP check, removed upload test from Heroku deploy because it doesn't work w/ heroku
         this.s.setSelectedServer(SPEEDTEST_SERVERS[0]);  // see template.html for SPEEDTEST_SERVERS - there is only one server
         this.s.onupdate = (data) => { this.onUpdate(data) };
         this.s.onend = (data) => { this.onEnd(data) };
-        this.addLogMsg("Starting Speedtest");
-        this.components.title.textContent = "Speedtest in progress";
-        this.components.testBtn.disabled = true;
+        this.pageInterface.addLogMsg("Starting Speedtest");
+        this.pageInterface.onStart();
         this.s.start();
     }
     abortTest() {
         this.inProgress = false;
         this.s.abort();
-        this.components.cancelBtn.disabled = true;
-        this.components.testBtn.disabled = false;
-        this.components.title.textContent = 'Speedtest cancelled';
+        this.s = new Speedtest();
+        this.pageInterface.onAbort();
     }
     onUpdate(data) {
         this.testData.downloadSpeed = data.dlStatus;
         this.testData.uploadSpeed = data.ulStatus;
         this.testData.ping = data.pingStatus;
         this._state = data.testState + 1;
-        this.components.result.textContent = this.toString();
-        this.components.done.textContent = RuralTest.testStates[this.state];
+        this.pageInterface.onUpdate(this.toString(), this._state)
     }
     onEnd(aborted) {
         this.finished = true;
-        this.components.done.textContent = 'Finished' + (aborted ? ' - Aborted' : '!');
+        this.pageInterface.onEnd(aborted, this.testData);
         if (!aborted) {
-            this.components.cancelBtn.disabled = true;
-            this.components.title.textContent = 'Speedtest Results';
-            this.components.result.innerHTML += `, <a href="https://google.com/maps/search/${this.testData.latitude},${this.testData.longitude}">Location: ${this.testData.city}</a>`;
             let testResults = new RuralTestResult(this.testData);
             testResults.postTest();
         }
     }
-    addLogMsg(msg) {
-        if (this.logging) {
-            let newLog = document.createElement('li');
-            newLog.textContent = msg;
-            this.components.log.appendChild(newLog);
-        }
-    }
     toString() {
-        return `Ping: ${this.testData.ping} ms, Down: ${this.testData.downloadSpeed || "N/A"} Mbps, Up: ${this.testData.uploadSpeed || "N/A"} Mbps`;
+        return new RuralTestResult(this.testData).toString();
     }
 }
 
@@ -262,7 +247,9 @@ class RuralTestResult {
             if (this._saveResults) {
                 this.storeTestLocal();
             }
+            return true;
         }
+        return false;
     }
     toggleLocalResultSaving() {
         this._saveResults = !this._saveResults;
@@ -284,6 +271,9 @@ class RuralTestResult {
             }
         }
         return testJson;
+    }
+    toString() {
+        return `Ping: ${this._content.ping} ms, Down: ${this._content.downloadSpeed || "N/A"} Mbps, Up: ${this._content.uploadSpeed || "N/A"} Mbps`;
     }
 }
 
@@ -366,39 +356,56 @@ class LocationUtility {
  * TODO: migrate pieces from speedtest
  */
 class SpeedTestPageInterface {
-
+    constructor(elementIds, log = true){
+        this.elements = {};
+        Object.keys(elementIds).forEach(key => {
+            this.elements[key] = document.getElementById(elementIds[key]);
+        })
+        this.lastState = "not started";
+        this.logging = true;
+    }
     onPageLoad() {
-        /**
-         * load and display prev test results
-         */
-        let prevResults = new RuralTestResult(getLocal=true);
+        let prevResults = new RuralTestResult({}, true);
+        this.elements.result.textContent = prevResults.toString();
+        this.elements.done.textContent = `Last test taken on ${new Date(`${prevResults._content.date}T${prevResults._content.time}Z`)}`//${prevResults._content.date} at ${prevResults._content.time}`
     }
     onStart() {
-        /**
-         * disable start button
-         * enable abort button
-         * change title
-         */
+        this.elements.title.textContent = "Speedtest in progress";
+        this.elements.testBtn.disabled = true;
+        this.elements.cancelBtn.disabled = false;
     }
-    onUpdate() {
-        /**
-         * update results
-         * update stage
-         * 
-         */
+    onUpdate(resultProgress, stateIndex) {
+        let presentState = RuralTest.testStates[stateIndex];
+        if (presentState !== this.lastState) {
+            this.addLogMsg(`Test ${presentState}...`);
+            this.lastState = presentState;
+            this.elements.done.textContent = presentState;
+        }
+        this.elements.result.textContent = resultProgress;
+        
     }
     onAbort() {
-        /**
-         * update title
-         * update buttons
-         * update stage
-         */
+        this.addLogMsg("Test Aborted by user");
+        this.elements.cancelBtn.disabled = true;
+        this.elements.testBtn.disabled = false;
+        this.elements.title.textContent = 'Speedtest cancelled';
     }
-    onEnd() {
-        /**
-         * update title
-         * update buttons
-         * update stage
-         */
+    onEnd(aborted, data) {
+        this.elements.done.textContent = 'Finished' + (aborted ? ' - Aborted' : '!');
+        this.elements.testBtn.textContent = 'Click to test again';
+        if (!aborted) {
+            this.addLogMsg("Test Complete!")
+            this.elements.cancelBtn.disabled = true;
+            this.elements.testBtn.disabled = false;
+            this.elements.title.textContent = 'Speedtest Results';
+            this.elements.result.innerHTML += `, <a href="https://google.com/maps/search/${data.latitude},${data.longitude}">Location: ${data.city}</a>`;
+        }
+    }
+    addLogMsg(msg) {
+        if (this.logging) {
+            let newLog = document.createElement('li');
+            newLog.textContent = msg;
+            this.elements.log.appendChild(newLog);
+        }
     }
 }
