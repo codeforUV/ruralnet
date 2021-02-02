@@ -27,6 +27,14 @@ const SpeedTestSchema = new Schema({
   longitude: Number
 });
 
+const SurveyTestSchema = new Schema({
+  survey: {
+    questions: Array,
+    answers: Array
+  }
+});
+
 const Dummy = mongoose.model('Dummy', DummySchema);
 const SpeedTest = mongoose.model('SpeedTest', SpeedTestSchema);
-export { Dummy, SpeedTest };
+const SurveyTest = mongoose.model('SurveyTest', SurveyTestSchema);
+export { Dummy, SpeedTest, SurveyTest };
