@@ -1,28 +1,50 @@
 <script>
+  
+  // Svelte import
   import { onMount } from 'svelte';
-  const findSurvey = async () => {
+
+  // Initialize memory for constants
+  const storage = window.localStorage;  // will store some information about the most recent speedtest (1 day)
+  const saveResults = true;
+  const milliDay = 86400000; // the number of milliseconds in a day
+  
+  // Initialize memory for variables
+  var inProgress = false;
+  var finished = false;
+  var questionNumber = 0;
+  var answer = '';
+  var promise = findSurvey();
+
+  // Initialize local data persistence.
+  var surveyInfo = {
+    questions: ["Who are the rural net team members?", "What are we trying to accomplish with the ruralnet project?", "When did the ruralnet project begin and when do we believe we have achieved success?", "Where did ruralnet begin and where do we want ruralnet to go?", "Why do you work for the ruralnet project?"],
+    answers: []
+  };
+
+  // Retrieve all surveys from the database.
+  const findSurveys = async () => {
     const resp = await fetch('survey.json');
     const data = await resp.json();
     if (resp.ok) {
       return data.docs;
     }
   };
-  let promise = findSurvey();
-  const refreshSurvey = async () => {
-    promise = await findData();
+
+  // Retrieve surveys that have been completed during the survey.
+  const refreshSurveyResults = async () => {
+    promise = await findSurveys();
   };
-  var surveyInfo = {
-    questions: ["Who are the rural net team members?", "What are we trying to accomplish with the ruralnet project?", "When did the ruralnet project begin and when do we believe we have achieved success?", "Where did ruralnet begin and where do we want ruralnet to go?", "Why do you work for the ruralnet project?"],
-    answers: []
+  
+  // Ensure that the answers array is the same length as the questions array.
+  function fill_array(size,content) {
+    var arr = [];
+    for(var i=0;i<size;i++){
+      arr.push(content);
+    }
+    return arr;
   };
-  var today;
-  const saveResults = true;
-  const milliDay = 86400000; // the number of milliseconds in a day
-  var inProgress = false;
-  var finished = false;
-  const storage = window.localStorage;  // will store some information about the most recent speedtest (1 day)
-  var questionNumber = 0;
-  var answer = '';
+
+  // Initialize the survey graphical user interface.
   async function beginSurvey() {
     let begin = document.getElementById('survey');
     begin.remove();
@@ -40,13 +62,8 @@
     document.getElementById('exit').hidden = false;
     document.getElementById('finish').hidden = false;
   };
-  function fill_array(size,content) {
-    var arr = [];
-    for(var i=0;i<size;i++){
-      arr.push(content);
-    }
-    return arr;
-  };
+
+  // Toggle to next question and store data locally.
   async function nextQuestion() {
     questionNumber++;
     surveyInfo.answers[questionNumber - 1] = answer;
@@ -65,6 +82,8 @@
       document.getElementById('answer').innerHTML = surveyInfo.answers[questionNumber];
     }
   };
+
+  // Toggle to previous question and store data locally.
   async function prevQuestion() {
     questionNumber--;
     surveyInfo.answers[questionNumber + 1] = answer;
@@ -82,9 +101,13 @@
       document.getElementById('answer').innerHTML = surveyInfo.answers[questionNumber];
     }
   };
+
+  // Save the survey locally and on the database.
   async function saveSurvey() {
     // save the survey locally and on the database
   };
+
+  // Delete the survey locally and on the database.
   const deleteSurvey = async (id) => {
     console.log(id);
     const resp = await fetch('survey.json', {
@@ -100,19 +123,25 @@
     }
   };
   
+  // Prompt the user to save or delete data and return the user to the home page
   async function exitSurvey() {
     // exit the survey
     // prompt user on delete or save answers
     // automatically save if the web page is abandoned
   };
 
+  // Save the survey locally and on the database. Display all survey results.
   async function finishSurvey() {
-    survey = { questions: surveyInfo.questions, answers: surveyInfo.answers };
-    postSurveyResults(survey);
+    document.getElementById('finish').disabled = true;
+    // survey = { "questions": surveyInfo.questions, "answers": surveyInfo.answers };
+    // console.log(survey);
+    // postSurveyResults(survey);
     finished = true;
     removeSurvey = document.getElementById('surveyContainer');
     removeSurvey.remove();
   }
+
+  // HTTP request to post the results to the database.
   async function postSurveyResults (results) {
     const res = await fetch("survey.json", {
       method: "POST",
@@ -136,26 +165,30 @@
 <h2 id='remove'>Let's think about our 'about page'.</h2>
 {#if !finished}
   <div id='surveyContainer'>
-    <button id='survey' on:click={beginSurvey}>Click to takey survey</button>
+    <button id='survey' on:click={beginSurvey} tabindex="-1" focus>Click to take survey</button>
     <h2 id='question-number' hidden>Question {questionNumber + 1} of {surveyInfo.questions.length}</h2>
     <h3 id='question' hidden>Question {questionNumber}</h3>
-    <input id='answer' type="text" bind:value={answer} placeholder="answer" hidden>
-    <button id='prev' on:click={prevQuestion} hidden>Prev Question</button>
-    <button id='next' on:click={nextQuestion} hidden>Next Question</button>
+    <input id='answer' type="text" bind:value={answer} placeholder="answer" tabindex="1" autofocus hidden>
     <button id='save' on:click={saveSurvey} hidden>Save Survey</button>
     <button id='abandon' on:click={deleteSurvey} hidden>Delete Survey</button>
     <button id='exit' on:click={exitSurvey} hidden>Exit Survey</button>
-    <div><button id='finish' on:click{finishSurvey} hidden>Finish Survey</div>
+  </div>
+  <div>
+    <button id='prev' on:click={prevQuestion} hidden>&#60;</button>
+    <button id='next' on:click={nextQuestion} tabindex="2" hidden>&#62;</button>
+  </div>
+  <div>
+    <button id='finish' on:click={finishSurvey} tabindex="3" hidden>Submit</button>
   </div>
 {/if}
 {#if finished}
   <div>
     {#await promise}
       <p>Loading...</p>
-    {:then surveys}
+    {:then docs}
       <h2>Survey Results</h2>
       <ol>
-        {#each survey as { _id, questions, answers }, i}
+        {#each docs as { _id, questions, answers }, i}
           <li>
             <p> { questions }</p>
             <p> { answers }</p>
