@@ -3,31 +3,35 @@
   // Svelte import
   import { onMount } from 'svelte';
 
-  // Initialize memory for constants
-  const storage = window.localStorage;  // will store some information about the most recent speedtest (1 day)
-  const saveResults = true;
-  const milliDay = 86400000; // the number of milliseconds in a day
-  
-  // Initialize memory for variables
-  var inProgress = false;
-  var finished = false;
-  var questionNumber = 0;
-  var answer = '';
-  var promise = findSurvey();
-
-  // Initialize local data persistence.
-  var surveyInfo = {
-    questions: ["Who are the rural net team members?", "What are we trying to accomplish with the ruralnet project?", "When did the ruralnet project begin and when do we believe we have achieved success?", "Where did ruralnet begin and where do we want ruralnet to go?", "Why do you work for the ruralnet project?"],
-    answers: []
-  };
-
-  // Retrieve all surveys from the database.
+  // Function that retrieves all surveys from the database.
   const findSurveys = async () => {
     const resp = await fetch('survey.json');
     const data = await resp.json();
     if (resp.ok) {
       return data.docs;
     }
+  };
+
+  // Initialize memory for constants
+  const storage = window.localStorage;  // will store some information about the most recent speedtest (1 day)
+  const saveResults = true;
+  const milliDay = 86400000; // the number of milliseconds in a day
+  
+  // Initialize memory for variables
+  let inProgress = false;
+  let finished = false;
+  let questionNumber = 0;
+  let answer = '';
+  let questions;
+  let answers;
+  let questionsJSON;
+  let answersJSON;
+  let promise = findSurveys();
+
+  // Initialize local data persistence.
+  let surveyInfo = {
+    questions: ["Who are the rural net team members?", "What are we trying to accomplish with the ruralnet project?", "When did the ruralnet project begin and when do we believe we have achieved success?", "Where did ruralnet begin and where do we want ruralnet to go?", "Why do you work for the ruralnet project?"],
+    answers: []
   };
 
   // Retrieve surveys that have been completed during the survey.
@@ -37,8 +41,8 @@
   
   // Ensure that the answers array is the same length as the questions array.
   function fill_array(size,content) {
-    var arr = [];
-    for(var i=0;i<size;i++){
+    let arr = [];
+    for(let i=0;i<size;i++){
       arr.push(content);
     }
     return arr;
@@ -65,41 +69,40 @@
 
   // Toggle to next question and store data locally.
   async function nextQuestion() {
+    surveyInfo.answers[questionNumber] = answer;
     questionNumber++;
-    surveyInfo.answers[questionNumber - 1] = answer;
-    console.log(surveyInfo.answers[questionNumber]);
-    answer = surveyInfo.answers[questionNumber];
-    if(questionNumber >= surveyInfo.questions.length - 1) {
-      console.log('Question number greater than or equal to the question array length.');
+    if(questionNumber === surveyInfo.questions.length - 1) {
       document.getElementById('next').disabled = true;
+    }
+    if(questionNumber > surveyInfo.questions.length - 1) {
+      console.log('Question number greater than the question array length.');
       questionNumber = surveyInfo.questions.length - 1;
     }
-    else {
-      if(document.getElementById('prev').disabled === true) {
-        document.getElementById('prev').disabled = false;
-      }
-      document.getElementById('question').innerHTML = surveyInfo.questions[questionNumber];
-      document.getElementById('answer').innerHTML = surveyInfo.answers[questionNumber];
+    if(document.getElementById('prev').disabled === true) {
+      document.getElementById('prev').disabled = false;
     }
+    answer = surveyInfo.answers[questionNumber];
+    document.getElementById('question').innerHTML = surveyInfo.questions[questionNumber];
+    document.getElementById('answer').innerHTML = surveyInfo.answers[questionNumber];
   };
 
   // Toggle to previous question and store data locally.
   async function prevQuestion() {
+    surveyInfo.answers[questionNumber] = answer;
     questionNumber--;
-    surveyInfo.answers[questionNumber + 1] = answer;
     answer = surveyInfo.answers[questionNumber];
-    if(questionNumber <= 0) {
-      console.log('Question number less than or equal to 0.');
+    if(questionNumber === 0) {
       document.getElementById('prev').disabled = true;
+    }
+    if(questionNumber < 0) {
+      console.log('Question number less than or equal to 0.');
       questionNumber = 0;
     }
-    else {
-      if(document.getElementById('next').disabled === true) {
-        document.getElementById('next').disabled = false;
-      }
-      document.getElementById('question').innerHTML = surveyInfo.questions[questionNumber];
-      document.getElementById('answer').innerHTML = surveyInfo.answers[questionNumber];
+    if(document.getElementById('next').disabled === true) {
+      document.getElementById('next').disabled = false;
     }
+    document.getElementById('question').innerHTML = surveyInfo.questions[questionNumber];
+    document.getElementById('answer').innerHTML = surveyInfo.answers[questionNumber];
   };
 
   // Save the survey locally and on the database.
@@ -119,7 +122,7 @@
     });
     if (resp.ok) {
       console.log('item deleted');
-      promise = await findData();
+      promise = await findSurveys();
     }
   };
   
@@ -132,17 +135,21 @@
 
   // Save the survey locally and on the database. Display all survey results.
   async function finishSurvey() {
+    surveyInfo.answers[questionNumber] = answer;
     document.getElementById('finish').disabled = true;
-    // survey = { "questions": surveyInfo.questions, "answers": surveyInfo.answers };
-    // console.log(survey);
-    // postSurveyResults(survey);
+    questionsJSON = JSON.stringify(surveyInfo.questions);
+    answersJSON = JSON.stringify(surveyInfo.answers);
+    console.log(questionsJSON);
+    console.log(answersJSON);
+    let survey = { "questions": questionsJSON, "answers": answersJSON };
+    console.log(survey);
+    postSurveyResults(survey);
     finished = true;
-    removeSurvey = document.getElementById('surveyContainer');
-    removeSurvey.remove();
   }
 
   // HTTP request to post the results to the database.
   async function postSurveyResults (results) {
+    console.log(results);
     const res = await fetch("survey.json", {
       method: "POST",
       headers: {
@@ -152,7 +159,7 @@
     });
     if (res.ok) {
       const success = await res.json();
-      testId = success.entryId;
+      let testId = success.entryId;
     }
   };
 </script>
@@ -168,17 +175,17 @@
     <button id='survey' on:click={beginSurvey} tabindex="-1" focus>Click to take survey</button>
     <h2 id='question-number' hidden>Question {questionNumber + 1} of {surveyInfo.questions.length}</h2>
     <h3 id='question' hidden>Question {questionNumber}</h3>
-    <input id='answer' type="text" bind:value={answer} placeholder="answer" tabindex="1" autofocus hidden>
+    <input id='answer' type="text" bind:value={answer} placeholder="answer" tabindex="-2" hidden>
     <button id='save' on:click={saveSurvey} hidden>Save Survey</button>
     <button id='abandon' on:click={deleteSurvey} hidden>Delete Survey</button>
     <button id='exit' on:click={exitSurvey} hidden>Exit Survey</button>
-  </div>
-  <div>
-    <button id='prev' on:click={prevQuestion} hidden>&#60;</button>
-    <button id='next' on:click={nextQuestion} tabindex="2" hidden>&#62;</button>
-  </div>
-  <div>
-    <button id='finish' on:click={finishSurvey} tabindex="3" hidden>Submit</button>
+    <div>
+      <button id='prev' on:click={prevQuestion} hidden>&#60;</button>
+      <button id='next' on:click={nextQuestion} tabindex="-3" hidden>&#62;</button>
+    </div>
+    <div>
+      <button id='finish' on:click={finishSurvey} tabindex="-4" hidden>Submit</button>
+    </div>
   </div>
 {/if}
 {#if finished}
@@ -187,14 +194,29 @@
       <p>Loading...</p>
     {:then docs}
       <h2>Survey Results</h2>
-      <ol>
-        {#each docs as { _id, questions, answers }, i}
-          <li>
-            <p> { questions }</p>
-            <p> { answers }</p>
-          </li>
-        {/each}
-      </ol>
+      {#each docs as survey (survey._id)}
+        <ol>
+          {(console.log(survey))}
+          {survey.questions}
+          {survey.answers}
+          <svg
+            on:click={() => deleteSurvey(survey._id)}
+            xmlns="http://www.w3.org/2000/svg"
+            class="icon icon-tabler icon-tabler-square-x"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="#607D8B"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <rect x="4" y="4" width="16" height="16" rx="2" />
+            <path d="M10 10l4 4m0 -4l-4 4" />
+          </svg>
+        </ol>
+      {/each}
     {:catch err}
       <p class="error">{err.message}</p>
     {/await}
