@@ -4,8 +4,10 @@ import { getRequestIP, getUserCookie } from '../../helpers';
 // this route uses ip address as a key to get info from previous tests, sparing api calls
 export async function get (req, res, next) {
     let requestIP = getRequestIP(req);
+    if (process.env.DEV) {
+        requestIP = "199.21.137.7";
+    }
     let userID = getUserCookie(req);
-    console.log(requestIP);
     const prevTests = await SpeedTest.find({ ipAddress: requestIP, userID: userID });
     if (prevTests) {
         res.writeHead(200, {

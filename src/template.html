@@ -25,7 +25,8 @@
 		];
 		window.onload = () => {
 			console.log(storage.getItem('recentTestDate'));
-			fetch('/id/cookieMonster.json')
+			CookieUtility.recoverUserCookie();  // get cookie id from recenttest
+			fetch('/id/cookieMonster.json');  // update it's expire time or get a new cookie 
 		}
 	</script>
 

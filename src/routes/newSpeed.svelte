@@ -7,7 +7,8 @@
 -->
 <script>
     import { onMount } from 'svelte';
-    var st; // = new RuralTest();
+    var st; 
+    var testComplete = false;
     onMount(() => {
         st = new RuralTest();
     })
@@ -21,7 +22,7 @@
 <button disabled='true' id='cancel' on:click={() => {st.abortTest()}}>Cancel Test</button>
 <p id='result'></p>
 <p id='done'></p>
+
 <h2>Test Log</h2>
 <ol id="log">
-
 </ol>

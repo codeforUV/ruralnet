@@ -33,12 +33,14 @@ function assignCookie(req) {
 export async function get(req, res, next) {
     
     let cookieID = assignCookie(req);
+    let expiryDate = new Date();
+    expiryDate.setFullYear(expiryDate.getFullYear() + 100);
 
     res.writeHead(200, {
         'Content-Type': 'application/json',
-        'Set-Cookie': `user=${cookieID}; Path=/` // by setting Path=/, the cookie will be sent to all routes in the ruralnet website
+        'Set-Cookie': `user=${cookieID}; Path=/; Expires=${expiryDate.toUTCString()}` // by setting Path=/, the cookie will be sent to all routes in the ruralnet website
     });
-    res.end(JSON.stringify({ cookie: "yum" }))
+    res.end(JSON.stringify({ cookie: "yum", when: expiryDate.toUTCString() }))
 }
 
 /**

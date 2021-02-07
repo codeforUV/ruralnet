@@ -73,7 +73,7 @@
     {:then docs}
       <h2>Test Results</h2>
       <ol>
-        {#each docs as { _id, downloadSpeed, city, internetProvider, date }, i}
+        {#each docs as { _id, downloadSpeed, city, internetProvider, date, userID }, i}
           <li>
             <p>
               <strong>Speed: </strong>
@@ -96,6 +96,7 @@
               </svg>
             </p>
             <p><em>{internetProvider}, {city || "location unknown"}, {date}</em></p>
+            <p>{userID}</p>
           </li>
         {/each}
       </ol>

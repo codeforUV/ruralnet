@@ -1,59 +1,31 @@
-const storage = window.localStorage;
-/**
- * A class to make using cookies in the front-end easy
- */
-class CookieUtility {
-    constructor() {
-        let rawCookie = document.cookie;
-        this._cookies = {};
-        rawCookie.split(';').forEach(pair => {
-            let key, value;
-            [key, value] = pair.split('=');
-            this._cookies[key] = value;
-        });
-    }
-    get allCookies() {
-        return this._cookies;
-    }
-    getValue(cookieKey) {
-        return this._cookies[cookieKey];
-    }
-    static recoverUserCookie() {
-        let recentTest = storage.getItem('recentTest');
-        if (recentTest !== null) {
-            let testJSON = JSON.parse(recentTest);
-            document.cookie = `user=${testJSON.userID}; Path=/`;
-            return true;
-        }
-        return false;
-    }
+const testStates = [
+    "not started", 
+    "started", 
+    "download", 
+    "ping and jitter", 
+    "upload", 
+    "finished", 
+    "aborted"];
+const emptyTestJson = {
+    date: null,
+    time: null,
+    userID: null,
+    ipAddress: null,
+    internetProvider: null,
+    uploadSpeed: null,
+    downloadSpeed: null,
+    ping: null,
+    city: null, 
+    latitude: null,
+    longitude: null
 }
 
+const MILLIDAY = 86400000;
+const TEST_EXPIRY_DAYS = 7;
 /**
  * RuralTest is a custom wrapper class for LibreSpeed SpeedTest class
  */
 class RuralTest {
-    static testStates = [
-        "not started", 
-        "started", 
-        "download", 
-        "ping and jitter", 
-        "upload", 
-        "finished", 
-        "aborted"];
-    static emptyTestJson = {
-        date: null,
-        time: null,
-        userID: null,
-        ipAddress: null,
-        internetProvider: null,
-        uploadSpeed: null,
-        downloadSpeed: null,
-        ping: null,
-        city: null, 
-        latitude: null,
-        longitude: null
-    }
     constructor(componentIds=null, logs=true) {
         this.s = new Speedtest();
         this.today = new Date();
@@ -76,14 +48,14 @@ class RuralTest {
         }
         this.pageInterface = new SpeedTestPageInterface(componentIds, logs);
         this.pageInterface.onPageLoad();
-        this.testData = RuralTest.emptyTestJson;
+        this.testData = emptyTestJson;
     }
     get state() {
         return {
             prepared: this.prepared,
             finished: this.finished,
             inProgress: this.inProgress,
-            stage: RuralTest.testStates[this._state]
+            stage: testStates[this._state]
         }
     }
     toggleUpload() {
@@ -147,6 +119,7 @@ class RuralTest {
         this.testData.userID = new CookieUtility().getValue("user");
         // then allow testing
         this.prepared = true;
+        console.log(this.testData);
     }
     async startTest() {
         if (!this.prepared) {
@@ -187,7 +160,7 @@ class RuralTest {
     toString() {
         return new RuralTestResult(this.testData).toString();
     }
-    getResult() {
+    export() {
         return new RuralTestResult(this.testData);
     }
 }
@@ -196,8 +169,6 @@ class RuralTest {
  * RuralTestResults provides containerization for data generated from a speed test
  */
 class RuralTestResult {
-    static MILLIDAY = 86400000;
-    static TEST_EXPIRY_DAYS = 7;
     constructor(jsonContent={}, getLocal=false, saveResults=true) {
         if(getLocal) {
             // get from local storage
@@ -218,8 +189,8 @@ class RuralTestResult {
     }
     set location(locationObj) {
         this._content.city = locationObj.city;
-        this._content.latitude = locationObj.latlng.lat;
-        this._content.longitude = locationObj.latlng.lng;
+        this._content.latitude = locationObj.latitude;
+        this._content.longitude = locationObj.longitude;
     }
     set content(testResult) {
         if(!this._content) {
@@ -241,7 +212,8 @@ class RuralTestResult {
         if (res.ok) {
             let respJson = await res.json();
             this._content._id = respJson.entryId;
-            if (this._saveResults && !update) {
+            console.log(this._content);
+            if (this._saveResults) {
                 this.storeTestLocal();
             }
             return true;
@@ -273,7 +245,7 @@ class RuralTestResult {
         return `Ping: ${this._content.ping} ms, Down: ${this._content.downloadSpeed || "N/A"} Mbps, Up: ${this._content.uploadSpeed || "N/A"} Mbps`;
     }
     metaDataString() {
-        return `${this._content.internetProvider}, ${this._content.city} on ${this._content.date} at ${this._content.time}`
+        return `${this._content.internetProvider}, on ${this.content.date} at ${this._content.time}`
     }
 }
 
@@ -310,24 +282,26 @@ class LocationUtility {
             }
         });
     }
-    async updateLocation(newLocation) {
+    updateLocation(newLocation) {
         // given a test ID and newLocation (zip code or city, state)
         // verify that newLocation is valid
         // update the test result in the DB w/ lat + long
         // newLocation can be either a zipcode "12345" or town/state string "Bradford, VT"
         let goodFormat = false;
-        let zip = parseInt(newLocation);
-        if (zip < 100000 && newLocation.length === 5) {
-            goodFormat = true;
-        } else if (newLocation.split(',').length === 2) {
-            goodFormat = true;
-            newLocation = newLocation.replaceAll(/\s+/g, "").toLowerCase();
-        } 
+        try {
+            let zip = parseInt(newLocation);
+            if (zip < 100000 && newLocation.length === 5) goodFormat = true;
+        } catch (error) {
+            if (newLocation.split(',').length === 2) {
+                goodFormat = true;
+                newLocation = newLocation.replaceAll(/\s+/g, "");
+            }
+        }
         if (goodFormat) {
-            let verified = await LocationUtility.verifyLocationInput(newLocation);
+            let verified = LocationUtility.verifyLocationInput(newLocation);
             if (verified) {
                 this.results.location = verified;
-                this.results.postTest(true);
+                this.results.postTest(update=true);
                 return true;
             } else {
                 return false;  // user input a good format but had a typo or invalid zip code
@@ -342,12 +316,8 @@ class LocationUtility {
         let verifyReq = await fetch(`/location/verify.json?location=${userLocationStr}`);
         let verification = await verifyReq.json();
         if (verification.verified) {
-            console.log("Verified!");
-            console.log(verification);
             return verification;
         } else {
-            console.log("Not Verified!");
-            console.log(verification);
             return null;
         }
     }
@@ -369,7 +339,7 @@ class SpeedTestPageInterface {
     onPageLoad() {
         let prevResults = new RuralTestResult({}, true);
         if (prevResults._content) {
-            this.elements.result.textContent = "Previous Results: " + prevResults.toString();
+            this.elements.result.textContent = prevResults.toString();
             this.elements.done.textContent = `Last test taken on ${new Date(`${prevResults._content.date}T${prevResults._content.time}Z`)}`;    
         }
     }
@@ -417,3 +387,5 @@ class SpeedTestPageInterface {
         }
     }
 }
+
+export {RuralTest, RuralTestResult};

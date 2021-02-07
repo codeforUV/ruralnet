@@ -1,5 +1,6 @@
 <script>
   import Nav from '../components/Nav.svelte';
+  import CookieBanner from '../components/CookieBanner.svelte';
 
   export let segment;
 </script>
@@ -20,3 +21,5 @@
 <main>
   <slot />
 </main>
+
+<CookieBanner/>
