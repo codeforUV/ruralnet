@@ -50,7 +50,8 @@
 
 <nav>
   <ul>
-    <li><a aria-current={segment === undefined ? 'page' : undefined} href=".">home</a></li>
+    <li><a aria-current={segment === undefined ? 'page' : undefined} href=".">Home</a></li>
+    <li><a aria-current={segment === 'about' ? 'page' : undefined} href="about">About</a></li>
     <li>
       <a aria-current={segment === 'database' ? 'page' : undefined} href="database">Test Database</a>
     </li>
