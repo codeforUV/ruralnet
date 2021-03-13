@@ -2,6 +2,7 @@
   
   // Svelte import
   import { onMount } from 'svelte';
+import Survey from '../components/Survey.svelte';
 
   // Function that retrieves all surveys from the database.
   const findSurveys = async () => {
@@ -26,7 +27,8 @@
   let answers;
   let questionsJSON;
   let answersJSON;
-  let promise = findSurveys();
+  // let promise = findSurveys();
+  let survey = {};
 
   // Initialize local data persistence.
   let surveyInfo = {
@@ -134,14 +136,14 @@
   };
 
   // Save the survey locally and on the database. Display all survey results.
-  async function finishSurvey() {
+  function finishSurvey() {
     surveyInfo.answers[questionNumber] = answer;
     document.getElementById('finish').disabled = true;
     questionsJSON = JSON.stringify(surveyInfo.questions);
     answersJSON = JSON.stringify(surveyInfo.answers);
     console.log(questionsJSON);
     console.log(answersJSON);
-    let survey = { "questions": questionsJSON, "answers": answersJSON };
+    survey = { "questions": questionsJSON, "answers": answersJSON };
     console.log(survey);
     postSurveyResults(survey);
     finished = true;
@@ -169,9 +171,9 @@
 </svelte:head>
 
 <h1 id='title'>Please fill out this short survey to help us advocate for your internet service needs.</h1>
-<h2 id='remove'>Let's think about our 'about page'.</h2>
+<!-- <h2 id='remove'>Let's think about our 'about page'.</h2> -->
 {#if !finished}
-  <div id='surveyContainer'>
+  <!-- <div id='surveyContainer'>
     <button id='survey' on:click={beginSurvey} tabindex="-1" focus>Click to take survey</button>
     <h2 id='question-number' hidden>Question {questionNumber + 1} of {surveyInfo.questions.length}</h2>
     <h3 id='question' hidden>Question {questionNumber}</h3>
@@ -186,7 +188,8 @@
     <div>
       <button id='finish' on:click={finishSurvey} tabindex="-4" hidden>Submit</button>
     </div>
-  </div>
+  </div> -->
+  <Survey />
 {/if}
 {#if finished}
   <div>
@@ -196,9 +199,8 @@
       <h2>Survey Results</h2>
       {#each docs as survey (survey._id)}
         <ol>
-          {(console.log(survey))}
-          {survey.questions}
-          {survey.answers}
+          <p>Survey data logged to console</p>
+         
           <svg
             on:click={() => deleteSurvey(survey._id)}
             xmlns="http://www.w3.org/2000/svg"
