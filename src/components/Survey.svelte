@@ -187,7 +187,7 @@ async function nextQuestion() {
         </div>
 
     {:else}
-    <div></div>
+    <div>Error: Input for this survey question has not been accounted for. (index:{questionNumber} of surveyInfo.  Component: Survey.svelte)</div>
     {/if}
 
     <div>
