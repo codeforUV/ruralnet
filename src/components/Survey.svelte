@@ -2,14 +2,12 @@
 
 // Initialize memory for variables
 let questionNumber = 0;
-let questionsJSON;
-let answersJSON;
 // let promise = findSurveys();
-let survey = {};
 
-let checkboxAnswers = []
+//temporary storage for checkbox answers; needed because something weird is happening with the data bindings
+let usesCheckboxAnswers = []
 
-let surveyInfo2 = [{
+let surveyInfo = [{
             id: 1,
             question: "How satisfied are you with the speed of your internet service?",
             answerName: "service-speed",
@@ -49,22 +47,19 @@ function finishSurvey() {
     console.log(`Finish Survey:`);
 
     if (questionNumber === 3) {
-        surveyInfo2[questionNumber].answer = checkboxAnswers;
+        surveyInfo[questionNumber].answer = usesCheckboxAnswers;
     }
 
-    document.getElementById('finish').disabled = true;
+    //@TODO: Need to handle "other" scenario for checkbox question. Currently stored in surveyInfo[x].other as a string
 
-    questionsJSON = JSON.stringify(surveyInfo2.map(question=>{return question.question}))
-    answersJSON = JSON.stringify(surveyInfo2.map(question=>{return question.answer}))
-    //@TODO: Need to handle "other" scenario for checkbox question. Currently stored in surveyInfo2[x].other as a string
-
-    survey = {
-        "questions": questionsJSON,
-        "answers": answersJSON
-    };
+    //@TODO: Probably need to pass something similar to surveyInfo so that question and answer pairs are each contained in their own object
+    let survey = {
+            "questions": JSON.stringify(surveyInfo.map(question=>{return question.question})),
+            "answers": JSON.stringify(surveyInfo.map(question=>{return question.answer}))
+        };
     console.log(survey);
     // postSurveyResults(survey);
-
+    document.getElementById('finish').disabled = true;
 }
 
 // HTTP request to post the results to the database.
@@ -105,22 +100,23 @@ async function prevQuestion() {
 async function nextQuestion() {
 
     if (questionNumber === 3) {
-        surveyInfo2[questionNumber].answer = checkboxAnswers;
+        surveyInfo[questionNumber].answer = usesCheckboxAnswers;
     }
 
     questionNumber++;
-    if (questionNumber === surveyInfo2.length - 1) {
+
+    if (questionNumber === surveyInfo.length - 1) {
         document.getElementById('next').disabled = true;
         document.getElementById('finish').disabled = false;
     }
-    if (questionNumber > surveyInfo2.length - 1) {
+    if (questionNumber > surveyInfo.length - 1) {
         console.log('Question number greater than the question array length.');
-        questionNumber = surveyInfo2.length - 1;
+        questionNumber = surveyInfo.length - 1;
     }
     if (document.getElementById('prev').disabled === true) {
         document.getElementById('prev').disabled = false;
     }
-    // answer = surveyInfo.answers[questionNumber];
+
 };
 </script>
 
@@ -151,46 +147,45 @@ async function nextQuestion() {
 
 <div class='survey-container'>
     <!-- <button id='survey' on:click={beginSurvey} tabindex="-1" focus>Click to take survey</button> -->
-    <h2 id='question-number' >Question {questionNumber + 1} of {surveyInfo2.length}</h2>
-    <h3 id='question' >{surveyInfo2[questionNumber].question}</h3>
-
-        <!-- <Answer type={surveyInfo2[questionNumber].answerType} 
-                options={surveyInfo2[questionNumber].answerOptions} 
-                name={surveyInfo2[questionNumber].answerName} 
-                bind:answer={answer}/> -->
+    <h2 id='question-number' >Question {questionNumber + 1} of {surveyInfo.length}</h2>
+    <h3 id='question' >{surveyInfo[questionNumber].question}</h3>
 
     {#if questionNumber === 0}
         <div class="radio-group">
-            {#each surveyInfo2[questionNumber].answerOptions as option}
+            {#each surveyInfo[questionNumber].answerOptions as option}
                 <div class="radio-item">
                     <label for="name">{option}</label>
-                    <input type="radio" id={option} bind:group={surveyInfo2[questionNumber].answer}  value={option}>
+                    <input type="radio" id={option} bind:group={surveyInfo[questionNumber].answer}  value={option}>
                 </div>
             {/each}
         </div> 
+
     {:else if questionNumber === 1}
-    <div class="radio-group">
-        {#each surveyInfo2[questionNumber].answerOptions as option}
-            <div class="radio-item">
-                <label for="name">{option}</label>
-                <input type="radio" id={option} bind:group={surveyInfo2[questionNumber].answer}  value={option}>
-            </div>
-        {/each}
-    </div> 
+        <div class="radio-group">
+            {#each surveyInfo[questionNumber].answerOptions as option}
+                <div class="radio-item">
+                    <label for="name">{option}</label>
+                    <input type="radio" id={option} bind:group={surveyInfo[questionNumber].answer}  value={option}>
+                </div>
+            {/each}
+        </div> 
+
     {:else if questionNumber === 2}
-        <input type="number" bind:value={surveyInfo2[questionNumber].answer}>
+        <input type="number" min="0" max="50" bind:value={surveyInfo[questionNumber].answer}>
+
     {:else if questionNumber === 3}
-    <div class="check-group">
-        {#each surveyInfo2[questionNumber].answerOptions as option}
-            <div class="check-item">
-                <input type="checkbox"  id={option} bind:group={checkboxAnswers} value={option}>
-                <label >{option}</label>
-                {#if option == 'Other'}
-                    <input type="text" name={option} id={option} bind:value={surveyInfo2[questionNumber].other}>
-                {/if}
-            </div>   
-        {/each}
-    </div>
+        <div class="check-group">
+            {#each surveyInfo[questionNumber].answerOptions as option}
+                <div class="check-item">
+                    <input type="checkbox"  id={option} bind:group={usesCheckboxAnswers} value={option}>
+                    <label >{option}</label>
+                    {#if option == 'Other'}
+                        <input type="text" name={option} id={option} bind:value={surveyInfo[questionNumber].other}>
+                    {/if}
+                </div>   
+            {/each}
+        </div>
+
     {:else}
     <div></div>
     {/if}
