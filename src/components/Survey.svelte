@@ -13,7 +13,8 @@ let surveyInfo = [{
             answerName: "service-speed",
             answerType: "radio",
             answerOptions: [1,2,3,4,5],
-            answer: null
+            answer: null,
+            other: ''
         },
         {
             id: 2,
@@ -21,7 +22,8 @@ let surveyInfo = [{
             answerName: "service-reliability",
             answerType: "radio",
             answerOptions: [1,2,3,4,5],
-            answer: null
+            answer: null,
+            other: ''
         },
         {
             id: 3,
@@ -29,7 +31,8 @@ let surveyInfo = [{
             answerName: "devices",
             answerType: "number",
             answerOptions: [],
-            answer: null
+            answer: null,
+            other: ''
         },
         {
             id: 4,
@@ -58,6 +61,7 @@ function finishSurvey() {
             "answers": JSON.stringify(surveyInfo.map(question=>{return question.answer}))
         };
     console.log(survey);
+
     // postSurveyResults(survey);
     document.getElementById('finish').disabled = true;
 }
