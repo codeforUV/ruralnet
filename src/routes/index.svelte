@@ -15,7 +15,7 @@
         <h1 class="wow fadeInUp">How fast is your internet?</h1>
         <p class="wow fadeInUp" data-wow-delay=".2s">Test your internet speed and compare it to that of other Vermont residents.</p>
         <button class="btn btn-lg video-btn wow fadeInUp lightbox m"><i class="fa fa-play"></i> Test Your Speed</button>
-        <p class="wow fadeInUp" data-wow-delay=".2s">Learn more (links to about)</p>
+        <p class="wow fadeInUp" data-wow-delay=".2s"><a href="about">Learn more →</a></p>
       </div>
 
       <!-- iPhone -->  

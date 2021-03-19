@@ -1,3 +1,7 @@
+<style>
+
+</style>
+
 <script>
     import { onMount } from 'svelte';
     var testInfo = {
@@ -260,20 +264,22 @@
   <title>Speed Test</title>
 </svelte:head>
 
-<h1 id='title'>Take a Speed Test</h1>
-{#if !finished}
-    <button id='test' on:click={doSpeedTest}>Click to Test</button>
-    {#if inProgress}
-        <button id='cancel' on:click={cancelSpeedTest}>Cancel Test</button>
+<div class="content">
+    <h1 class='title'>Take a Speed Test</h1>
+    {#if !finished}
+        <button id='test' on:click={doSpeedTest}>Click to Test</button>
+        {#if inProgress}
+            <button id='cancel' on:click={cancelSpeedTest}>Cancel Test</button>
+        {/if}
     {/if}
-{/if}
-<p id='result'></p>
-<p id='done'></p>
-{#if finished}
-    <h2>Location Look Wrong?</h2>
-    <p><small>Location estimation works best on mobile devices</small></p>
-    <p><strong>Tell us where you are - city, state or zip code</strong></p>
-    <input type="text" bind:value={userLocation} placeholder="example: Barre, VT">
-    <button on:click={fixLocation}>That's where I am</button>
-    <p id="chastise"></p>
-{/if}
+    <p id='result'></p>
+    <p id='done'></p>
+    {#if finished}
+        <h2>Location Look Wrong?</h2>
+        <p><small>Location estimation works best on mobile devices</small></p>
+        <p><strong>Tell us where you are - city, state or zip code</strong></p>
+        <input type="text" bind:value={userLocation} placeholder="example: Barre, VT">
+        <button on:click={fixLocation}>That's where I am</button>
+        <p id="chastise"></p>
+    {/if}
+</div>

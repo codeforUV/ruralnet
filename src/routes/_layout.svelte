@@ -11,6 +11,7 @@
     background-color: white;
     box-sizing: border-box;
   }
+  
 </style>
 
 <Nav {segment} />

@@ -422,7 +422,7 @@ input[type="email"]:focus {
 *****************************************************/
 #header {
   padding: 200px 0 510px;
-  background-image: url("./images/vt_trees_mtns.jpg");
+  background-image: url("../images/vt_trees_mtns.jpg");
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
@@ -1040,6 +1040,15 @@ input[type="email"]:focus {
 #footer .made-by a img {
   margin-top: -8px;
   margin-left: 8px;
+}
+
+.content {
+  max-width: 700px;
+  margin: auto;
+}
+
+.title {
+  padding-top: 3em;
 }
 
 /*****************************************************
