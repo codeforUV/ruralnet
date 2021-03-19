@@ -1,37 +1,5 @@
 <style>
-  h1,
-  figure,
-  p {
-    text-align: center;
-    margin: 0 auto;
-  }
-
-  h1 {
-    font-size: 2.8em;
-    text-transform: uppercase;
-    font-weight: 700;
-    margin: 0 0 0.5em 0;
-  }
-
-  figure {
-    margin: 0 0 1em 0;
-  }
-
-  img {
-    width: 100%;
-    max-width: 400px;
-    margin: 0 0 1em 0;
-  }
-
-  p {
-    margin: 1em auto;
-  }
-
-  @media (min-width: 480px) {
-    h1 {
-      font-size: 4em;
-    }
-  }
+  
 </style>
 
 <svelte:head>
@@ -46,7 +14,7 @@
       <div class="col-md-8 col-md-offset-2 text-center">
         <h1 class="wow fadeInUp">How fast is your internet?</h1>
         <p class="wow fadeInUp" data-wow-delay=".2s">Test your internet speed and compare it to that of other Vermont residents.</p>
-        <button class="btn btn-lg video-btn wow fadeInUp lightbox m><i class="fa fa-play"></i> Test Your Speed</button>
+        <button class="btn btn-lg video-btn wow fadeInUp lightbox m"><i class="fa fa-play"></i> Test Your Speed</button>
         <p class="wow fadeInUp" data-wow-delay=".2s">Learn more (links to about)</p>
       </div>
 
@@ -99,7 +67,7 @@
           <a href="#" class="btn btn-blue">Try to hack us <i class="fa fa-arrow-right"></i></a>
           <a href="#" class="btn">Learn More</a>
         </div> -->
-        <button class="btn btn-lg video-btn wow fadeInUp lightbox m><i class="fa fa-play"></i> Test Your Speed</button>
+        <button class="btn btn-lg video-btn wow fadeInUp lightbox m"><i class="fa fa-play"></i> Test Your Speed</button>
      
       </div>
 
@@ -160,7 +128,7 @@
       </div><!-- //Map Showcase -->
 
     </div>
-  </div>
+ 
 </section><!-- //Map Feature -->
 
 <!-- <section id="iphone-screens">
