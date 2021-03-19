@@ -6,7 +6,7 @@
   
 </style>
 
-<nav>
+<!-- <nav>
   <ul>
     <li><a aria-current={segment === undefined ? 'page' : undefined} href=".">Home</a></li>
     <li><a aria-current={segment === 'about' ? 'page' : undefined} href="about">About</a></li>
@@ -20,4 +20,53 @@
       <a aria-current={segment === 'speedDatabase' ? 'page' : undefined} href="speedDatabase">Speed Test Results</a>
     </li>
   </ul>
-</nav>
+</nav> -->
+
+<header id="main-nav">
+  <div class="container">
+
+    <a id="navigation" href="#"><i class="fa fa-bars"></i></a>
+
+    <div id="slide_out_menu">
+      <a href="#" class="menu-close"><i class="fa fa-times"></i></a>
+      <!-- 
+      <div class="logo"><img src="images/logo-white.png" alt=""></div> -->
+      <p>ruralnet</p>
+      <ul>
+        <li><a href="#Home">Home</a></li>
+        <li><a href="#About">About</a></li>
+        <li><a href="#Test">Test & Results</a></li>
+        <li><a href="#Next">What's Next?</a></li>
+        <li><a href="#Contact">Contact</a></li>
+        <li><a href="#Test" class="btn btn-blue"> Test Your Speed</a></li>
+      </ul>
+
+      <div class="slide_out_menu_footer">
+        <ul class="socials">
+          <li><a href="https://twitter.com"><i class="fa fa-twitter"></i></a></li>
+          <li><a href="https://facebook.com"><i class="fa fa-facebook"></i></a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4">
+        <ul class="left">
+          <li><a aria-current={segment === undefined ? 'page' : undefined} href=".">Home</a></li>
+          <li><a aria-current={segment === 'about' ? 'page' : undefined} href="about">About</a></li>
+          <li><a aria-current={segment === 'speed' ? 'page' : undefined} href="speed">Test & Results</a></li>
+        </ul>
+      </div>
+      <div class="col-md-4 text-center">
+        <p>ruralnet</p>
+        <!-- <a href="#" class="logo"><img src="images/logo.png" alt="New Providence"></a> -->
+      </div>
+      <div class="col-md-4">
+        <ul class="right">
+            <li><a href="#Contact">Contact</a></li>
+            <li><a href="#Test" class="btn btn-blue">Test Your Speed</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</header><!-- //Main Nav -->
