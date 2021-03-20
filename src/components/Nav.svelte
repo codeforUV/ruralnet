@@ -39,6 +39,7 @@
         <li><a aria-current={segment === undefined ? 'page' : undefined} href=".">Home</a></li>
           <li><a aria-current={segment === 'about' ? 'page' : undefined} href="about">About</a></li>
           <li><a aria-current={segment === 'speed' ? 'page' : undefined} href="speed">Test</a></li>
+          <li><a aria-current={segment === 'map' ? 'page' : undefined} href="map">Results Map</a></li>
         <li><a href="#Test" class="btn btn-blue"> Test Your Speed</a></li>
       </ul>
 
@@ -51,18 +52,19 @@
     </div>
 
     <div class="row">
-      <div class="col-md-4">
+      <div class="col-md-5">
         <ul class="left">
           <li><a aria-current={segment === undefined ? 'page' : undefined} href=".">Home</a></li>
           <li><a aria-current={segment === 'about' ? 'page' : undefined} href="about">About</a></li>
           <li><a aria-current={segment === 'speed' ? 'page' : undefined} href="speed">Test</a></li>
+          <li><a aria-current={segment === 'map' ? 'page' : undefined} href="map">Results Map</a></li>
         </ul>
       </div>
-      <div class="col-md-4 text-center">
+      <div class="col-md-2 text-center">
         <p>RuralNet</p>
         <!-- <a href="#" class="logo"><img src="images/logo.png" alt="New Providence"></a> -->
       </div>
-      <div class="col-md-4">
+      <div class="col-md-5">
         <ul class="right">
             <li><a href="#Test" class="btn btn-blue">Test Your Speed</a></li>
         </ul>
