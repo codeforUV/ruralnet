@@ -33,11 +33,9 @@
       <div class="logo"><img src="images/logo-white.png" alt=""></div> -->
       <p>ruralnet</p>
       <ul>
-        <li><a href="#Home">Home</a></li>
-        <li><a href="#About">About</a></li>
-        <li><a href="#Test">Test & Results</a></li>
-        <li><a href="#Next">What's Next?</a></li>
-        <li><a href="#Contact">Contact</a></li>
+        <li><a aria-current={segment === undefined ? 'page' : undefined} href=".">Home</a></li>
+          <li><a aria-current={segment === 'about' ? 'page' : undefined} href="about">About</a></li>
+          <li><a aria-current={segment === 'speed' ? 'page' : undefined} href="speed">Test</a></li>
         <li><a href="#Test" class="btn btn-blue"> Test Your Speed</a></li>
       </ul>
 
@@ -54,16 +52,15 @@
         <ul class="left">
           <li><a aria-current={segment === undefined ? 'page' : undefined} href=".">Home</a></li>
           <li><a aria-current={segment === 'about' ? 'page' : undefined} href="about">About</a></li>
-          <li><a aria-current={segment === 'speed' ? 'page' : undefined} href="speed">Test & Results</a></li>
+          <li><a aria-current={segment === 'speed' ? 'page' : undefined} href="speed">Test</a></li>
         </ul>
       </div>
       <div class="col-md-4 text-center">
-        <p>ruralnet</p>
+        <p>RuralNet</p>
         <!-- <a href="#" class="logo"><img src="images/logo.png" alt="New Providence"></a> -->
       </div>
       <div class="col-md-4">
         <ul class="right">
-            <li><a href="#Contact">Contact</a></li>
             <li><a href="#Test" class="btn btn-blue">Test Your Speed</a></li>
         </ul>
       </div>

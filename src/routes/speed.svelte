@@ -153,7 +153,7 @@
     };
     async function doSpeedTest () {
         inProgress = true;
-        document.getElementById('title').innerHTML = 'Speedtest in progress';
+        document.getElementById('test').innerHTML = 'Speedtest in progress';
         let r = document.getElementById("result");
         // Date information - date and time
         today = new Date();
@@ -267,9 +267,9 @@
 <div class="content">
     <h1 class='title'>Take a Speed Test</h1>
     {#if !finished}
-        <button id='test' on:click={doSpeedTest}>Click to Test</button>
+        <button id='test' class="btn btn-blue" on:click={doSpeedTest}>Click to Test</button>
         {#if inProgress}
-            <button id='cancel' on:click={cancelSpeedTest}>Cancel Test</button>
+            <button class="btn btn-red" id='cancel' on:click={cancelSpeedTest}>Cancel Test</button>
         {/if}
     {/if}
     <p id='result'></p>
@@ -279,7 +279,7 @@
         <p><small>Location estimation works best on mobile devices</small></p>
         <p><strong>Tell us where you are - city, state or zip code</strong></p>
         <input type="text" bind:value={userLocation} placeholder="example: Barre, VT">
-        <button on:click={fixLocation}>That's where I am</button>
+        <button on:click={fixLocation}>Update Location</button>
         <p id="chastise"></p>
     {/if}
 </div>
