@@ -622,10 +622,8 @@ input[type="email"]:focus {
 
 /*** start - added by Colby Hemond  **/
 
-.content {
-  max-width: 700px;
-  margin: auto;
-  padding: 0 1.5em;
+main > h1 {
+  padding-top: 2em;
 }
 
 .title {
@@ -647,6 +645,10 @@ Responsive Styles
   #main-nav #navigation {
     display: inline;
     padding-left: 1em;
+  }
+
+  #main-nav #desktop-menu {
+    display: none;
   }
 
   #main-nav .col-md-4:first-child,

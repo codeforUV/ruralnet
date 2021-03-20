@@ -8,7 +8,7 @@
 
 <!-- BEGIN OF TEMPLATE INSERT-->
 
-<section id="header">
+<section id="header"> 
   <div class="container">
     <div class="row">
       <div class="col-md-8 col-md-offset-2 text-center">

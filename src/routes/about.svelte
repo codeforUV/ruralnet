@@ -6,8 +6,8 @@
   <title>About</title>
 </svelte:head>
 
-<div class="content">
-  <h1 class="title">About</h1>
+
+  <h1>About</h1>
 
   <p>Access to reliable high-speed internet has quickly become a requirement for modern life. Yet numerous communities,
       particularly those in more remote areas, still lack access and any reasonable recourse to improve their situation.
@@ -23,4 +23,4 @@
       availability. At the same time, our hope is to share Rural Net and the collected internet speed data with any
       existing state or county level public service projects in this space, to facilitate future legislative efforts.</p>
 
-</div>
+

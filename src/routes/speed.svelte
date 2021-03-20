@@ -264,8 +264,7 @@
   <title>Speed Test</title>
 </svelte:head>
 
-<div class="content">
-    <h1 class='title'>Take a Speed Test</h1>
+    <h1>Take a Speed Test</h1>
     {#if !finished}
         <button id='test' class="btn btn-blue" on:click={doSpeedTest}>Click to Test</button>
         {#if inProgress}
@@ -282,4 +281,3 @@
         <button on:click={fixLocation}>Update Location</button>
         <p id="chastise"></p>
     {/if}
-</div>

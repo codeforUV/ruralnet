@@ -42,8 +42,7 @@
 
 </style>
 
-<div class="content">
-  <h1 class="title">Results Map</h1>
+  <h1>Results Map</h1>
 
   <!-- <p>
     In the map below, the results of speed tests submitted by users of this site are shown as dots,
@@ -116,4 +115,4 @@
 
 <ResultsMap />
 </div>
-</div>
+<!-- </div> -->
