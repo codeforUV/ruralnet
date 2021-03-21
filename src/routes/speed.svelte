@@ -119,7 +119,7 @@
     async function speedtestEnd (aborted) {
         document.getElementById('done').textContent = 'Finished' + (aborted ? ' - Aborted' : '!'); 
         if (!aborted) {
-            document.getElementById('title').innerHTML = 'Speedtest results';
+            // document.getElementById('title').innerHTML = 'Speedtest results';
             // convert coords to city
             if (testInfo.latitude && testInfo.longitude){
                 let cityreq = await fetch(`/location/city.json?latlng=${testInfo.latitude},${testInfo.longitude}`);
@@ -264,7 +264,7 @@
   <title>Speed Test</title>
 </svelte:head>
 
-    <h1>Take a Speed Test</h1>
+    <h1>Internet Speed Test</h1>
     {#if !finished}
         <button id='test' class="btn btn-blue" on:click={doSpeedTest}>Click to Test</button>
         {#if inProgress}
@@ -274,10 +274,10 @@
     <p id='result'></p>
     <p id='done'></p>
     {#if finished}
-        <h2>Location Look Wrong?</h2>
+        <h3>Location Look Wrong?</h3>
         <p><small>Location estimation works best on mobile devices</small></p>
         <p><strong>Tell us where you are - city, state or zip code</strong></p>
         <input type="text" bind:value={userLocation} placeholder="example: Barre, VT">
-        <button on:click={fixLocation}>Update Location</button>
+        <button class="btn" on:click={fixLocation}>Update Location</button>
         <p id="chastise"></p>
     {/if}

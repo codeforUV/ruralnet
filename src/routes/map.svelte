@@ -33,12 +33,6 @@
     background-color: #c5442f;
   }
 
-  .legend-left {
-    width: 50%;
-  }
-  .legend-right {
-    width: 50%;
-  }
 
   .color-gradient {
     width: 100%;
@@ -69,41 +63,12 @@
   <div class="container-fluid">
     <h3>User Submitted Speeds</h3>
     <div class="legend">
-      <div class="legend-left">
+  
         <div class="legend-user">
           <div class="user-circle green"></div>
           <!-- <span>&gt 100 mbps</span> -->
           <span>Represented by a colored circle in the general location where the speed test was performed</span>
         </div>
-
-        <!-- <div class="legend-user">
-          <div class="user-circle yellow"></div>
-          <span>5 - 100 mbps</span>
-        </div>
-
-        <div class="legend-user">
-          <div class="user-circle red"></div>
-          <span>&lt 5 mbps</span>
-        </div> -->
-      </div>
-      <!-- <div class="legend-right">
-      
-        <div class="legend-user">
-          <div class="user-circle green"></div>
-          <span>100 mbps</span>
-        </div>
-  
-        <div class="legend-user">
-          <div class="user-circle yellow"></div>
-          <span>5 - 100 mbps</span>
-        </div>
-  
-        <div class="legend-user">
-          <div class="user-circle red"></div>
-          <span>&lt 5 mbps</span>
-        </div>
-     
-      </div> -->
     </div>
 
     
