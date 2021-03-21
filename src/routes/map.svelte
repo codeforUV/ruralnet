@@ -22,15 +22,15 @@
   }
 
   .yellow {
-    background-color: yellow;
+    background-color: #f1f7b2;
   }
 
   .green {
-    background-color: green;
+    background-color: #b7de85;
   }
 
   .red {
-    background-color: red;
+    background-color: #c5442f;
   }
 
   .legend-left {
@@ -38,6 +38,19 @@
   }
   .legend-right {
     width: 50%;
+  }
+
+  .color-gradient {
+    width: 100%;
+    height: 20px;
+    background: rgb(197,68,47);
+    background: linear-gradient(90deg, rgba(197,68,47,1) 16%, rgba(241,247,178,1) 49%, rgba(16,110,62,1) 87%);
+  }
+
+  .gradient-values {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
   }
 
 </style>
@@ -59,10 +72,11 @@
       <div class="legend-left">
         <div class="legend-user">
           <div class="user-circle green"></div>
-          <span>100 mbps</span>
+          <!-- <span>&gt 100 mbps</span> -->
+          <span>Represented by a colored circle in the general location where the speed test was performed</span>
         </div>
 
-        <div class="legend-user">
+        <!-- <div class="legend-user">
           <div class="user-circle yellow"></div>
           <span>5 - 100 mbps</span>
         </div>
@@ -70,7 +84,7 @@
         <div class="legend-user">
           <div class="user-circle red"></div>
           <span>&lt 5 mbps</span>
-        </div>
+        </div> -->
       </div>
       <!-- <div class="legend-right">
       
@@ -95,22 +109,43 @@
     
 
     <div>
-      <p>
+      <h3>Base Comparison Speeds</h3>
+      
+      <div class="row-fluid">
+        <div class="color-gradient"></div>
+        <div class="row gradient-values">
+          <span>&lt 5 mbps</span>
+          <span> 5 - 100 mbps</span>
+          <span>&gt 100 mbps</span>
+        </div>
+        <small>Data Source: <a target="_blank" rel='noopener noreferrer' href="https://publicservice.vermont.gov/content/broadband-availability">Vermont Dept of Public Service (2019)</a></small>
+      </div>
+      <!-- <p>
         The shaded color for each town shows the percentage of buildings or homes that have broadband
         (25/3 mbps or higher speeds) from data obtained from the Vermont Dept of Public Service at
-        <a target="new" href="https://publicservice.vermont.gov/content/broadband-availability">publicservice.vermont.gov/content/broadband-availability</a>. To see the legend and the various map layers, click on the double arrow in the top left
+        <a target="new" href="https://publicservice.vermont.gov/content/broadband-availability">publicservice.vermont.gov/content/broadband-availability</a>. 
+      </p> -->
+      <br/>
+      <p>
+        To see the legend and the various map layers, click on the double arrow in the top left
         corner of the map and then click on the right arrow next to the "Percent Broadband" layer. To
         view the "Underserved" layer, turn off the Percent Broadband layer and you'll see the
-        Underserved percentage. "Underserved" means less than 4 mbps download speed or no internet. The
+        Underserved percentage. 
+      </p>
+      <!-- <p>
+        "Underserved" means less than 4 mbps download speed or no internet. The
         town data was collected in 2019 from the internet service providers as to what download/upload
         speeds they were serving to each address. This is one measure of service but overestimates the
         actual speeds that customers are experiencing.
-      </p>
+      </p> -->
       <p>
+        Click on County or User data point to see a breakdown of the details.
+      </p>
+      <!-- <p>
         You can see the raw counts and percentages in each category by clicking on the town or point.
         For the data submitted using our speed test, clicking the point will show the download speed,
         the town, the date the test was done, and the company providing internet service.
-      </p>
+      </p> -->
     </div>
 
 <ResultsMap />

@@ -11,7 +11,7 @@
       <div class="row">
         <div class="col-md-3">
           <!-- <img class="logo" src="images/logo.png" alt=""> -->
-          <p>Little blurby thing?</p>
+          <p>Social</p>
           <!-- <a href="#" class="app_download"><img src="images/app-store-download.png" alt=""></a> -->
           <ul class="socials">
             <li><a href="https://twitter.com"><i class="fa fa-twitter"></i></a></li>
