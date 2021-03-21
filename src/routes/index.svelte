@@ -35,7 +35,11 @@ import ResultsMap from "../components/ResultsMap.svelte";
   <div class="jumbotron-content-background">
     <h1 class="wow fadeInUp">How fast is your internet?</h1>
     <p class="wow fadeInUp" data-wow-delay=".2s">Test your internet speed to help get high-speed internet to rural areas of Vermont/New Hampshire</p>
-    <button class="btn btn-lg video-btn wow fadeInUp lightbox m"><a href="speed"><i class="fa fa-play"></i> Test Your Speed</a></button>
+    <button class="btn btn-lg video-btn wow fadeInUp">
+      <a href="/speed">
+        <i class="fa fa-play"></i>Test Your Speed
+      </a>
+    </button>
     <small class="wow fadeInUp" data-wow-delay=".2s"><a href="map">See Map of Results →</a></small>
   </div>
 </section>
