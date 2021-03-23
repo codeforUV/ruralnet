@@ -1,16 +1,4 @@
 <script>
-  import { onMount } from 'svelte';
-  async function populateInfo() {
-    let r = await fetch('/id/deploymentInfo.json');
-    let j = await r.json();
-    return j;
-  }
-  var headline, about;
-  onMount(async () => {
-    let deets = await populateInfo();
-    headline = deets.headline;
-    about = deets.about;
-  });
 </script>
 <style>
   h1,
@@ -59,4 +47,4 @@
   <figcaption>HIGH FIVE!</figcaption>
 </figure>
 
-<p><strong>{headline} - {about}</strong></p>
+<p><strong>RuralNet - Still under development</strong></p>

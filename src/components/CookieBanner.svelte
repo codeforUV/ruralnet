@@ -1,15 +1,16 @@
 <script>
     import { onMount } from 'svelte';
-    let agreed;
+    export let forcePrompt = false;
+    let prompt, cookieUtil;
     onMount(() => {
-        agreed = window.localStorage.getItem("cookieConsent") || "false";
+        cookieUtil = new CookieUtility();
+        prompt = cookieUtil.consentStatus.askAgain
     })
     function agree() {
-        agreed = "true";
-        window.localStorage.setItem("cookieConsent", "true");
+        cookieUtil.agree();
     }
     function decline() {
-        window.localStorage.setItem("cookieConsent", "false");
+        cookieUtil.decline();
     }
 </script>
 
@@ -26,7 +27,7 @@
     }
 </style>
 
-{#if agreed === "false"}
+{#if prompt === true || forcePrompt === true}
     <div id="cookie-banner">
         <p>Our sites uses cookies. Consenting to cookies is required to test.</p>
         <p>Read the <a href="/about/privacy">Privacy Policy</a> to learn more.</p>

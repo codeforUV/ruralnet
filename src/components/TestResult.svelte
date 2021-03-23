@@ -8,7 +8,7 @@
     
     async function deleteItem(id) {
         console.log(id);
-        const resp = await fetch('speedDB/speedTestCRUD.json', {
+        const resp = await fetch('speedDB/speedDB.json', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -24,7 +24,6 @@
     function locationButton() {
         if (locationEdit) {
             document.getElementById(`locationExpander${id}`).textContent = "That location isn't right";
-            testData = testData;
         } else {
             document.getElementById(`locationExpander${id}`).textContent = "Collapse";
         }
@@ -54,5 +53,5 @@
 <p id='done{id}'>{testData.metaDataString()}</p>
 <button id='locationExpander{id}' on:click={locationButton}>That location isn't right</button>
 {#if locationEdit}
-    <svelte:component this={LocationUpdate} testResult={testData} id={id}/>
+    <svelte:component this={LocationUpdate} bind:testResult={testData} id={id}/>
 {/if}

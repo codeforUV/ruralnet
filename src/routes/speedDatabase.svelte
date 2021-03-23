@@ -2,7 +2,7 @@
 
     const deleteItem = async (id) => {
       console.log(id);
-      const resp = await fetch('speedDB/speedTestCRUD.json', {
+      const resp = await fetch('speedDB/speedDB.json', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -16,7 +16,7 @@
     };
   
     const findData = async () => {
-      const resp = await fetch('speedDB/speedTestCRUD.json');
+      const resp = await fetch('speedDB/speedDB.json');
       const data = await resp.json();
       if (resp.ok) {
         // console.log('Server response object:');

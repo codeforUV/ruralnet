@@ -49,14 +49,6 @@ This endpoint provides a stable proxy for users (and developers...) to retrieve 
 
 *NB* this route should only be called once per user per device, as the info obtained from it should be stored and accessible from our database once they test once
 
-### Deployment Info
-
-Deployment info allows for our developers to set environment variables in .env or on Heroku to display custom messages about the current deployment on the home page.
-
-`BRANCH_NAME` should represent the general goal/feature of the current branch. `BRANCH_INFO` should be a short sentance providing some extra detail about the features/goals.
-
-If these variables are not set, this route will return default hardcoded values.
-
 ## Location /location/
 
 ### City

@@ -7,10 +7,6 @@
         const resp = await fetch('speedDB/history.json');
         const data = await resp.json();
         if (resp.ok) {
-        // console.log('Server response object:');
-        // console.log(resp);
-        // console.log('Response JSON parsed:');
-        // console.log(data);
         return data.docs;
         }
     };
@@ -23,11 +19,11 @@
 
 <h1>Your Speed Tests</h1>
 <p>Your past speed test results will be displayed below. You may delete them, or update the location if it is inaccurate.</p>
+<p><em>Warning! Clearing your brower's cookies or local storage will cause you to lose access to your previous tests!</em></p>
 <div>
     {#await promise}
         <p>Loading...</p>
     {:then docs}
-        <h2>Documents</h2>
         <ol>
         {#each docs as test, i}
             <li>

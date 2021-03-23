@@ -15,8 +15,27 @@ class CookieUtility {
     get allCookies() {
         return this._cookies;
     }
+    get consentStatus() {
+        if (storage.getItem("cookieConsent") === "true") {
+            return { consented: true, askAgain: false };
+        } else {
+            let ask = parseInt(storage.getItem("cookiesDeclined")) + 3600000 < new Date().getTime();
+            return { consented: false, askAgain: ask };
+        }
+    }
     getValue(cookieKey) {
         return this._cookies[cookieKey];
+    }
+    agree() {
+        storage.setItem("cookieConsent", "true");
+    }
+    decline() {
+        storage.setItem("cookieConsent", "false");
+        storage.setItem("cookiesDeclined", new Date().getTime());
+        document.cookie = "user=none; Expires=-1";
+    }
+    async getNewCookie() {
+        await fetch("id/cookieMonster.json");
     }
     static recoverUserCookie() {
         let recentTest = storage.getItem('recentTest');
@@ -100,7 +119,7 @@ class RuralTest {
     async prepare() {
         // get ip, isp, time and location
         this.pageInterface.addLogMsg("Preparing Speedtest...");
-        let previousTestReq = await fetch('speedDB/constInfoCache.json');
+        let previousTestReq = await fetch('speedDB/userInfo.json');
         let prevTestMeta = await previousTestReq.json();
         if (!prevTestMeta.err) {
             this.pageInterface.addLogMsg("Welcome back! Thanks for testing again");
@@ -231,7 +250,7 @@ class RuralTestResult {
         storage.setItem('recentTestDate', Date.now());
     }
     async postTest(update=false) {
-        const res = await fetch("speedDB/speedTestCRUD.json", {
+        const res = await fetch("speedDB/speedDB.json", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -325,7 +344,7 @@ class LocationUtility {
         } 
         if (goodFormat) {
             let verified = await LocationUtility.verifyLocationInput(newLocation);
-            if (verified) {
+            if (verified.verified) {
                 this.results.location = verified;
                 this.results.postTest(true);
                 return true;
