@@ -19,10 +19,6 @@
       const resp = await fetch('speedDB/speedDB.json');
       const data = await resp.json();
       if (resp.ok) {
-        // console.log('Server response object:');
-        // console.log(resp);
-        // console.log('Response JSON parsed:');
-        // console.log(data);
         return data.docs;
       }
     };

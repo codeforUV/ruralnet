@@ -4,8 +4,8 @@ import { getRequestIP } from '../../helpers';
 // this endpoint can be called from the frontend to relay a request to ipinfo.io for the end user
 export async function get (req, res, next) {
     var reqIP = getRequestIP(req);
-    if (process.env.DEV) {
-        reqIP = "199.21.137.7";
+    if (process.env.DEV_IP) {
+        reqIP = process.env.DEV_IP;
     }
     try {
         let ipInfoReq = await fetch(`https://ipinfo.io/${reqIP}?token=${process.env.IPINFO_TOKEN}`);

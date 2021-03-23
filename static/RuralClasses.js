@@ -292,7 +292,7 @@ class RuralTestResult {
         return `Ping: ${this._content.ping} ms, Down: ${this._content.downloadSpeed || "N/A"} Mbps, Up: ${this._content.uploadSpeed || "N/A"} Mbps`;
     }
     metaDataString() {
-        return `${this._content.internetProvider}, ${this._content.city} on ${this._content.date} at ${this._content.time}`
+        return `${this._content.internetProvider}, ${this._content.city} on ${new Date(`${this._content.date}T${this._content.time}Z`)}`;
     }
 }
 

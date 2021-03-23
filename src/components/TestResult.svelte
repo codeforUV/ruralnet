@@ -5,7 +5,7 @@
     //import SpeedTestResult from '../../static/RuralClasses.js'
     export let testData;  // a RuralTestResult instance
     export let id = "";  // if multiple instances of this component exist on a page, use this id to reference elements by id 
-    
+    export let allowEdit = true;
     async function deleteItem(id) {
         console.log(id);
         const resp = await fetch('speedDB/speedDB.json', {
@@ -32,6 +32,7 @@
 </script>
 
 <p>Test Result {btoa(testData._content._id)}
+    {#if allowEdit}
     <svg
         on:click={() => deleteItem(testData._content._id)}
         xmlns="http://www.w3.org/2000/svg"
@@ -48,10 +49,13 @@
         <rect x="4" y="4" width="16" height="16" rx="2" />
         <path d="M10 10l4 4m0 -4l-4 4" />
     </svg>
+    {/if}
 </p>
 <p id='result{id}'>{testData.toString()}</p>
 <p id='done{id}'>{testData.metaDataString()}</p>
-<button id='locationExpander{id}' on:click={locationButton}>That location isn't right</button>
+{#if allowEdit}
+    <button id='locationExpander{id}' on:click={locationButton}>That location isn't right</button>
+{/if}
 {#if locationEdit}
     <svelte:component this={LocationUpdate} bind:testResult={testData} id={id}/>
 {/if}
