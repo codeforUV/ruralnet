@@ -15,36 +15,38 @@ class CookieUtility {
     get allCookies() {
         return this._cookies;
     }
-    get consentStatus() {
+    getValue(cookieKey) {
+        return this._cookies[cookieKey];
+    }
+    static agree() {
+        storage.setItem("cookieConsent", "true");
+        let recovery = CookieUtility.recoverUserCookie();
+        console.log(recovery);
+    }
+    static decline() {
+        storage.setItem("cookieConsent", "false");
+        storage.setItem("cookiesDeclined", new Date().getTime());
+        document.cookie = "user=; Expires=-1";
+    }
+    static async getNewCookie() {
+        await fetch("id/cookieMonster.json");
+    }
+    static recoverUserCookie() {
+        let recentTest = storage.getItem('recentTest');
+        if (recentTest !== null && CookieUtility.consentStatus().consented) {
+            let testJSON = JSON.parse(recentTest);
+            document.cookie = `user=${testJSON.userID}; Path=/`;
+            return true;
+        }
+        return false;
+    }
+    static consentStatus() {
         if (storage.getItem("cookieConsent") === "true") {
             return { consented: true, askAgain: false };
         } else {
             let ask = parseInt(storage.getItem("cookiesDeclined")) + 3600000 < new Date().getTime();
             return { consented: false, askAgain: ask };
         }
-    }
-    getValue(cookieKey) {
-        return this._cookies[cookieKey];
-    }
-    agree() {
-        storage.setItem("cookieConsent", "true");
-    }
-    decline() {
-        storage.setItem("cookieConsent", "false");
-        storage.setItem("cookiesDeclined", new Date().getTime());
-        document.cookie = "user=none; Expires=-1";
-    }
-    async getNewCookie() {
-        await fetch("id/cookieMonster.json");
-    }
-    static recoverUserCookie() {
-        let recentTest = storage.getItem('recentTest');
-        if (recentTest !== null) {
-            let testJSON = JSON.parse(recentTest);
-            document.cookie = `user=${testJSON.userID}; Path=/`;
-            return true;
-        }
-        return false;
     }
 }
 
@@ -131,6 +133,7 @@ class RuralTest {
             this.pageInterface.addLogMsg("Metadata copied from last test");
         } else {
             this.pageInterface.addLogMsg("Welcome first time tester!");
+            this.pageInterface.addLogMsg("Not your first time? You may not have acepted cookies. "); // TODO
             let ipInfoReq = await fetch('id/ipInfo.json');
             let ipInfo = await ipInfoReq.json();
             

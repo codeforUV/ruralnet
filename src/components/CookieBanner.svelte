@@ -4,13 +4,13 @@
     let prompt, cookieUtil;
     onMount(() => {
         cookieUtil = new CookieUtility();
-        prompt = cookieUtil.consentStatus.askAgain
+        prompt = CookieUtility.consentStatus().askAgain
     })
     function agree() {
-        cookieUtil.agree();
+        CookieUtility.agree();
     }
     function decline() {
-        cookieUtil.decline();
+        CookieUtility.decline();
     }
 </script>
 
