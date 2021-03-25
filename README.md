@@ -1,14 +1,13 @@
 # RuralNet
 
-- [RuralNet](#ruralnet)
-  - [Project Goals](#project-goals)
-  - [Todos](#todos)
-  - [Running Locally](#running-locally)
-  - [App Development](#app-development)
-    - [Setting up your development environment](#setting-up-your-development-environment)
-    - [Working with the codebase](#working-with-the-codebase)
-    - [Editing files](#editing-files)
-  - [Deploying](#deploying)
+- [Project Goals](#project-goals)
+- [Todos](#todos)
+- [Running Locally](#running-locally)
+- [App Development](#app-development)
+  - [Setting up your development environment](#setting-up-your-development-environment)
+  - [Working with the codebase](#working-with-the-codebase)
+  - [Editing files](#editing-files)
+- [Deploying](#deploying)
 
 ## Project Goals
 
@@ -18,14 +17,14 @@ This information would allow municipalities to apply for grants and funding to i
 
 ## Todos
 
-For simplicity and tracking checkout the [Taskboard](https://github.com/codeforUV/ruralnet/projects/1) on Github.
+For simplicity and tracking checkout the [Taskboard](https://github.com/codeforUV/ruralnet/projects/2) on Github.
 
 ## Running Locally
 
-To run the app locally you need to:  
+To run the app locally you'll first need to make sure you have [nodejs](https://nodejs.org/en/) installed on your machine. Then:  
 
 1. Clone this repo: `git clone https://github.com/codeforUV/ruralnet.git`  
-2. Install dependencies: `npm install`  
+2. Install dependencies: `npm install`  (run from inside the project folder)
 3. Configure the mongo connection: `mv .env-example .env` and paste in the mongodb connection string for `MONGODB_URI` (ask @ejolly)
 4. Configure mapquest API key - paste an api key string for `MAPQUEST_KEY` in `.env` (@NateDimick has one)
 5. `./submoduleUpdate.sh` (set up the speedtest submodule and move some files)
@@ -35,7 +34,6 @@ To run the app locally you need to:
 ## App Development 
 
 The current version of the app is built using HTML, CSS, Javascript, and NodeJS (a Javascript based web-server). It uses [SvelteJS](https://svelte.dev/) as a frontend framework for the UI and [SapperJS](https://svelte.dev/) as a backend framework (built on top of NodeJS). 
-To conduct the speedtest itself, we have several options. Currently, we're using [speedtest-net](https://www.npmjs.com/package/speedtest-net) which uses the Ookla speedtest CLI. Another option is the [fast-speedtest](https://www.npmjs.com/package/fast-speed-test) which uses the Netflix fast.com speed test 
 
 ### Setting up your development environment
 
