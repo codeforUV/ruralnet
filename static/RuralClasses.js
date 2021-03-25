@@ -39,8 +39,12 @@ class CookieUtility {
         let recentTest = storage.getItem('recentTest');
         if (recentTest !== null && CookieUtility.consentStatus().consented) {
             let testJSON = JSON.parse(recentTest);
-            document.cookie = `user=${testJSON.userID}; Path=/`;
-            return true;
+            if (testJSON.userID) {
+                document.cookie = `user=${testJSON.userID}; Path=/`;
+                return true;
+            } else {
+                return false;
+            }
         }
         return false;
     }
