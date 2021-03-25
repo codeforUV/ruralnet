@@ -10,7 +10,7 @@ export async function get (req, res, next) {
     let userID = getUserCookie(req);
     console.log(`IP:USER: ${requestIP} | ${userID}`);
     const prevTest = await SpeedTest.findOne({ ipAddress: requestIP, userID: userID });
-    if (prevTest) {
+    if (prevTest && userID) {
         res.writeHead(200, {
             'Content-Type': 'application/json'
         });
@@ -19,7 +19,7 @@ export async function get (req, res, next) {
             city: prevTest.city, 
             latitude: prevTest.latitude,
             longitude: prevTest.longitude,
-            cookie: prevTest.userID || "no userID", 
+            cookie: prevTest.userID, 
             err: null}));  // include ip, ISP, and city string (which can be used to obtain lat/long later)
     } else {
         res.writeHead(404, {
