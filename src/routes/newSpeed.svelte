@@ -12,12 +12,10 @@
     onMount(() => {
         st = new RuralTest();
     })
-
 </script>
 
 
 <h1 id='title'>New Speed Test</h1>
-<a href="/shortcuts">Debugging Shortcuts</a>
 <button id='test' on:click={() => {st.startTest()}}>Click to begin Speedtest</button>
 <button disabled='true' id='cancel' on:click={() => {st.abortTest()}}>Cancel Test</button>
 <p id='result'></p>

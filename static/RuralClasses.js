@@ -21,12 +21,16 @@ class CookieUtility {
     static agree() {
         storage.setItem("cookieConsent", "true");
         let recovery = CookieUtility.recoverUserCookie();
-        console.log(recovery);
+        if (!recovery) {
+            CookieUtility.getNewCookie();
+        }
     }
     static decline() {
         storage.setItem("cookieConsent", "false");
         storage.setItem("cookiesDeclined", new Date().getTime());
-        document.cookie = "user=; Expires=-1";
+        let expiredDate = new Date();
+        expiredDate.setFullYear(expiredDate.getFullYear() - 1);
+        document.cookie = "user=null; Path=/; Expires=" + expiredDate.toUTCString();
     }
     static async getNewCookie() {
         await fetch("id/cookieMonster.json");
@@ -42,10 +46,11 @@ class CookieUtility {
     }
     static consentStatus() {
         if (storage.getItem("cookieConsent") === "true") {
-            return { consented: true, askAgain: false };
+            return { consented: true, askAgain: false, explicit: true };
+        } else if (storage.getItem("cookieConsent") === "false") {
+            return { consented: false, askAgain: false, explicit: true };
         } else {
-            let ask = parseInt(storage.getItem("cookiesDeclined")) + 3600000 < new Date().getTime();
-            return { consented: false, askAgain: ask };
+            return { consented: true, askAgain: true , explicit: false };
         }
     }
 }
@@ -86,7 +91,7 @@ class RuralTest {
         this.testOrder = "P_D";
         if(!componentIds) {
             componentIds = {
-                // ids of elements that that speedtest wents to write information to
+                // ids of elements that that speedtest wants to write information to
                 result: 'result',
                 title: 'title',
                 done: 'done',
@@ -166,7 +171,7 @@ class RuralTest {
         this.pageInterface.addLogMsg("Finishing preparations...");
         this.testData.date = this.today.toISOString().split("T")[0];
         this.testData.time = this.today.toISOString().split("T")[1].slice(0, -1);
-        this.testData.userID = new CookieUtility().getValue("user");
+        this.testData.userID = new CookieUtility().getValue("user");  // if the user has explicitly declined cookies, this field will not be included
         // then allow testing
         this.prepared = true;
     }

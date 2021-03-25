@@ -9,7 +9,7 @@ export async function get (req, res, next) {
     }
     let userID = getUserCookie(req);
     const prevTests = await SpeedTest.find({ ipAddress: requestIP, userID: userID });
-    if (prevTests) {
+    if (prevTests && userID !== null) {
         res.writeHead(200, {
             'Content-Type': 'application/json'
         });
@@ -18,6 +18,6 @@ export async function get (req, res, next) {
         res.writeHead(500, {
             'Content-Type': 'application/json'
         });
-        res.end(JSON.stringify({ ipAddress: requestIP, err: "no tests from this IP address stored in the database"}))
+        res.end(JSON.stringify({ ipAddress: requestIP, uniqueID: userID, err: "no tests from this IP address and user stored in the database"}))
     }
 }
