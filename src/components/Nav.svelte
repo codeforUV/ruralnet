@@ -51,13 +51,9 @@
 <nav>
   <ul>
     <li><a aria-current={segment === undefined ? 'page' : undefined} href=".">Home</a></li>
-<<<<<<< HEAD
     <li>
       <a aria-current={segment === 'about' ? 'page' : undefined} href="about">About</a>
     </li>
-=======
-    <li><a aria-current={segment === 'about' ? 'page' : undefined} href="about">About</a></li>
->>>>>>> 1b687010e768b93746db284635d49ca6d9921baa
     <li>
       <a aria-current={segment === 'database' ? 'page' : undefined} href="database">Test Database</a>
     </li>
