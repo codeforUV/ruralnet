@@ -51,6 +51,8 @@
 
   <h1>Results Map</h1>
 
+  <ResultsMap />
+
   <!-- <p>
     In the map below, the results of speed tests submitted by users of this site are shown as dots,
     with the color representing measured download speed from <font color="red"
@@ -113,6 +115,6 @@
       </p> -->
     </div>
 
-<ResultsMap />
+
 </div>
 <!-- </div> -->
