@@ -57,10 +57,10 @@
   
   <h1>Demo interaction with a live mongo database</h1>
   <div class="button-container">
-    <button on:click={refreshData}>Refresh messages</button>
+    <button class="btn" on:click={refreshData}>Refresh messages</button>
   </div>
   <div class="button-container">
-    <button on:click={getTSV}>Export TSV of data</button>
+    <button class="btn btn-blue" on:click={getTSV}>Export TSV of data</button>
   </div>
   
   <div>

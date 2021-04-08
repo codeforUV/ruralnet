@@ -1,4 +1,5 @@
 <script>
+  import Footer from '../components/Footer.svelte';
   import Nav from '../components/Nav.svelte';
   import CookieBanner from '../components/CookieBanner.svelte';
 
@@ -8,18 +9,29 @@
 <style>
   main {
     position: relative;
-    max-width: 56em;
     background-color: white;
-    padding: 2em;
-    margin: 0 auto;
     box-sizing: border-box;
+  }
+
+  .content {
+    max-width: 700px;
+    margin: auto;
+    padding: 0 1.5em;
   }
 </style>
 
 <Nav {segment} />
 
-<main>
-  <slot />
-</main>
-
+{#if segment === undefined}
+  <main>
+    <slot />
+  </main>
+{:else}
+  <div class="content">
+    <main>
+        <slot />
+    </main>
+  </div>
+{/if}
 <CookieBanner/>
+<Footer />
