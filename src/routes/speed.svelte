@@ -1,3 +1,7 @@
+<style>
+
+</style>
+
 <script>
     import { onMount } from 'svelte';
     var testInfo = {
@@ -115,7 +119,7 @@
     async function speedtestEnd (aborted) {
         document.getElementById('done').textContent = 'Finished' + (aborted ? ' - Aborted' : '!'); 
         if (!aborted) {
-            document.getElementById('title').innerHTML = 'Speedtest results';
+            // document.getElementById('title').innerHTML = 'Speedtest results';
             // convert coords to city
             if (testInfo.latitude && testInfo.longitude){
                 let cityreq = await fetch(`/location/city.json?latlng=${testInfo.latitude},${testInfo.longitude}`);
@@ -149,7 +153,7 @@
     };
     async function doSpeedTest () {
         inProgress = true;
-        document.getElementById('title').innerHTML = 'Speedtest in progress';
+        document.getElementById('test').innerHTML = 'Speedtest in progress';
         let r = document.getElementById("result");
         // Date information - date and time
         today = new Date();
@@ -260,20 +264,20 @@
   <title>Speed Test</title>
 </svelte:head>
 
-<h1 id='title'>Take a Speed Test</h1>
-{#if !finished}
-    <button id='test' on:click={doSpeedTest}>Click to Test</button>
-    {#if inProgress}
-        <button id='cancel' on:click={cancelSpeedTest}>Cancel Test</button>
+    <h1>Internet Speed Test</h1>
+    {#if !finished}
+        <button id='test' class="btn btn-blue" on:click={doSpeedTest}>Click to Test</button>
+        {#if inProgress}
+            <button class="btn btn-red" id='cancel' on:click={cancelSpeedTest}>Cancel Test</button>
+        {/if}
     {/if}
-{/if}
-<p id='result'></p>
-<p id='done'></p>
-{#if finished}
-    <h2>Location Look Wrong?</h2>
-    <p><small>Location estimation works best on mobile devices</small></p>
-    <p><strong>Tell us where you are - city, state or zip code</strong></p>
-    <input type="text" bind:value={userLocation} placeholder="example: Barre, VT">
-    <button on:click={fixLocation}>That's where I am</button>
-    <p id="chastise"></p>
-{/if}
+    <p id='result'></p>
+    <p id='done'></p>
+    {#if finished}
+        <h3>Location Look Wrong?</h3>
+        <p><small>Location estimation works best on mobile devices</small></p>
+        <p><strong>Tell us where you are - city, state or zip code</strong></p>
+        <input type="text" bind:value={userLocation} placeholder="example: Barre, VT">
+        <button class="btn" on:click={fixLocation}>Update Location</button>
+        <p id="chastise"></p>
+    {/if}
