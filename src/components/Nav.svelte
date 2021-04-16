@@ -22,6 +22,9 @@
     <li>
       <a aria-current={segment === 'map' ? 'page' : undefined} href="map">Results Map</a>
     </li>
+    <li>
+      <a aria-current={segment === 'map' ? 'page' : undefined} href="map">Results Map</a>
+    </li>
   </ul>
 </nav> -->
 

@@ -11,7 +11,7 @@
       <div class="row">
         <div class="col-md-3">
           <!-- <img class="logo" src="images/logo.png" alt=""> -->
-          <p>Social</p>
+          <!-- <p class="title">Social</p> -->
           <!-- <a href="#" class="app_download"><img src="images/app-store-download.png" alt=""></a> -->
           <ul class="socials">
             <li><a href="https://twitter.com"><i class="fa fa-twitter"></i></a></li>
@@ -20,10 +20,12 @@
         </div>
         <div class="col-md-2 col-md-offset-3 col-sm-4 col-xs-6 footer-links">
           <ul>
-            <li><p class="title">Learn More</p></li>
-            <li><a href="/">How it works?</a></li>
+            <li><p class="title">Tools</p></li>
+            <!-- <li><a href="/">How it works?</a></li>
             <li><a href="/">Our Mission</a></li>
-            <li><a href="/">Recent News</a></li>
+            <li><a href="/">Recent News</a></li> -->
+            <li><a href="/speed">Speed Test</a></li>
+            <li><a href="/survey">Survey</a></li>
           </ul>
         </div>
         <div class="col-md-2 col-sm-4 col-xs-6 footer-links">

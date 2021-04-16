@@ -998,11 +998,14 @@ input[type="email"]:focus {
 #footer ul li a {
   color: #8c8f94;
   text-decoration: none;
-  line-height: 36px;
 }
 
 #footer ul li a:hover {
   color: #26272d;
+}
+
+#footer ul li {
+  padding-top: 20px;
 }
 
 #footer .socials {
@@ -1045,11 +1048,7 @@ input[type="email"]:focus {
 /*** start - added by Colby Hemond  **/
 
 main > h1 {
-  padding-top: 2em;
-}
-
-.title {
-  padding-top: 2em;
+  padding-top: 3em;
 }
 
 /***  end - added by Colby Hemond  **/
