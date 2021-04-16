@@ -167,10 +167,10 @@ import Survey from '../components/Survey.svelte';
 </script>
 
 <svelte:head>
-  <title>Internet Service Survey</title>
+  <title>Survey</title>
 </svelte:head>
 
-<h1 id='title'>Please fill out this short survey to help us advocate for your internet service needs.</h1>
+<h1 id='title'>Survey</h1>
 <!-- <h2 id='remove'>Let's think about our 'about page'.</h2> -->
 {#if !finished}
   <!-- <div id='surveyContainer'>

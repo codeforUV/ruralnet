@@ -7,41 +7,57 @@ let questionNumber = 0;
 //temporary storage for checkbox answers; needed because something weird is happening with the data bindings
 let usesCheckboxAnswers = []
 
-let surveyInfo = [{
+let surveyInfo = [
+        {
             id: 1,
-            question: "How satisfied are you with the speed of your internet service?",
-            answerName: "service-speed",
+            question: "When you connect to the internet at home, do you:",
+            answerName: "connection",
             answerType: "radio",
-            answerOptions: [1,2,3,4,5],
+            answerOptions: ["Connect to your home Wi-Fi (typical for laptop, tablet or phone)", "Connect your computer to your router with a cable (typical for desktop computer)", "Set up your phone as a Wi-Fi hotspot (if you don't have home internet, but use cell phone for internet)"],
             answer: null,
             
         },
         {
             id: 2,
-            question: "How satisfied are you with the reliability of your internet service?",
-            answerName: "service-reliability",
+            question: "Approximately how many other devices are using your internet while you ran the test? (Other people in your home that are online, Alexa, smart home devices, security cameras, etc.)",
+            answerName: "devices",
             answerType: "radio",
-            answerOptions: [1,2,3,4,5],
+            answerOptions: ["1 - 5","5 - 9","10 or more"],
             answer: null,
-            other: ''
+            
         },
         {
             id: 3,
-            question: "How many users (or devices) are typically connected to your internet simultaneously?",
-            answerName: "devices",
-            answerType: "number",
-            answerOptions: [],
+            question: "How satisfied are you with the speed of your internet service?",
+            answerName: "service-speed",
+            answerType: "radio",
+            answerOptions: ["Very dissatisfied", "Somewhat dissatisfied", "Neutral", "Somewhat satisfied", "Very satisfied"],
             answer: null,
-            other: ''
+            
         },
         {
             id: 4,
-            question: "Which of the following is this internet connection used for?",
+            question: "Which of the following is this internet connection used for? (check all that apply)",
             answerName: "uses",
             answerType: "checkbox",
-            answerOptions: ["Work", "K-12 Education", "Higher Ed", "Personal/General", "Other",],
-            answer: [],
-            other: ''
+            answerOptions: ["K-12 Education", "Higher Education", "Personal/General", "Remote Work/Home Business", "Telemedecine" ],
+            answer: []
+        },
+        {
+            id: 5,
+            question: "High speed fiber internet would typically allow one person to be uploading and downloading multiple videos, music files and photos, a second person to watch a video (Hulu, Netflix, Amazon Prime), and a third person to be browsing and reading email, all at the same time. If high speed fiber internet were available at your location, how much per month would you be willing to pay?",
+            answerName: "cost",
+            answerType: "radio",
+            answerOptions: ["less than $25", "$25-$50", "$50-$75", "$75-$100", "more than $100"],
+            answer: []
+        },
+        {
+            id: 5,
+            question: "Additional questions or feedback?",
+            answerName: "feedback",
+            answerType: "textarea",
+            answerOptions: [],
+            answer: []
         },
     ]  
 
@@ -136,69 +152,98 @@ async function nextQuestion() {
         margin: 10px 0;
     }
 
-    .radio-group {
-        display: flex;
-    }
-
     .radio-item {
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin: 0 1rem;
+    }
+    
+    .radio-item input {
+        margin-right: 5px;
+    }
+
+    textarea {
+        width: 100%;
     }
 
 </style>
 
 <div class='survey-container'>
     <!-- <button id='survey' on:click={beginSurvey} tabindex="-1" focus>Click to take survey</button> -->
-    <h2 id='question-number' >Question {questionNumber + 1} of {surveyInfo.length}</h2>
-    <h3 id='question' >{surveyInfo[questionNumber].question}</h3>
+    <p id='question-number'>Question {questionNumber + 1} of {surveyInfo.length}</p>
+    <p id='question'>{surveyInfo[questionNumber].question}</p>
 
     {#if questionNumber === 0}
-        <div class="radio-group">
-            {#each surveyInfo[questionNumber].answerOptions as option}
-                <div class="radio-item">
-                    <label for="name">{option}</label>
-                    <input type="radio" id={option} bind:group={surveyInfo[questionNumber].answer}  value={option}>
-                </div>
-            {/each}
-        </div> 
+        
+            <div class="radio-group">
+                {#each surveyInfo[questionNumber].answerOptions as option}
+                    <div class="radio-item">
+                        <input type="radio" id={option} bind:group={surveyInfo[questionNumber].answer}  value={option}>
+                        <label for="name">{option}</label>
+                    </div>
+                {/each}
+            </div> 
+        
 
     {:else if questionNumber === 1}
-        <div class="radio-group">
-            {#each surveyInfo[questionNumber].answerOptions as option}
-                <div class="radio-item">
-                    <label for="name">{option}</label>
-                    <input type="radio" id={option} bind:group={surveyInfo[questionNumber].answer}  value={option}>
-                </div>
-            {/each}
-        </div> 
+        
+            <div class="radio-group">
+                {#each surveyInfo[questionNumber].answerOptions as option}
+                    <div class="radio-item">
+                        <input type="radio" id={option} bind:group={surveyInfo[questionNumber].answer}  value={option}>
+                        <label for="name">{option}</label>
+                    </div>
+                {/each}
+            </div> 
+        
 
     {:else if questionNumber === 2}
-        <input type="number" min="0" max="50" bind:value={surveyInfo[questionNumber].answer}>
+        
+            <div class="radio-group">
+                {#each surveyInfo[questionNumber].answerOptions as option}
+                    <div class="radio-item">
+                        <input type="radio" id={option} bind:group={surveyInfo[questionNumber].answer}  value={option}>
+                        <label for="name">{option}</label>
+                    </div>
+                {/each}
+            </div>
+        
 
     {:else if questionNumber === 3}
-        <div class="check-group">
-            {#each surveyInfo[questionNumber].answerOptions as option}
-                <div class="check-item">
-                    <input type="checkbox"  id={option} bind:group={usesCheckboxAnswers} value={option}>
-                    <label >{option}</label>
-                    {#if option == 'Other'}
-                        <input type="text" name={option} id={option} bind:value={surveyInfo[questionNumber].other}>
-                    {/if}
-                </div>   
-            {/each}
-        </div>
+        
+            <div class="check-group">
+                {#each surveyInfo[questionNumber].answerOptions as option}
+                    <div class="check-item">
+                        <input type="checkbox"  id={option} bind:group={usesCheckboxAnswers} value={option}>
+                        <label >{option}</label>
+                        {#if option == 'Other'}
+                            <input type="text" name={option} id={option} bind:value={surveyInfo[questionNumber].other}>
+                        {/if}
+                    </div>   
+                {/each}
+            </div>
+        
+    {:else if questionNumber === 4}
+        
+            <div class="radio-group">
+                {#each surveyInfo[questionNumber].answerOptions as option}
+                    <div class="radio-item">
+                        <input type="radio" id={option} bind:group={surveyInfo[questionNumber].answer}  value={option}>
+                        <label for="name">{option}</label>
+                    </div>
+                {/each}
+            </div>
+        
 
+    {:else if questionNumber === 5}
+        <textarea rows="4"></textarea>
     {:else}
-    <div>Error: Input for this survey question has not been accounted for. (index:{questionNumber} of surveyInfo.  Component: Survey.svelte)</div>
+        <div>Error: Input for this survey question has not been accounted for. (index:{questionNumber} of surveyInfo.  Component: Survey.svelte)</div>
     {/if}
 
     <div>
-        <button id='prev' on:click={prevQuestion} disabled>←</button>
-        <button id='next' on:click={nextQuestion}  >→</button>
+        <button class="btn" id='prev' on:click={prevQuestion} disabled>←</button>
+        <button class="btn" id='next' on:click={nextQuestion}  >→</button>
     </div>
     <div>
-        <button id='finish' on:click={finishSurvey} disabled >Submit</button>
+        <button class="btn btn-blue" id='finish' on:click={finishSurvey} disabled >Submit</button>
     </div>
 </div>
