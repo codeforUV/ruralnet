@@ -1,18 +1,16 @@
-import { SpeedTest } from '../../models';
 const fetch = require("node-fetch");
 export async function get (req, res, next) {
     /* This route takes a coordinate pair and will return the name of the town + state that the coordinate is (probably) in
        by doing a radius search */
     const latlng = req.query.latlng;
     if (latlng) {
-        const key = process.env.MAPQUEST_KEY; //"";
+        const key = process.env.MAPQUEST_KEY;
         let url = `https://www.mapquestapi.com/search/v2/radius?key=${key}&origin=${latlng}&maxMatches=${req.query.matches || 3}`;
         let apiReq = await fetch(url);
         let searchResults = await apiReq.json();
         let cityCounts = {};
         // get the city, state and zip code of each result and count them
         searchResults.searchResults.forEach(result => {
-            //console.log(result);
             let city = `${result.fields.city}, ${result.fields.state}, ${result.fields.postal_code}`;
             if (cityCounts[city]) {
                 cityCounts[city] += 1;
@@ -21,7 +19,7 @@ export async function get (req, res, next) {
             }
         });
         // unpack the info into seprate keys and determine confidence in each result
-        // confidence could also be determined via weighted means by giving smaller ditances from the origin greater weights - result.distance in above forEach
+        // confidence could also be determined via weighted means by giving smaller distances from the origin greater weights - result.distance in above forEach
         let output = {};
         let conf = 0;
         Object.keys(cityCounts).forEach(key => {

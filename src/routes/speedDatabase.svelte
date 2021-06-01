@@ -2,7 +2,7 @@
 
     const deleteItem = async (id) => {
       console.log(id);
-      const resp = await fetch('speedDatabase.json', {
+      const resp = await fetch('speedDB/speedDB.json', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -16,13 +16,9 @@
     };
   
     const findData = async () => {
-      const resp = await fetch('speedDatabase.json');
+      const resp = await fetch('speedDB/speedDB.json');
       const data = await resp.json();
       if (resp.ok) {
-        // console.log('Server response object:');
-        // console.log(resp);
-        // console.log('Response JSON parsed:');
-        // console.log(data);
         return data.docs;
       }
     };
@@ -35,13 +31,13 @@
     const getTSV = async () => {
       // this is a hairbrained attempt at protecting the data from non-hackers - easily 
       var pw = prompt("Enter the Password");
-      let pwCheck = await fetch(`/export.json?r=${pw}`, {
+      let pwCheck = await fetch(`speedDB/export.json?r=${pw}`, {
         method: 'POST'
       })
       pwCheck = await pwCheck.json();
       if (pwCheck.trust) {
         let downloadAnchor = document.createElement('a');
-        downloadAnchor.href = `/export.json?r=${pw}`;
+        downloadAnchor.href = `speedDB/export.json?r=${pw}`;
         downloadAnchor.download = true;
         downloadAnchor.click();
       } else {
@@ -73,7 +69,7 @@
     {:then docs}
       <h2>Test Results</h2>
       <ol>
-        {#each docs as { _id, downloadSpeed, city, internetProvider, date }, i}
+        {#each docs as { _id, downloadSpeed, city, internetProvider, date, userID }, i}
           <li>
             <p>
               <strong>Speed: </strong>
@@ -96,6 +92,7 @@
               </svg>
             </p>
             <p><em>{internetProvider}, {city || "location unknown"}, {date}</em></p>
+            <p>{userID}</p>
           </li>
         {/each}
       </ol>

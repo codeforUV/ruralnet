@@ -23,4 +23,4 @@
       availability. At the same time, our hope is to share Rural Net and the collected internet speed data with any
       existing state or county level public service projects in this space, to facilitate future legislative efforts.</p>
 
-
+  <p>Click here for the <a href="/about/privacy">Privacy Page</a></p>

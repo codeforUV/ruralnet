@@ -14,12 +14,12 @@ export async function get (req, res, next) {
     res.writeHead(200, {
         'Content-Type': 'application/json'
     });
-    let formettedResult = (result.adminArea5 + "," + result.adminArea3).toLowerCase().replace(/\s+/g, "");  //no whitespace and all lowercase for uniformity with input
-    if (location === result.postalCode || location.toLowerCase() == formettedResult) {
+    let formattedResult = (result.adminArea5 + "," + result.adminArea3).toLowerCase().replace(/\s+/g, "");  //no whitespace and all lowercase for uniformity with input
+    if (location === result.postalCode || location.toLowerCase() == formattedResult) {
         // good outcome, the user query matched the search result
         res.end(JSON.stringify({verified: true, city: result.adminArea5 + ", " + result.adminArea3, latlng: result.latLng}));
     } else {
         // bad result, user entered garbage
-        res.end(JSON.stringify({verified: false, userInput: location, checkedAgainst: [result.postalCode, formettedResult]}));
+        res.end(JSON.stringify({verified: false, userInput: location, checkedAgainst: [result.postalCode, formattedResult]}));
     }
 }

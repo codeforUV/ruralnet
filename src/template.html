@@ -12,6 +12,7 @@
 	<link rel='icon' type='image/png' href='favicon.png'>
 	
 	<script type="text/javascript" src="speedtest.js"></script>
+	<script type="text/javascript" src="RuralClasses.js"></script>
 
 	<!-- BEGIN - copied from template -->
 	<link href='https://fonts.googleapis.com/css?family=Roboto:400,300,700,500' rel='stylesheet' type='text/css'>
@@ -28,13 +29,22 @@
 		var SPEEDTEST_SERVERS = [
 			{
 				"name": "RuralNet Server",
-				"server": "/", //"https://192.168.1.13:3000/",  // major assumption here that / will point to this website
+				"server": "/test/", //"https://192.168.1.13:3000/",  // /test/ will point to where the speed test backend routes are located in /src
 				"dlURL": "garbage.json",
-				"ulURL": "empty.bin", // in speedtest docs, an empty file can be a suitable replacement for a real backend - perhaps this gets around heroku h18 503 error "empty.json",
+				"ulURL": "empty.json", // "empty.bin", // in speedtest docs, an empty file (like empty.bin) can be a suitable replacement for a real backend - perhaps this gets around heroku h18 503 error "empty.json",
 				"pingURL": "empty.json",
 				"getIpURL": "getIP.json"
 			}
 		];
+		window.onload = () => {
+			console.log(storage.getItem('recentTestDate'));
+			if (CookieUtility.consentStatus().consented) {
+				CookieUtility.recoverUserCookie();  // get cookie id from recenttest
+				fetch('/id/cookieMonster.json');  // update it's expire time or get a new cookie
+			} else {
+				CookieUtility.decline();
+			}
+		}
 	</script>
 
     <!-- Sapper generates a <style> tag containing critical CSS

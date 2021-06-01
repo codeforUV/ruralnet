@@ -131,6 +131,11 @@ ul > li {
   color: white;
 }
 
+.btn-red {
+  background-color: rgb(243, 102, 102);
+  color: white;
+}
+
 .btn-dark {
   background-color: #131315;
   color: white;
