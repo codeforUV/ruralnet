@@ -1,11 +1,10 @@
 /node_modules/
 
-.DS_Store  
+.DS_Store
 
 __sapper__
 src/node_modules
 src/package-lock.json
-.vscode
 .env
 npm-debug.log
 #static/speedtest*

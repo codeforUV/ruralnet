@@ -36,6 +36,8 @@ module.exports = {
     'no-await-in-loop': 0,
     'a11y-invalid-attribute': 0,
     'no-restricted-globals': 0,
+    'no-plusplus': 0,
+    'dot-notation': 0,
   },
   overrides: [
     {

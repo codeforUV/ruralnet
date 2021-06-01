@@ -1,29 +1,5 @@
 <script>
-import ResultsMap from "../components/ResultsMap.svelte";
-
 </script>
-<style>
-
-.jumbotron-content-background {
-  background-color: rgba(255, 255, 255, 0.8);
-  padding: 2em;
-  width: 50%;
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  
-}
-  
-
-@media only screen and (max-width: 500px) {
-  .jumbotron-content-background {
-    padding: 1em;
-    width: 90%;
-  }
-}
-</style>
 
 <svelte:head>
   <title>RuralNet - Internet Speed Test</title>
@@ -31,13 +7,16 @@ import ResultsMap from "../components/ResultsMap.svelte";
 
 <!-- BEGIN OF TEMPLATE INSERT-->
 
-<section id="header"> 
+<section id="header">
   <div class="jumbotron-content-background">
     <h1 class="wow fadeInUp">How fast is your internet?</h1>
-    <p class="wow fadeInUp" data-wow-delay=".2s">Test your internet speed to help get high-speed internet to rural areas of Vermont/New Hampshire</p>
+    <p class="wow fadeInUp" data-wow-delay=".2s">
+      Test your internet speed to help get high-speed internet to rural areas of Vermont/New
+      Hampshire
+    </p>
     <button class="btn btn-lg video-btn wow fadeInUp">
       <a href="/speed">
-        <i class="fa fa-play"></i>Test Your Speed
+        <i class="fa fa-play" />Test Your Speed
       </a>
     </button>
     <small class="wow fadeInUp" data-wow-delay=".2s"><a href="map">See Map of Results →</a></small>
@@ -146,5 +125,25 @@ import ResultsMap from "../components/ResultsMap.svelte";
 </section> 
 -->
 
-
 <!-- END OF TEMPLATE INSERT-->
+
+<style>
+  .jumbotron-content-background {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 2em;
+    width: 50%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  @media only screen and (max-width: 500px) {
+    .jumbotron-content-background {
+      padding: 1em;
+      width: 90%;
+    }
+  }
+
+</style>

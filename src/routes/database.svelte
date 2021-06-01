@@ -50,16 +50,8 @@
   const refreshData = async () => {
     promise = await findData();
   };
-</script>
 
-<style>
-  .error {
-    color: red;
-  }
-  .button-container {
-    margin-bottom: 2rem;
-  }
-</style>
+</script>
 
 <h1>Demo interaction with a live mongo database</h1>
 <div class="button-container">
@@ -90,7 +82,8 @@
               stroke="#607D8B"
               fill="none"
               stroke-linecap="round"
-              stroke-linejoin="round">
+              stroke-linejoin="round"
+            >
               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
               <rect x="4" y="4" width="16" height="16" rx="2" />
               <path d="M10 10l4 4m0 -4l-4 4" />
@@ -104,3 +97,13 @@
     <p class="error">{err.message}</p>
   {/await}
 </div>
+
+<style>
+  .error {
+    color: red;
+  }
+  .button-container {
+    margin-bottom: 2rem;
+  }
+
+</style>
