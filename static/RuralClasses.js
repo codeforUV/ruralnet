@@ -180,6 +180,9 @@ class RuralTest {
         this.prepared = true;
     }
     async startTest() {
+        if (this.pageInterface.elements.log.firstChild) {
+            this.pageInterface.clearLog();
+        }
         if (!this.prepared) {
             await this.prepare();
         }
@@ -445,6 +448,11 @@ class SpeedTestPageInterface {
             let newLog = document.createElement('li');
             newLog.textContent = msg;
             this.elements.log.appendChild(newLog);
+        }
+    }
+    clearLog() {
+        while (this.elements.log.firstChild) {
+            this.elements.log.removeChild(this.elements.log.firstChild);
         }
     }
 }
