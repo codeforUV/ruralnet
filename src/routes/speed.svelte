@@ -295,6 +295,3 @@
   <button class="btn" on:click={fixLocation}>Update Location</button>
   <p id="chastise" />
 {/if}
-
-<script>
-</script>
