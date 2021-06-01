@@ -402,7 +402,7 @@ class SpeedTestPageInterface {
     }
     onPageLoad() {
         let prevResults = new RuralTestResult({}, true);
-        if (prevResults._content) {
+        if (prevResults._content && CookieUtility.consentStatus().consented) {
             this.elements.result.textContent = "Previous Results: " + prevResults.toString();
             this.elements.done.textContent = `Last test taken on ${new Date(`${prevResults._content.date}T${prevResults._content.time}Z`)}`;    
         }
