@@ -24,7 +24,7 @@ const SpeedTestSchema = new Schema({
   city: String,
   ping: Number,
   latitude: Number,
-  longitude: Number
+  longitude: Number,
 });
 
 const Dummy = mongoose.model('Dummy', DummySchema);
