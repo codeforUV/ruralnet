@@ -1,4 +1,9 @@
 <script>
+import Speed from "../routes/speed.svelte";
+
+
+
+    export let submitted = false;
 
 // Initialize memory for variables
 let questionNumber = 0;
@@ -9,7 +14,7 @@ let usesCheckboxAnswers = []
 
 let surveyInfo = [
         {
-            id: 1,
+            _id: 1,
             question: "When you connect to the internet at home, do you:",
             answerName: "connection",
             answerType: "radio",
@@ -18,7 +23,7 @@ let surveyInfo = [
             
         },
         {
-            id: 2,
+            _id: 2,
             question: "Approximately how many other devices are using your internet while you ran the test? (Other people in your home that are online, Alexa, smart home devices, security cameras, etc.)",
             answerName: "devices",
             answerType: "radio",
@@ -27,7 +32,7 @@ let surveyInfo = [
             
         },
         {
-            id: 3,
+            _id: 3,
             question: "How satisfied are you with the speed of your internet service?",
             answerName: "service-speed",
             answerType: "radio",
@@ -36,7 +41,7 @@ let surveyInfo = [
             
         },
         {
-            id: 4,
+            _id: 4,
             question: "Which of the following is this internet connection used for? (check all that apply)",
             answerName: "uses",
             answerType: "checkbox",
@@ -44,7 +49,7 @@ let surveyInfo = [
             answer: []
         },
         {
-            id: 5,
+            _id: 5,
             question: "High speed fiber internet would typically allow one person to be uploading and downloading multiple videos, music files and photos, a second person to watch a video (Hulu, Netflix, Amazon Prime), and a third person to be browsing and reading email, all at the same time. If high speed fiber internet were available at your location, how much per month would you be willing to pay?",
             answerName: "cost",
             answerType: "radio",
@@ -52,7 +57,7 @@ let surveyInfo = [
             answer: []
         },
         {
-            id: 5,
+            _id: 6,
             question: "Additional questions or feedback?",
             answerName: "feedback",
             answerType: "textarea",
@@ -64,6 +69,7 @@ let surveyInfo = [
 // Save the survey locally and on the database. Display all survey results.
 function finishSurvey() {
     console.log(`Finish Survey:`);
+    console.log(surveyInfo);
 
     if (questionNumber === 3) {
         surveyInfo[questionNumber].answer = usesCheckboxAnswers;
@@ -71,15 +77,31 @@ function finishSurvey() {
 
     //@TODO: Need to handle "other" scenario for checkbox question. Currently stored in surveyInfo[x].other as a string
 
-    //@TODO: Probably need to pass something similar to surveyInfo so that question and answer pairs are each contained in their own object
-    let survey = {
-            "questions": JSON.stringify(surveyInfo.map(question=>{return question.question})),
-            "answers": JSON.stringify(surveyInfo.map(question=>{return question.answer}))
-        };
-    console.log(survey);
+    const storage = window.localStorage; 
+    const recentTest = JSON.parse(storage.recentTest)
 
-    // postSurveyResults(survey);
+    let data = {
+            "date": new Date().toString(),
+            "city": recentTest.city,
+            "state": ``,
+            "answers": surveyInfo.map(question => {
+                if (question.answerName === 'uses') {
+                    return {
+                        questionId: question.answerName,
+                        answer: question.answer.join(", ")
+                    }
+                } else {
+                    return {
+                        questionId: question.answerName,
+                        answer: question.answer
+                    }
+                }
+            })
+        };
+    
+    postSurveyResults(data);
     document.getElementById('finish').disabled = true;
+    submitted = true
 }
 
 // HTTP request to post the results to the database.
@@ -234,7 +256,7 @@ async function nextQuestion() {
         
 
     {:else if questionNumber === 5}
-        <textarea rows="4"></textarea>
+        <textarea bind:value={surveyInfo[questionNumber].answer} rows="4"></textarea>
     {:else}
         <div>Error: Input for this survey question has not been accounted for. (index:{questionNumber} of surveyInfo.  Component: Survey.svelte)</div>
     {/if}

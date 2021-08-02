@@ -49,6 +49,10 @@
 
 </style>
 
+<svelte:head>
+  <title>Results Map</title>
+</svelte:head>
+
   <h1>Results Map</h1>
 
   <ResultsMap />

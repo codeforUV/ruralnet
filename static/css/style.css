@@ -136,6 +136,11 @@ ul > li {
   color: white;
 }
 
+.btn-red {
+  background-color: rgb(243, 102, 102);
+  color: white;
+}
+
 .btn-blue:hover,
 .btn-blue:focus,
 .btn-green:hover,

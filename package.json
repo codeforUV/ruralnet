@@ -9,8 +9,7 @@
     "start": "node __sapper__/build",
     "cy:run": "cypress run",
     "cy:open": "cypress open",
-    "test": "run-p --race dev cy:run",
-    "netlify-build": "sapper export && mv ./__sapper__/export ./public"
+    "test": "run-p --race dev cy:run"
   },
   "dependencies": {
     "body-parser": "^1.19.0",

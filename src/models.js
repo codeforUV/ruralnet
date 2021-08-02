@@ -34,7 +34,23 @@ const SurveyTestSchema = new Schema({
   }
 });
 
+
+
+const SurveySubmissionsSchema = new Schema({
+  date: {
+    type: String,
+    default: Date.now(),
+  },
+  city: String,
+  state: String,
+  answers: [{
+    questionId: String,
+    answer: String
+  }]
+});
+
 const Dummy = mongoose.model('Dummy', DummySchema);
 const SpeedTest = mongoose.model('SpeedTest', SpeedTestSchema);
 const SurveyTest = mongoose.model('SurveyTest', SurveyTestSchema);
-export { Dummy, SpeedTest, SurveyTest };
+const SurveySubmissions = mongoose.model('SurveySubmissions', SurveySubmissionsSchema);
+export { Dummy, SpeedTest, SurveyTest, SurveySubmissions };
