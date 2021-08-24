@@ -27,20 +27,12 @@ const SpeedTestSchema = new Schema({
   longitude: Number,
 });
 
-const SurveyTestSchema = new Schema({
-  survey: {
-    questions: Array,
-    answers: Array
-  }
-});
-
-
-
 const SurveySubmissionsSchema = new Schema({
   date: {
     type: String,
     default: Date.now(),
   },
+  address: String,
   city: String,
   state: String,
   answers: [{
@@ -51,6 +43,5 @@ const SurveySubmissionsSchema = new Schema({
 
 const Dummy = mongoose.model('Dummy', DummySchema);
 const SpeedTest = mongoose.model('SpeedTest', SpeedTestSchema);
-const SurveyTest = mongoose.model('SurveyTest', SurveyTestSchema);
 const SurveySubmissions = mongoose.model('SurveySubmissions', SurveySubmissionsSchema);
-export { Dummy, SpeedTest, SurveyTest, SurveySubmissions };
+export { Dummy, SpeedTest, SurveySubmissions };
