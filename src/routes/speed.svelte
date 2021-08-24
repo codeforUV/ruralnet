@@ -7,17 +7,17 @@
 -->
 <script>
     import { onMount } from 'svelte';
-    var st; 
+    var speedTest; 
     var testComplete = false;
     onMount(() => {
-        st = new RuralTest();
+        speedTest = new RuralTest();
     })
 </script>
 
 
 <h1 id='title'>New Speed Test</h1>
-<button id='test' class="btn btn-blue" on:click={() => {st.startTest()}}>Click to begin Speedtest</button>
-<button disabled='true' id='cancel' class="btn btn-red" on:click={() => {st.abortTest()}}>Cancel Test</button>
+<button id='test' class="btn btn-blue" on:click={() => {speedTest.startTest()}}>Click to begin Speedtest</button>
+<button disabled='true' id='cancel' class="btn btn-red" on:click={() => {speedTest.abortTest()}}>Cancel Test</button>
 <p id='result'></p>
 <p id='done'></p>
 
