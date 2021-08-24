@@ -64,18 +64,9 @@
         <ul class="left">
           <li><a aria-current={segment === undefined ? 'page' : undefined} href=".">Home</a></li>
           <li><a aria-current={segment === 'about' ? 'page' : undefined} href="about">About</a></li>
-<<<<<<< HEAD
-          <li>
-            <a aria-current={segment === 'speed' ? 'page' : undefined} href="speed">Speed Test</a>
-          </li>
-          <li>
-            <a aria-current={segment === 'map' ? 'page' : undefined} href="map">Results Map</a>
-          </li>
-=======
           <li><a aria-current={segment === 'speed' ? 'page' : undefined} href="speed">Speed Test</a></li>
           <li><a aria-current={segment === 'yourTests' ? 'page' : undefined} href="yourTests">Your Speedtests</a></li>
           <li><a aria-current={segment === 'map' ? 'page' : undefined} href="map">Results Map</a></li>
->>>>>>> natedimik/MMM-COOKIE
         </ul>
       </div>
 

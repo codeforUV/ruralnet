@@ -1,5 +1,4 @@
 <script>
-
     const deleteItem = async (id) => {
       console.log(id);
       const resp = await fetch('speedDB/speedDB.json', {
@@ -43,42 +42,9 @@
       } else {
         alert('Sorry, you do not have access to this resource');
       }
-    }
-  };
-
-  const findData = async () => {
-    const resp = await fetch('speedDatabase.json');
-    const data = await resp.json();
-    if (resp.ok) {
-      // console.log('Server response object:');
-      // console.log(resp);
-      // console.log('Response JSON parsed:');
-      // console.log(data);
-      return data.docs;
-    }
-  };
-  let promise = findData();
-
-  const refreshData = async () => {
-    promise = await findData();
-  };
-
-  const getTSV = async () => {
-    // this is a hairbrained attempt at protecting the data from non-hackers - easily
-    var pw = prompt('Enter the Password');
-    let pwCheck = await fetch(`/export.json?r=${pw}`, {
-      method: 'POST',
-    });
-    pwCheck = await pwCheck.json();
-    if (pwCheck.trust) {
-      let downloadAnchor = document.createElement('a');
-      downloadAnchor.href = `/export.json?r=${pw}`;
-      downloadAnchor.download = true;
-      downloadAnchor.click();
-    } else {
-      alert('Sorry, you do not have access to this resource');
-    }
-  </style>
+  }
+  
+  </script>
   
   <h1>Demo interaction with a live mongo database</h1>
   <div class="button-container">
