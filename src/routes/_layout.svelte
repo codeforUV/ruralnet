@@ -1,6 +1,7 @@
 <script>
   import Footer from '../components/Footer.svelte';
   import Nav from '../components/Nav.svelte';
+  import CookieBanner from '../components/CookieBanner.svelte';
 
   export let segment;
 
@@ -19,7 +20,7 @@
     </main>
   </div>
 {/if}
-
+<CookieBanner/>
 <Footer />
 
 <style>
