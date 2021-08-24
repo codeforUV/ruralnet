@@ -82,8 +82,9 @@ function finishSurvey() {
 
     let data = {
             "date": new Date().toString(),
-            "city": recentTest.city,
-            "state": ``,
+            "address": recentTest.address ? recentTest.address : null,
+            "city": recentTest.city ? recentTest.city : null,
+            "state": recentTest.state ? recentTest.state : null,
             "answers": surveyInfo.map(question => {
                 if (question.answerName === 'uses') {
                     return {
@@ -168,6 +169,9 @@ async function nextQuestion() {
         display: flex;
         flex-direction: column;
         align-items: center;
+        border-radius: 25px;
+        padding: 2em;
+        box-shadow: 0px 0px 30px lightgrey;
     }
 
     .survey-container > * {
@@ -189,6 +193,7 @@ async function nextQuestion() {
 </style>
 
 <div class='survey-container'>
+    <h1 id="title">Internet Usage Survey</h1>
     <!-- <button id='survey' on:click={beginSurvey} tabindex="-1" focus>Click to take survey</button> -->
     <p id='question-number'>Question {questionNumber + 1} of {surveyInfo.length}</p>
     <p id='question'>{surveyInfo[questionNumber].question}</p>

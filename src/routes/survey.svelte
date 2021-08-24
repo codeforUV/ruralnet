@@ -40,7 +40,7 @@ import Survey from '../components/Survey.svelte';
   <title>Survey</title>
 </svelte:head>
 
-<h1 id='title'>Survey</h1>
+<!-- <h1 id='title'>Survey</h1> -->
 {#if !finished}
   <Survey bind:submitted={finished} />
 {/if}
