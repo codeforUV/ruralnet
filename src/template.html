@@ -12,9 +12,8 @@
 	<link rel='icon' type='image/png' href='favicon.png'>
 	
 	<script type="text/javascript" src="speedtest.js"></script>
-	<script type="text/javascript" src="RuralClasses.js"></script>
+	<script type="text/javascript" src="./RuralClasses.js"></script>
 
-    <script type="text/javascript" src="speedtest.js"></script>
 
     <!-- BEGIN - copied from template -->
     <link
@@ -49,7 +48,7 @@
 			}
 		];
 		window.onload = () => {
-			console.log(storage.getItem('recentTestDate'));
+			// console.log(storage.getItem('recentTestDate'));
 			if (CookieUtility.consentStatus().consented) {
 				CookieUtility.recoverUserCookie();  // get cookie id from recenttest
 				fetch('/id/cookieMonster.json');  // update it's expire time or get a new cookie

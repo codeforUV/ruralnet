@@ -107,6 +107,7 @@ class RuralTest {
         this.pageInterface = new SpeedTestPageInterface(componentIds, logs);
         this.pageInterface.onPageLoad();
         this.testData = RuralTest.emptyTestJson;
+        this.logging = logs
     }
     get state() {
         return {
@@ -145,31 +146,48 @@ class RuralTest {
             this.pageInterface.addLogMsg("Not your first time? You may not have acepted cookies. "); // TODO
             let ipInfoReq = await fetch('id/ipInfo.json');
             let ipInfo = await ipInfoReq.json();
-            
+
             this.pageInterface.addLogMsg("Gathering ISP information...");
             this.testData.ipAddress = ipInfo.ip;
-            this.testData.internetProvider = ipInfo.org.split(" ").slice(1).join(" ");
-            
+            this.testData.internetProvider = ipInfo.org ? ipInfo.org.split(" ").slice(1).join(" ") : null; // colby 1
+
             this.pageInterface.addLogMsg("Trying to figure out your location...");
             this.pageInterface.addLogMsg("(If your browser asks to access your location, please click \"Allow\")");
-            var ipLatLng = ipInfo.loc.replace(" ", "");
-            var browserLatLng = await LocationUtility.browserLocation();
-            
+            var ipLatLng = ipInfo.loc ? ipInfo.loc.replace(" ", "") : null; //colby 2
+            var browserLatLng = await LocationUtility.browserLocation()
+                                    .catch(err => { // colby 3 possibly add extra error handling
+                                        return err
+                                    });
+
             let cityreq, chosenLatLng;
+            // if (browserLatLng !== "geolocationFailed") {
+            //     this.pageInterface.addLogMsg("Using browser geolocation...");
+            //     cityreq = await fetch("location/city.json?latlng=" + browserLatLng);
+            //     chosenLatLng = browserLatLng;
+            // } else {
+            //     this.pageInterface.addLogMsg("Using IP geolocation...");
+            //     cityreq = await fetch("location/city.json?latlng=" + ipLatLng);
+            //     chosenLatLng = ipLatLng;
+            // }
             if (browserLatLng !== "geolocationFailed") {
                 this.pageInterface.addLogMsg("Using browser geolocation...");
                 cityreq = await fetch("location/city.json?latlng=" + browserLatLng);
                 chosenLatLng = browserLatLng;
-            } else {
+            }
+            if (ipLatLng !== null){
                 this.pageInterface.addLogMsg("Using IP geolocation...");
                 cityreq = await fetch("location/city.json?latlng=" + ipLatLng);
                 chosenLatLng = ipLatLng;
             }
-            chosenLatLng = chosenLatLng.split(',');
-            this.testData.latitude = parseFloat(chosenLatLng[0]);
-            this.testData.longitude = parseFloat(chosenLatLng[1]);
-            let cityInfo = await cityreq.json();
-            this.testData.city = `${cityInfo.city}, ${cityInfo.state}`;
+            if (cityreq === undefined) {
+                this.pageInterface.addLogMsg("No location found");
+            } else {
+                chosenLatLng = chosenLatLng.split(',');
+                this.testData.latitude = parseFloat(chosenLatLng[0]);
+                this.testData.longitude = parseFloat(chosenLatLng[1]);
+                let cityInfo = await cityreq.json();
+                this.testData.city = `${cityInfo.city}, ${cityInfo.state}`;
+            }
         }
 
         this.pageInterface.addLogMsg("Finishing preparations...");
@@ -180,7 +198,8 @@ class RuralTest {
         this.prepared = true;
     }
     async startTest() {
-        if (this.pageInterface.elements.log.firstChild) {
+        
+        if (this.logging && this.pageInterface.elements.log.firstChild) {
             this.pageInterface.clearLog();
         }
         if (!this.prepared) {
@@ -398,7 +417,7 @@ class SpeedTestPageInterface {
             this.elements[key] = document.getElementById(elementIds[key]);
         })
         this.lastState = "not started";
-        this.logging = true;
+        this.logging = log;
     }
     onPageLoad() {
         let prevResults = new RuralTestResult({}, true);
@@ -408,7 +427,9 @@ class SpeedTestPageInterface {
         }
     }
     onStart() {
-        this.elements.title.textContent = "Speedtest in progress";
+        if (this.logging) {
+            this.elements.title.textContent = "Speedtest in progress";
+        }
         this.elements.testBtn.disabled = true;
         this.elements.cancelBtn.disabled = false;
     }
@@ -420,7 +441,7 @@ class SpeedTestPageInterface {
             this.elements.done.textContent = presentState;
         }
         this.elements.result.textContent = resultProgress;
-        
+
     }
     onAbort() {
         this.addLogMsg("Test Aborted by user");

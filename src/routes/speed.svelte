@@ -6,20 +6,13 @@
     and better performance/ new features
 -->
 <script>
-    import { onMount } from 'svelte';
-    var speedTest; 
-    var testComplete = false;
-    onMount(() => {
-        speedTest = new RuralTest();
-    })
+import SpeedTest from "../components/SpeedTest.svelte";
+
+
 </script>
 
-
 <h1 id='title'>New Speed Test</h1>
-<button id='test' class="btn btn-blue" on:click={() => {speedTest.startTest()}}>Click to begin Speedtest</button>
-<button disabled='true' id='cancel' class="btn btn-red" on:click={() => {speedTest.abortTest()}}>Cancel Test</button>
-<p id='result'></p>
-<p id='done'></p>
+<SpeedTest/>
 
 <h2>Test Log</h2>
 <ol id="log">
