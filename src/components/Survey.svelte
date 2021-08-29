@@ -142,8 +142,19 @@ async function prevQuestion() {
 // Toggle to next question and store data locally.
 async function nextQuestion() {
 
+    console.log(surveyInfo[questionNumber])
+
     if (questionNumber === 3) {
         surveyInfo[questionNumber].answer = usesCheckboxAnswers;
+    }
+
+    const answer = surveyInfo[questionNumber].answer
+
+    if (answer === null || answer.length === 0) {
+        document.getElementById('message').innerText = 'Please select an answer.'
+        return
+    } else {
+        document.getElementById('message').innerText = null
     }
 
     questionNumber++;
@@ -165,13 +176,18 @@ async function nextQuestion() {
 
 <style>
 
+    #message {
+        color: red;
+        font-size: 12pt;
+    }
+
     .survey-container {
         display: flex;
         flex-direction: column;
         align-items: center;
-        border-radius: 25px;
-        padding: 2em;
-        box-shadow: 0px 0px 30px lightgrey;
+        /* border-radius: 25px; */
+        /* padding: 2em; */
+        /* box-shadow: 0px 0px 30px lightgrey; */
     }
 
     .survey-container > * {
@@ -193,7 +209,7 @@ async function nextQuestion() {
 </style>
 
 <div class='survey-container'>
-    <h1 id="title">Internet Usage Survey</h1>
+    <!-- <h1 id="title">Internet Usage Survey</h1> -->
     <!-- <button id='survey' on:click={beginSurvey} tabindex="-1" focus>Click to take survey</button> -->
     <p id='question-number'>Question {questionNumber + 1} of {surveyInfo.length}</p>
     <p id='question'>{surveyInfo[questionNumber].question}</p>
@@ -269,6 +285,9 @@ async function nextQuestion() {
     <div>
         <button class="btn" id='prev' on:click={prevQuestion} disabled>←</button>
         <button class="btn" id='next' on:click={nextQuestion}  >→</button>
+    </div>
+    <div>
+        <p id='message'></p>
     </div>
     <div>
         <button class="btn btn-blue" id='finish' on:click={finishSurvey} disabled >Submit</button>

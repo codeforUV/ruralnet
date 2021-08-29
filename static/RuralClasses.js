@@ -85,7 +85,7 @@ class RuralTest {
         longitude: null
     }
     constructor(componentIds=null, logs=true) {
-        this.s = new Speedtest();
+        this.speedTest = new Speedtest();
         this.today = new Date();
         this.prepared = false;
         this.inProgress = false;
@@ -116,6 +116,10 @@ class RuralTest {
             inProgress: this.inProgress,
             stage: RuralTest.testStates[this._state]
         }
+    }
+    async getFinished() {
+        console.log('blahhh');
+        // return(this.finished)
     }
     toggleUpload() {
         // turn off
@@ -207,19 +211,20 @@ class RuralTest {
         }
         this.inProgress = true;
         this.pageInterface.addLogMsg("Finalizing Speedtest Configuration");
-        this.s.setParameter("garbagePhp_chunkSize", this.chunkSize);
-        this.s.setParameter("test_order", this.testOrder);  // no need for IP check, removed upload test from Heroku deploy because it doesn't work w/ heroku
-        this.s.setSelectedServer(SPEEDTEST_SERVERS[0]);  // see template.html for SPEEDTEST_SERVERS - there is only one server
-        this.s.onupdate = (data) => { this.onUpdate(data) };
-        this.s.onend = (data) => { this.onEnd(data) };
+        this.speedTest.setParameter("garbagePhp_chunkSize", this.chunkSize);
+        this.speedTest.setParameter("test_order", this.testOrder);  // no need for IP check, removed upload test from Heroku deploy because it doesn't work w/ heroku
+        this.speedTest.setSelectedServer(SPEEDTEST_SERVERS[0]);  // see template.html for SPEEDTEST_SERVERS - there is only one server
+        this.speedTest.onupdate = (data) => { this.onUpdate(data) };
+        // this.speedTest.onend = (data) => { this.onEnd(data) };
         this.pageInterface.addLogMsg("Starting Speedtest");
         this.pageInterface.onStart();
-        this.s.start();
+        this.speedTest.start();
+        this.speedTest.onend = (data) => { this.onEnd(data) };
     }
     abortTest() {
         this.inProgress = false;
-        this.s.abort();
-        this.s = new Speedtest();
+        this.speedTest.abort();
+        this.speedTest = new Speedtest();
         this.pageInterface.onAbort();
     }
     onUpdate(data) {

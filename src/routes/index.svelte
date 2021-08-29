@@ -1,16 +1,31 @@
 <script>
-import SpeedTest from "../components/SpeedTest.svelte";
+  import SpeedTest from "../components/SpeedTest.svelte";
+  import Survey from "../components/Survey.svelte";
 
-  let showDefault = true;
-  let showSpeedTest = false;
-  let showSurvey = false
+    let showDefault = true;
+    let showSpeedTest = false;
+    let showSurvey = false;
 
-const renderSpeedTest = () => {
-  console.log(`renderspeedtest`)
- showDefault = false;
- showSurvey = false;
- showSpeedTest = true;
-}
+    let showSurveyBtn = false
+    let surveyFinished = false
+
+  const renderSpeedTest = () => {
+    console.log(`renderspeedtest`)
+    showDefault = false;
+    showSpeedTest = true;
+    showSurvey = false;
+  }
+
+  const renderSurvey = () => {
+    console.log(`rendersurvey`)
+    showDefault = false;
+    showSpeedTest = false;
+    showSurvey = true;
+  }
+
+  const showSurveyButton = () => {
+    showSurveyBtn = true
+  }
 
 </script>
 
@@ -58,9 +73,19 @@ const renderSpeedTest = () => {
   
 {:else if showSpeedTest === true}
   <h1 class="wow fadeInUp">Speed test</h1>
-  <SpeedTest/>
+  <SpeedTest on:testComplete={showSurveyButton}/>
+  {#if showSurveyBtn === true}
+    <p>Take a quick survey to give us a better indicator about your speed test results!</p>
+    <button id='survey' class="btn btn-blue" on:click={renderSurvey}>Start Survey</button>
+  {/if}
 {:else if showSurvey === true}
-  <h1 class="wow fadeInUp">Survey</h1>
+  {#if surveyFinished === false}
+    <h1 class="wow fadeInUp">Survey</h1>
+    <Survey bind:submitted={surveyFinished}/>
+  {:else}
+    <p>Thanks for participating!</p>
+    <a href="/map">See internet speeds in the Upper Valley</a>
+  {/if}
 {:else}
 
 {/if}
