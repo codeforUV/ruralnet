@@ -40,12 +40,12 @@
       <div class="logo"><img src="images/logo-white.png" alt=""></div> -->
       <p>ruralnet</p>
       <ul>
-        <li><a aria-current={segment === undefined ? 'page' : undefined} href=".">Home</a></li>
+          <!-- <li><a aria-current={segment === undefined ? 'page' : undefined} href=".">Home</a></li> -->
           <li><a aria-current={segment === 'about' ? 'page' : undefined} href="about">About</a></li>
-          <li><a aria-current={segment === 'speed' ? 'page' : undefined} href="speed">Speed Test</a></li>
-          <li><a aria-current={segment === 'yourTests' ? 'page' : undefined} href="yourTests">Your Speedtests</a></li>
+          <!-- <li><a aria-current={segment === 'speed' ? 'page' : undefined} href="speed">Speed Test</a></li> -->
+          <!-- <li><a aria-current={segment === 'yourTests' ? 'page' : undefined} href="yourTests">Your Speedtests</a></li> -->
           <li><a aria-current={segment === 'map' ? 'page' : undefined} href="map">Results Map</a></li>
-        <li><a href="speed" class="btn btn-blue"> Test Your Speed</a></li>
+          <!-- <li><a href="speed" class="btn btn-blue"> Test Your Speed</a></li> -->
       </ul>
 
       <div class="slide_out_menu_footer">
@@ -62,19 +62,19 @@
       </div>
       <div class="col-md-8">
         <ul class="left">
-          <li><a aria-current={segment === undefined ? 'page' : undefined} href=".">Home</a></li>
+          <!-- <li><a aria-current={segment === undefined ? 'page' : undefined} href=".">Home</a></li> -->
           <li><a aria-current={segment === 'about' ? 'page' : undefined} href="about">About</a></li>
-          <li><a aria-current={segment === 'speed' ? 'page' : undefined} href="speed">Speed Test</a></li>
-          <li><a aria-current={segment === 'yourTests' ? 'page' : undefined} href="yourTests">Your Speedtests</a></li>
+          <!-- <li><a aria-current={segment === 'speed' ? 'page' : undefined} href="speed">Speed Test</a></li> -->
+          <!-- <li><a aria-current={segment === 'yourTests' ? 'page' : undefined} href="yourTests">Your Speedtests</a></li> -->
           <li><a aria-current={segment === 'map' ? 'page' : undefined} href="map">Results Map</a></li>
         </ul>
       </div>
 
-      <div class="col-md-2">
+      <!-- <div class="col-md-2">
         <ul class="right">
           <li><a href="speed" class="btn btn-blue">Test Your Speed</a></li>
         </ul>
-      </div>
+      </div> -->
     </div>
   </div>
 </header>
