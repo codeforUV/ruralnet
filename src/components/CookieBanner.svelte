@@ -26,7 +26,8 @@ import { bubble } from 'svelte/internal';
         position: fixed;
         left: 3em;
         bottom: 3em;
-        border-style: solid;
+        padding: 1em 2em;
+        background-color: rgba(255, 255, 255, 0.8);
     }
 </style>
 
