@@ -131,8 +131,18 @@ ul > li {
   color: white;
 }
 
+.btn-red {
+  background-color: rgb(243, 102, 102);
+  color: white;
+}
+
 .btn-dark {
   background-color: #131315;
+  color: white;
+}
+
+.btn-red {
+  background-color: rgb(243, 102, 102);
   color: white;
 }
 
@@ -431,10 +441,10 @@ input[type="email"]:focus {
   overflow: hidden;
 }
 
-#header p {
+/* #header p {
   font-size: 20px;
   color: black;
-}
+} */
 
 #header .header_iphone {
   position: absolute;
@@ -998,11 +1008,14 @@ input[type="email"]:focus {
 #footer ul li a {
   color: #8c8f94;
   text-decoration: none;
-  line-height: 36px;
 }
 
 #footer ul li a:hover {
   color: #26272d;
+}
+
+#footer ul li {
+  padding-top: 20px;
 }
 
 #footer .socials {
@@ -1044,12 +1057,12 @@ input[type="email"]:focus {
 
 /*** start - added by Colby Hemond  **/
 
-main > h1 {
-  padding-top: 2em;
-}
+/* main > h1 {
+  padding-top: 3em;
+} */
 
-.title {
-  padding-top: 2em;
+main {
+  padding-bottom: 3em;
 }
 
 /***  end - added by Colby Hemond  **/

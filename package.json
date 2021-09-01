@@ -9,10 +9,10 @@
     "start": "node __sapper__/build",
     "cy:run": "cypress run",
     "cy:open": "cypress open",
-    "test": "run-p --race dev cy:run",
-    "netlify-build": "sapper export && mv ./__sapper__/export ./public"
+    "test": "run-p --race dev cy:run"
   },
   "dependencies": {
+    "babel-eslint": "^10.1.0",
     "body-parser": "^1.19.0",
     "cli-progress": "^3.8.2",
     "compression": "^1.7.1",

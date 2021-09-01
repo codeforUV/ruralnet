@@ -8,3 +8,4 @@ src/package-lock.json
 .env
 npm-debug.log
 #static/speedtest*
+src/routes/exp/

@@ -14,17 +14,21 @@ function calcDistance(pointA, pointB) {
   ).toPrecision(4);
 }
 
+/**
+ * This route is *mostly* obsolete
+ * it makes 2 calls to ipinfo.io (rate limit described inline) to get end user ISP name and end user estimated distance to server
+ * we can get ISP name once per IP address by calling ipInfo.io in the frontend
+ * distance is not used
+ * to viably use ipinfo.io in the backend requires the acquision of an api key
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 export async function get(req, res, next) {
-  // insert action code
   console.log(req.headers);
-  let requestIP =
-    req.headers['x-forwarded-for'] ||
-    req.connection.remoteAddress ||
-    req.headers['HTTP_CLIENT_IP'] ||
-    req.headers['X-Real-IP'] ||
-    req.headers['HTTP_X_FORWARDED_FOR'];
-  if (requestIP.substr(0, 7) === '::ffff:') {
-    requestIP = requestIP.substr(7);
+  let requestIP = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.headers['HTTP_CLIENT_IP'] || req.headers['X-Real-IP'] || req.headers['HTTP_X_FORWARDED_FOR'];
+  if (requestIP.substr(0, 7) === "::ffff:") {
+    requestIP = requestIP.substr(7)
   }
   console.log(requestIP);
   let respString = requestIP;
@@ -41,20 +45,17 @@ export async function get(req, res, next) {
     const d = calcDistance(ipData.loc.split(','), serverData.loc.split(','));
     respString += ` ${d}km`;
   }
-  // on end of action
   res.writeHead(200, {
-    'Content-Type': 'text/plain',
+    'Content-Type': 'text/plain'
   });
   res.write(respString);
   res.end();
 }
 
 export async function post(req, res, next) {
-  // insert action code
-
-  // on end of action
+  // do nothing
   res.writeHead(200, {
-    'Content-Type': 'application/json',
+    'Content-Type': 'application/json'
   });
-  res.end(JSON.stringify());
+  res.end(JSON.stringify( ));
 }
