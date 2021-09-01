@@ -441,10 +441,10 @@ input[type="email"]:focus {
   overflow: hidden;
 }
 
-#header p {
+/* #header p {
   font-size: 20px;
   color: black;
-}
+} */
 
 #header .header_iphone {
   position: absolute;

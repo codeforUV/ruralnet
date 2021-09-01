@@ -11,8 +11,8 @@ import SpeedTest from "../components/SpeedTest.svelte";
 
 </script>
 
-<h1 id='title'>New Speed Test</h1>
-<SpeedTest/>
+<!-- <h1 id='title'>New Speed Test</h1> -->
+<SpeedTest logging="true"/>
 
 <h2>Test Log</h2>
 <ol id="log">

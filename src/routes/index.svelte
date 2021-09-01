@@ -72,22 +72,22 @@
     <small class="wow fadeInUp" data-wow-delay=".2s"><a href="map">See Map of Results →</a></small>
   
 {:else if showSpeedTest === true}
-  <h1 class="wow fadeInUp">Speed test</h1>
+  <!-- <h1 class="wow fadeInUp">Speed Test</h1> -->
   <SpeedTest on:testComplete={showSurveyButton}/>
   {#if showSurveyBtn === true}
-    <p>Take a quick survey to give us a better indicator about your speed test results!</p>
-    <button id='survey' class="btn btn-blue" on:click={renderSurvey}>Start Survey</button>
+    <!-- <p>Take a quick survey to give us a better indicator about your speed test results!</p> -->
+    <button id='survey' class="btn btn-blue" on:click={renderSurvey}>Take A Quick Survey!</button>
   {/if}
 {:else if showSurvey === true}
   {#if surveyFinished === false}
-    <h1 class="wow fadeInUp">Survey</h1>
+    <!-- <h1 class="wow fadeInUp">Survey</h1> -->
     <Survey bind:submitted={surveyFinished}/>
   {:else}
     <p>Thanks for participating!</p>
     <a href="/map">See internet speeds in the Upper Valley</a>
   {/if}
 {:else}
-
+    <p>Oops...unhandled condition in index.svelte route</p>
 {/if}
 </div>
 </section>

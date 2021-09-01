@@ -2,8 +2,6 @@
   <title>About</title>
 </svelte:head>
 
-<h1>About</h1>
-
   <h1>About</h1>
 
   <p>Access to reliable high-speed internet has quickly become a requirement for modern life. Yet numerous communities,

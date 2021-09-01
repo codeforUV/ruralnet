@@ -232,7 +232,8 @@ class RuralTest {
         this.testData.uploadSpeed = data.ulStatus;
         this.testData.ping = data.pingStatus;
         this._state = data.testState + 1;
-        this.pageInterface.onUpdate(this.toString(), this._state)
+        // this.pageInterface.onUpdate(this.toString(), this._state)
+        this.pageInterface.onUpdate(this.testData, this._state)
     }
     onEnd(aborted) {
         this.finished = true;
@@ -423,20 +424,27 @@ class SpeedTestPageInterface {
         })
         this.lastState = "not started";
         this.logging = log;
+        this.results = null
     }
+    getResults() {
+        return this.results
+    }
+    
     onPageLoad() {
         let prevResults = new RuralTestResult({}, true);
         if (prevResults._content && CookieUtility.consentStatus().consented) {
-            this.elements.result.textContent = "Previous Results: " + prevResults.toString();
-            this.elements.done.textContent = `Last test taken on ${new Date(`${prevResults._content.date}T${prevResults._content.time}Z`)}`;    
+            this.results = prevResults._content
+            // const date = new Date(`${prevResults._content.date}T${prevResults._content.time}Z`)
+            // this.elements.result.textContent = "Previous Results: " + prevResults.toString();
+            // this.elements.done.textContent = `Last test taken on ${date.toLocaleDateString()} at ${date.toLocaleTimeString()}`;    
         }
     }
     onStart() {
         if (this.logging) {
-            this.elements.title.textContent = "Speedtest in progress";
+            // this.elements.title.textContent = "Speedtest in progress";
         }
-        this.elements.testBtn.disabled = true;
-        this.elements.cancelBtn.disabled = false;
+        // this.elements.testBtn.disabled = true;
+        // this.elements.cancelBtn.disabled = false;
     }
     onUpdate(resultProgress, stateIndex) {
         let presentState = RuralTest.testStates[stateIndex];
@@ -445,24 +453,25 @@ class SpeedTestPageInterface {
             this.lastState = presentState;
             this.elements.done.textContent = presentState;
         }
-        this.elements.result.textContent = resultProgress;
+        // this.elements.result.textContent = resultProgress;
+        this.results = resultProgress
 
     }
     onAbort() {
         this.addLogMsg("Test Aborted by user");
-        this.elements.cancelBtn.disabled = true;
-        this.elements.testBtn.disabled = false;
+        // this.elements.cancelBtn.disabled = true;
+        // this.elements.testBtn.disabled = false;
         this.elements.title.textContent = 'Speedtest cancelled';
     }
     onEnd(aborted, data) {
         this.elements.done.textContent = 'Finished' + (aborted ? ' - Aborted' : '!');
-        this.elements.testBtn.textContent = 'Click to test again';
+        // this.elements.testBtn.textContent = 'Click to test again';
         if (!aborted) {
             this.addLogMsg("Test Complete!")
-            this.elements.cancelBtn.disabled = true;
-            this.elements.testBtn.disabled = false;
-            this.elements.title.textContent = 'Speedtest Results';
-            this.elements.result.innerHTML += `, <a href="https://google.com/maps/search/${data.latitude},${data.longitude}">Location: ${data.city}</a>`;
+            // this.elements.cancelBtn.disabled = true;
+            // this.elements.testBtn.disabled = false;
+            // this.elements.title.textContent = 'Speedtest Results';
+            // this.elements.result.innerHTML += `, <a href="https://google.com/maps/search/${data.latitude},${data.longitude}">Location: ${data.city}</a>`;
         }
     }
     toggleLogging() {
@@ -481,4 +490,5 @@ class SpeedTestPageInterface {
             this.elements.log.removeChild(this.elements.log.firstChild);
         }
     }
+    
 }
