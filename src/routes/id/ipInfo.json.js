@@ -6,7 +6,7 @@ export async function get(req, res, next) {
   let reqIP = getRequestIP(req);
   console.log(reqIP);
   if (process.env.DEV_IP) {
-    reqIP = '192.168.1.145';
+    reqIP = process.env.DEV_IP;
   }
   try {
     const ipInfoReq = await fetch(`https://ipinfo.io/${reqIP}?token=${process.env.IPINFO_TOKEN}`);
