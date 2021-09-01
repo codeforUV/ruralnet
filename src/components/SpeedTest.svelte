@@ -19,6 +19,7 @@ import FeatherIcon from './FeatherIcon.svelte';
     let start = true
     let loading = false
     let finished = false
+    let noPastResults = false
 
     const dispatch = createEventDispatcher();
 
@@ -48,7 +49,12 @@ import FeatherIcon from './FeatherIcon.svelte';
                     }
         })
         if (speedTest.pageInterface) {
-            updateResults(speedTest.pageInterface)
+            if (speedTest.pageInterface.results === null){
+                noPastResults = true
+            }
+            else {
+                updateResults(speedTest.pageInterface)
+            }
         }
     })
 
@@ -159,30 +165,33 @@ import FeatherIcon from './FeatherIcon.svelte';
     {/if}
 </div>
 <div class="results">
+    {#if noPastResults === true}
+        <div></div>
+    {:else}
     <div class="speed-metrics-row">
-    {#if ping}
-        <div class="speed-metric">
-            <div id="ping-value" class="metric-value">{ping}</div>
-            <div id="ping-label" class="metric-label">Ping</div> 
+        {#if ping}
+            <div class="speed-metric">
+                <div id="ping-value" class="metric-value">{ping}</div>
+                <div id="ping-label" class="metric-label">Ping</div> 
+            </div>
+        {/if}
+        {#if downloadSpeed}
+            <div class="speed-metric">
+                <div id="download-value" class="metric-value">{downloadSpeed}</div>
+                <div id="download-label" class="metric-label">Download</div> 
+            </div>
+        {/if}
+        {#if uploadSpeed}
+            <div class="speed-metric">
+                <div id="upload-value" class="metric-value">{uploadSpeed}</div>
+                <div id="upload-label" class="metric-label">Upload</div> 
+            </div>
+        {/if}
         </div>
-    {/if}
-    {#if downloadSpeed}
-        <div class="speed-metric">
-            <div id="download-value" class="metric-value">{downloadSpeed}</div>
-            <div id="download-label" class="metric-label">Download</div> 
-        </div>
-    {/if}
-    {#if uploadSpeed}
-        <div class="speed-metric">
-            <div id="upload-value" class="metric-value">{uploadSpeed}</div>
-            <div id="upload-label" class="metric-label">Upload</div> 
-        </div>
-    {/if}
-    </div>
 
-    <div >
-        <p class="location">{location}</p>
-    </div>
-        
+        <div >
+            <p class="location">{location}</p>
+        </div>
+    {/if}
 </div>
     
