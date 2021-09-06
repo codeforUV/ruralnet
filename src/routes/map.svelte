@@ -1,5 +1,6 @@
 <script>
   import ResultsMap from '../components/ResultsMap.svelte';
+  import TestResultsList from '../components/TestResultsList.svelte';
 
 </script>
 
@@ -61,9 +62,18 @@
     padding-right: 1em
   }
 
-  .explination-container {
+  .personal-results-container {
     width: 50%;
     padding-left: 1em
+  }
+
+  .explination-container {
+    width: 100%;
+    padding: 0 0em
+  }
+
+  #jump-to-link {
+    display: none;
   }
 
   /* X-Small devices (portrait phones, less than 576px)*/
@@ -83,6 +93,15 @@
     padding-left: 0;
   }
 
+  .personal-results-container {
+    width: 100%;
+    padding-left: 0
+  }
+
+  #jump-to-link {
+    display: block;
+  }
+
  }
 
 /* Small devices (landscape phones, less than 768px)*/
@@ -93,49 +112,58 @@
 
 </style>
 
-<h1>Results Map</h1>
+<h1>Results</h1>
+
+<!-- <button on:click={handleJumpToSpeedResults}>Jump to past speedtest results</button> -->
+<a id="jump-to-link" href='/map#your-results'>Jump to past speedtest results</a>
 
 <div class="results-container">
 
-  <div class="map-container">
+  <div id="map" class="map-container">
+    <h2>Map of All Speed Tests</h2>
     <ResultsMap />
-  </div>
-
-
-  <div class="explination-container">
-    <h3>User Submitted Speeds</h3>
-    <div class="legend">
-      <div class="legend-user">
-        <div class="user-circle green"></div>
-        <span> Represented by a colored circle in the general location where the speed test was performed</span>
-      </div>
-    </div>
-    <div>
-      <h3>Base Comparison Speeds</h3>
-      <div class="row-fluid">
-        <div class="color-gradient"></div>
-        <div class="row gradient-values">
-          <span>&lt 5 mbps</span>
-          <span> 5 - 100 mbps</span>
-          <span>&gt 100 mbps</span>
+    <div class="explination-container">
+      <h3>User Submitted Speeds</h3>
+      <div class="legend">
+        <div class="legend-user">
+          <div class="user-circle green"></div>
+          <span> Represented by a colored circle in the general location where the speed test was performed</span>
         </div>
-        <small>Data Source: <a target="_blank" rel="noopener noreferrer"
-            href="https://publicservice.vermont.gov/content/broadband-availability">
-            Vermont Dept of Public Service (2019)
-          </a></small>
-
-
-        <br />
-        <p>
-          To see the legend and the various map layers, click on the double arrow in the top left corner
-          of the map and then click on the right arrow next to the "Percent Broadband" layer. To view
-          the "Underserved" layer, turn off the Percent Broadband layer and you'll see the Underserved
-          percentage.
-        </p>
-
-        <p>Click on County or User data point to see a breakdown of the details.</p>
-
+      </div>
+      <div>
+        <h3>Base Comparison Speeds</h3>
+        <div class="row-fluid">
+          <div class="color-gradient"></div>
+          <div class="row gradient-values">
+            <span>&lt 5 mbps</span>
+            <span> 5 - 100 mbps</span>
+            <span>&gt 100 mbps</span>
+          </div>
+          <small>Data Source: <a target="_blank" rel="noopener noreferrer"
+              href="https://publicservice.vermont.gov/content/broadband-availability">
+              Vermont Dept of Public Service (2019)
+            </a></small>
+    
+    
+          <br />
+          <p>
+            To see the legend and the various map layers, click on the double arrow in the top left corner
+            of the map and then click on the right arrow next to the "Percent Broadband" layer. To view
+            the "Underserved" layer, turn off the Percent Broadband layer and you'll see the Underserved
+            percentage.
+          </p>
+    
+          <p>Click on County or User data point to see a breakdown of the details.</p>
+    
+        </div>
       </div>
     </div>
   </div>
+
+  <div id="your-results" class="personal-results-container">
+    <h2>Your Past Speed Tests</h2>
+    <TestResultsList/>  
+  </div>
+  
 </div>
+

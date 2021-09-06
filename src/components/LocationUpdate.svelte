@@ -17,8 +17,8 @@
     }
 </script>
 
-<h2>Update Test {id + 1} Location</h2>
-<p><strong>Input either a 5-digit zip code, or the name of your city and state</strong></p>
-<input type="text" bind:value={locationInput} placeholder="example: Barre, VT">
-<button on:click={fixLocation}>That's where I am</button>
+<!-- <h2>Update Test {id + 1} Location</h2> -->
+<!-- <p>Input either a 5-digit zip code, or the name of your city and state</p> -->
+<input type="text" bind:value={locationInput} placeholder="Zip Code or City & State (Ex: Barre, VT)">
+<button class="btn-sm btn-blue" on:click={fixLocation}>Update Location</button>
 <p id="chastise{id}"></p>
