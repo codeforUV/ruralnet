@@ -17,7 +17,7 @@
         });
         if (resp.ok) {
             console.log('item deleted');
-            // location.reload();
+            location.reload();
         }
     };
     var locationEdit = false;
@@ -35,7 +35,7 @@
     let uploadSpeed = testData._content.uploadSpeed
     let testDateTime = new Date(`${testData._content.date}T${testData._content.time}Z`).toLocaleString()
     let internetProvider = testData._content.internetProvider
-    let location = testData._content.city
+    let userLocation = testData._content.city
 
 </script>
 
@@ -83,8 +83,8 @@
 {#if internetProvider}
 <li>Internet Provider: {internetProvider}</li>
 {/if}
-{#if location}
-<li>Location: <strong>{location}</strong></li>
+{#if userLocation}
+<li>Location: <strong>{userLocation}</strong></li>
 {:else}
 <li><strong>No Location Found</strong></li>
 {/if}

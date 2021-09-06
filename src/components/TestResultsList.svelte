@@ -16,8 +16,8 @@
     };
 </script>
 
-<div>Clearing your brower's cookies or local storage will cause you to lose access to your previous tests.</div><br/>
-<div>You will also not be able to see these test results from another device or browser</div>
+<div>Clearing your browser's cookies or local storage will cause you to lose access to your results.</div><br/>
+<div>You will also not be able to see these results from another device or browser</div>
 <div>
     {#await promise}
         <p>Loading...</p>
