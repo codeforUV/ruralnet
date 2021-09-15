@@ -1,6 +1,22 @@
 <script>
-  import ResultsMap from '../components/ResultsMap.svelte';
+  import ApiMap from '../components/APIMap.svelte';
+import ResultsMap from '../components/ResultsMap.svelte';
   import TestResultsList from '../components/TestResultsList.svelte';
+
+  const findData = async () => {
+        const resp = await fetch('speedDB/speedDB.json');
+        const data = await resp.json();
+        if (resp.ok) {
+            console.log('Data Found');
+            // console.log(data.docs[1]);
+            // buildPointGraphic(data.docs[1])
+            return data.docs;
+        } else {
+            return [];
+        }
+    };
+
+    const promise = findData()
 
 </script>
 
@@ -115,7 +131,7 @@
 <h1>Results</h1>
 
 <!-- <button on:click={handleJumpToSpeedResults}>Jump to past speedtest results</button> -->
-<a id="jump-to-link" href='/map#your-results'>Jump to past speedtest results</a>
+<!-- <a id="jump-to-link" href='/map#your-results'>Jump to past speedtest results</a>
 
 <div class="results-container">
 
@@ -165,5 +181,19 @@
     <TestResultsList/>  
   </div>
   
-</div>
+</div> -->
+
+{#await promise}
+        <p>Loading...</p>
+    {:then docs}
+        {#if docs.length === 0}
+          <p>Looks like you haven't tested yet. <a href="/index">Take a test.</a></p>
+        {:else}
+          <ApiMap speedData={docs} />
+        {/if}
+    {:catch err}
+        <p class="error">{err.message}</p>
+    {/await}
+
+
 

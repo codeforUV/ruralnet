@@ -38,7 +38,7 @@
       <a href="#" class="menu-close"><i class="fa fa-times" /></a>
       <!-- 
       <div class="logo"><img src="images/logo-white.png" alt=""></div> -->
-      <p>ruralnet</p>
+      <a href="."><p>RuralNet</p></a>
       <ul>
           <!-- <li><a aria-current={segment === undefined ? 'page' : undefined} href=".">Home</a></li> -->
           <li><a aria-current={segment === 'about' ? 'page' : undefined} href="about">About</a></li>
