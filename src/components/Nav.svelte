@@ -31,7 +31,7 @@
 </nav> -->
 
 <header id="main-nav">
-  <div class="container">
+  <div class="container-fluid">
     <a id="navigation" href="#"><i class="fa fa-bars" /></a>
 
     <div id="slide_out_menu">
@@ -58,7 +58,7 @@
 
     <div class="row" id="desktop-menu">
       <div class="col-md-2 text-center">
-        <a href="."><p>RuralNet</p></a>
+        <a href="." class="logo"><p>RuralNet</p></a>
       </div>
       <div class="col-md-8">
         <ul class="left">
