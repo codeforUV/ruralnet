@@ -2,8 +2,8 @@
   import SpeedTest from "../components/SpeedTest.svelte";
   import Survey from "../components/Survey.svelte";
 
-    let showDefault = true;
-    let showSpeedTest = false;
+    let showDefault = false;
+    let showSpeedTest = true;
     let showSurvey = false ;
 
     let showSurveyBtn = false
@@ -84,7 +84,7 @@
       <button class="btn btn-lg btn-blue video-btn wow fadeInUp" on:click={renderSpeedTest}>
           <i class="fa fa-play" />Begin Test
       </button>
-      <small class="wow fadeInUp" data-wow-delay=".2s"><a href="map">See Map of Results →</a></small>
+      <small class="wow fadeInUp" data-wow-delay=".2s"><a href="map">Skip to Results Map →</a></small>
 
   
 {:else if showSpeedTest === true}
@@ -94,6 +94,7 @@
     <!-- <p>Take a quick survey to give us a better indicator about your speed test results!</p> -->
     <button id='survey' class="btn btn-blue" on:click={renderSurvey}>Take A Quick Survey!</button>
   {/if}
+  <small class="wow fadeInUp" data-wow-delay=".2s"><a href="map">Skip to Results Map →</a></small>
 {:else if showSurvey === true}
   {#if surveyFinished === false}
     <!-- <h1 class="wow fadeInUp">Survey</h1> -->

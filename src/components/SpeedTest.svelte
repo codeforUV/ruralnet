@@ -1,7 +1,7 @@
 <script>
     import { onMount } from 'svelte';
     import { createEventDispatcher } from 'svelte';
-import FeatherIcon from './FeatherIcon.svelte';
+    import FeatherIcon from './FeatherIcon.svelte';
     import LoadingSpinner from './LoadingSpinner.svelte';
 
 
@@ -72,6 +72,7 @@ import FeatherIcon from './FeatherIcon.svelte';
     const handleStartTest = () => {
         loading = true
         start = false
+        noPastResults = false
 
         ping = 0
         downloadSpeed = 0
@@ -159,7 +160,7 @@ import FeatherIcon from './FeatherIcon.svelte';
     {:else if start === true}
         <div on:click={handleStartTest} id="start-speed-test">
             <FeatherIcon iconName='play-circle' size='60'/>
-            <p>Start Test</p>
+            <p>Start Speed Test</p>
         </div>
     
     {/if}
