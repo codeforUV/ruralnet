@@ -49,10 +49,10 @@
       </ul>
 
       <div class="slide_out_menu_footer">
-        <ul class="socials">
+        <!-- <ul class="socials">
           <li><a href="https://twitter.com"><i class="fa fa-twitter" /></a></li>
           <li><a href="https://facebook.com"><i class="fa fa-facebook" /></a></li>
-        </ul>
+        </ul> -->
       </div>
     </div>
 
