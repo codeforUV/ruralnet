@@ -33,6 +33,10 @@ $(document).ready(function() {
 				e.preventDefault();
 				$('#slide_out_menu').removeClass('open');
 			})
+			$('.closes-menu').on('click', function(e){
+				// e.preventDefault();
+				$('#slide_out_menu').removeClass('open');
+			})
 		}
 	});
 

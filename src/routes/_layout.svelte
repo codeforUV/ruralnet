@@ -31,10 +31,10 @@
   }
 
   .content {
-    max-width: 700px;
+    max-width: 800px;
     margin: auto;
-    padding: 0 1.5em;
-    margin-top: 150px;
+    /* padding: 0 1.5em;
+    margin-top: 150px; */
   }
 
 </style>

@@ -1,79 +1,8 @@
 <script>
   import ResultsMap from '../components/ResultsMap.svelte';
+  import TestResultsList from '../components/TestResultsList.svelte';
 
 </script>
-
-<h1>Results Map</h1>
-
-<ResultsMap />
-
-<!-- <p>
-    In the map below, the results of speed tests submitted by users of this site are shown as dots,
-    with the color representing measured download speed from <font color="red"
-      >red (4 mbps or less)</font
-    >
-    to
-    <font color="darkgreen">green (over 100 mbps)</font>. If you did a speed test from a location in
-    Vermont, your data point will show up on the map within 24 hours, so please check back!
-  </p> -->
-<div class="container-fluid">
-  <h3>User Submitted Speeds</h3>
-  <div class="legend">
-    <div class="legend-user">
-      <div class="user-circle green" />
-      <!-- <span>&gt 100 mbps</span> -->
-      <span
-        >Represented by a colored circle in the general location where the speed test was performed</span
-      >
-    </div>
-  </div>
-
-  <div>
-    <h3>Base Comparison Speeds</h3>
-
-    <div class="row-fluid">
-      <div class="color-gradient" />
-      <div class="row gradient-values">
-        <span>&lt 5 mbps</span>
-        <span> 5 - 100 mbps</span>
-        <span>&gt 100 mbps</span>
-      </div>
-      <small
-        >Data Source: <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://publicservice.vermont.gov/content/broadband-availability"
-          >Vermont Dept of Public Service (2019)</a
-        ></small
-      >
-    </div>
-    <!-- <p>
-        The shaded color for each town shows the percentage of buildings or homes that have broadband
-        (25/3 mbps or higher speeds) from data obtained from the Vermont Dept of Public Service at
-        <a target="new" href="https://publicservice.vermont.gov/content/broadband-availability">publicservice.vermont.gov/content/broadband-availability</a>. 
-      </p> -->
-    <br />
-    <p>
-      To see the legend and the various map layers, click on the double arrow in the top left corner
-      of the map and then click on the right arrow next to the "Percent Broadband" layer. To view
-      the "Underserved" layer, turn off the Percent Broadband layer and you'll see the Underserved
-      percentage.
-    </p>
-    <!-- <p>
-        "Underserved" means less than 4 mbps download speed or no internet. The
-        town data was collected in 2019 from the internet service providers as to what download/upload
-        speeds they were serving to each address. This is one measure of service but overestimates the
-        actual speeds that customers are experiencing.
-      </p> -->
-    <p>Click on County or User data point to see a breakdown of the details.</p>
-    <!-- <p>
-        You can see the raw counts and percentages in each category by clicking on the town or point.
-        For the data submitted using our speed test, clicking the point will show the download speed,
-        the town, the date the test was done, and the company providing internet service.
-      </p> -->
-  </div>
-</div>
-<!-- </div> -->
 
 <style>
   .user-circle {
@@ -124,4 +53,117 @@
     width: 100%;
   }
 
+  .results-container {
+    display: flex;
+  }
+
+  .map-container {
+    width: 50%;
+    padding-right: 1em
+  }
+
+  .personal-results-container {
+    width: 50%;
+    padding-left: 1em
+  }
+
+  .explination-container {
+    width: 100%;
+    padding: 0 0em
+  }
+
+  #jump-to-link {
+    display: none;
+  }
+
+  /* X-Small devices (portrait phones, less than 576px)*/
+@media (max-width: 575.98px) { 
+
+  .results-container {
+    flex-direction: column;
+  }
+
+  .map-container {
+    width: 100%;
+    padding-right: 0
+  }
+
+  .explination-container {
+    width: 100%;
+    padding-left: 0;
+  }
+
+  .personal-results-container {
+    width: 100%;
+    padding-left: 0
+  }
+
+  #jump-to-link {
+    display: block;
+  }
+
+ }
+
+/* Small devices (landscape phones, less than 768px)*/
+@media (max-width: 767.98px) {  }
+
+/* Medium devices (tablets, less than 992px)*/
+@media (max-width: 991.98px) {  }
+
 </style>
+
+<h1>Results</h1>
+
+<!-- <button on:click={handleJumpToSpeedResults}>Jump to past speedtest results</button> -->
+<a id="jump-to-link" href='/map#your-results'>Jump to past speedtest results</a>
+
+<div class="results-container">
+
+  <div id="map" class="map-container">
+    <h2>Map of All Speed Tests</h2>
+    <ResultsMap />
+    <div class="explination-container">
+      <h3>User Submitted Speeds</h3>
+      <div class="legend">
+        <div class="legend-user">
+          <div class="user-circle green"></div>
+          <span> Represented by a colored circle in the general location where the speed test was performed</span>
+        </div>
+      </div>
+      <div>
+        <h3>Base Comparison Speeds</h3>
+        <div class="row-fluid">
+          <div class="color-gradient"></div>
+          <div class="row gradient-values">
+            <span>&lt 5 mbps</span>
+            <span> 5 - 100 mbps</span>
+            <span>&gt 100 mbps</span>
+          </div>
+          <small>Data Source: <a target="_blank" rel="noopener noreferrer"
+              href="https://publicservice.vermont.gov/content/broadband-availability">
+              Vermont Dept of Public Service (2019)
+            </a></small>
+    
+    
+          <br />
+          <p>
+            To see the legend and the various map layers, click on the double arrow in the top left corner
+            of the map and then click on the right arrow next to the "Percent Broadband" layer. To view
+            the "Underserved" layer, turn off the Percent Broadband layer and you'll see the Underserved
+            percentage.
+          </p>
+    
+          <p>Click on County or User data point to see a breakdown of the details.</p>
+    
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="your-results" class="personal-results-container">
+    <h2>Your Past Speed Tests</h2>
+    <TestResultsList/>  
+  </div>
+  
+</div>
+

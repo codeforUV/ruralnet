@@ -23,15 +23,31 @@
     var locationEdit = false;
     function locationButton() {
         if (locationEdit) {
-            document.getElementById(`locationExpander${id}`).textContent = "That location isn't right";
+            document.getElementById(`locationExpander${id}`).textContent = "Edit Location";
         } else {
-            document.getElementById(`locationExpander${id}`).textContent = "Collapse";
+            document.getElementById(`locationExpander${id}`).textContent = "Cancel";
         }
         locationEdit = !locationEdit;
     }
+
+    let ping = testData._content.ping
+    let downloadSpeed = testData._content.downloadSpeed
+    let uploadSpeed = testData._content.uploadSpeed
+    let testDateTime = new Date(`${testData._content.date}T${testData._content.time}Z`).toLocaleString()
+    let internetProvider = testData._content.internetProvider
+    let userLocation = testData._content.city
+
 </script>
 
-<p>Test Result {btoa(testData._content._id)}
+<style>
+    .test-result {
+        margin: 1em 0;
+    }
+</style>
+
+<div class="test-result">
+<!-- <p>Test Result {btoa(testData._content._id)} -->
+    <p>Speed Test: {testDateTime}
     {#if allowEdit}
     <svg
         on:click={() => deleteItem(testData._content._id)}
@@ -51,11 +67,34 @@
     </svg>
     {/if}
 </p>
-<p id='result{id}'>{testData.toString()}</p>
-<p id='done{id}'>{testData.metaDataString()}</p>
+<!-- <p id='result{id}'>{testData.toString()}</p> -->
+<!-- <p id='done{id}'>{testData.metaDataString()}</p> -->
+<ul>
+{#if ping}
+<li>Ping: {ping}</li>
+{/if}
+{#if downloadSpeed}
+<li>Download: {downloadSpeed}</li>
+{/if}
+{#if uploadSpeed}
+<li>Upload: {uploadSpeed}</li>
+{/if}
+
+{#if internetProvider}
+<li>Internet Provider: {internetProvider}</li>
+{/if}
+{#if userLocation}
+<li>Location: <strong>{userLocation}</strong></li>
+{:else}
+<li><strong>No Location Found</strong></li>
+{/if}
+</ul>
+
 {#if allowEdit}
-    <button id='locationExpander{id}' on:click={locationButton}>That location isn't right</button>
+    <button class="btn-sm btn-blue" id='locationExpander{id}' on:click={locationButton}>Edit Location</button>
 {/if}
 {#if locationEdit}
     <svelte:component this={LocationUpdate} bind:testResult={testData} id={id}/>
 {/if}
+
+</div>
