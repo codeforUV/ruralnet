@@ -1,6 +1,6 @@
 <script>
   import ApiMap from '../components/APIMap.svelte';
-import ResultsMap from '../components/ResultsMap.svelte';
+  import ResultsMap from '../components/ResultsMap.svelte';
   import TestResultsList from '../components/TestResultsList.svelte';
 
   const findData = async () => {

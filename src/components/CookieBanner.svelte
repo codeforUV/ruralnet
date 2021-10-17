@@ -7,36 +7,62 @@ import { bubble } from 'svelte/internal';
         cookieUtil = new CookieUtility();
         prompt = CookieUtility.consentStatus().askAgain
     })
-    function dismiss() {
+    function handleDismiss() {
         prompt = false;
         forcePrompt = false;
     }
-    function agree() {
+    function handleAgree() {
         CookieUtility.agree();
-        dismiss()
+        handleDismiss()
     }
-    function decline() {
+    function handleDecline() {
         CookieUtility.decline();
-        dismiss()
+        handleDismiss()
     }
 </script>
 
 <style>
     #cookie-banner {
         position: fixed;
-        left: 3em;
-        bottom: 3em;
+        left: 0em;
+        bottom: 0em;
         padding: 1em 2em;
-        background-color: rgba(255, 255, 255, 0.8);
+        width: 100%;
+        background-color: rgba(255, 255, 255);
+    }
+
+    #cookie-banner p {
+        font-size: 12pt;
+    }
+
+    .cookie-buttons {
+        display: inline;
+        padding: 0 1em;
+    }
+
+    .cookie-buttons button {
+        margin: 0 1em;
+    }
+
+    @media only screen and (max-width: 500px) {
+    
+        .cookie-buttons {
+            display: flex;
+            justify-content: space-evenly;
+            padding: 0.5em 1em;
+        }
+    
     }
 </style>
 
 {#if prompt === true || forcePrompt === true}
     <div id="cookie-banner">
-        <p>Our sites uses cookies. Consenting to cookies is required to test.</p>
-        <p>Read the <a href="/about/privacy">Privacy Policy</a> to learn more.</p>
-        <button id="agree" on:click={agree}>Agree to Cookies</button>
-        <button id="decline" on:click={decline}>Decline</button>
-        <button id="dismiss" on:click={dismiss}>Dismiss</button>
+        <p>Cookies are primarily used to retain your previous speed tests. For additional uses view our
+        <a href="/about/privacy"> Privacy Policy</a>
+        <span class="cookie-buttons">
+            <button class="btn btn-blue" id="agree" on:click={handleAgree}>Accept</button>
+            <button class="btn btn-red" id="decline" on:click={handleDecline}>Decline</button>
+        </span>
+    </p>
     </div>
 {/if}

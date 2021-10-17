@@ -2,9 +2,9 @@
   import SpeedTest from "../components/SpeedTest.svelte";
   import Survey from "../components/Survey.svelte";
 
-    let showDefault = true;
-    let showSpeedTest = false;
-    let showSurvey = false;
+    let showDefault = false;
+    let showSpeedTest = true;
+    let showSurvey = false ;
 
     let showSurveyBtn = false
     let surveyFinished = false
@@ -33,18 +33,34 @@
   .jumbotron-content-background {
     background-color: rgba(255, 255, 255, 0.8);
     border-radius: 25px;
-    padding: 2em;
+    padding-top: 2em;
     width: 50%;
     min-height: 25em;
+    height: 100%;
     margin: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     text-align: center;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  button i {
+    margin-right: 10px;
+  }
+
+  .content > * {
+    margin: 1em 0;
   }
 
   @media only screen and (max-width: 500px) {
     .jumbotron-content-background {
+      
       padding: 1em;
       width: 90%;
     }
@@ -59,17 +75,17 @@
 <!-- BEGIN OF TEMPLATE INSERT-->
 <section id="header">
   <div class="jumbotron-content-background">
+    <div class="content">
 {#if showDefault === true}
+    <h1 class="wow fadeInUp">Take a Speed Test</h1>  
+      <!-- <p class="wow fadeInUp" data-wow-delay=".2s">
+        Test your internet speed!
+      </p> -->
+      <button class="btn btn-lg btn-blue video-btn wow fadeInUp" on:click={renderSpeedTest}>
+          <i class="fa fa-play" />Begin Test
+      </button>
+      <small class="wow fadeInUp" data-wow-delay=".2s"><a href="map">Skip to Results Map →</a></small>
 
-    <h1 class="wow fadeInUp">How fast is your internet?</h1>
-    <p class="wow fadeInUp" data-wow-delay=".2s">
-      Test your internet speed to help get high-speed internet to rural areas of Vermont/New
-      Hampshire
-    </p>
-    <button class="btn btn-lg btn-blue video-btn wow fadeInUp" on:click={renderSpeedTest}>
-        <i class="fa fa-play" />Test Your Speed
-    </button>
-    <small class="wow fadeInUp" data-wow-delay=".2s"><a href="map">See Map of Results →</a></small>
   
 {:else if showSpeedTest === true}
   <!-- <h1 class="wow fadeInUp">Speed Test</h1> -->
@@ -78,6 +94,7 @@
     <!-- <p>Take a quick survey to give us a better indicator about your speed test results!</p> -->
     <button id='survey' class="btn btn-blue" on:click={renderSurvey}>Take A Quick Survey!</button>
   {/if}
+  <small class="wow fadeInUp" data-wow-delay=".2s"><a href="map">Skip to Results Map →</a></small>
 {:else if showSurvey === true}
   {#if surveyFinished === false}
     <!-- <h1 class="wow fadeInUp">Survey</h1> -->
@@ -89,7 +106,8 @@
 {:else}
     <p>Oops...unhandled condition in index.svelte route</p>
 {/if}
-</div>
+    </div>
+  </div>
 </section>
 
 

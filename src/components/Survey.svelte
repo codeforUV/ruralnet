@@ -175,36 +175,171 @@ async function nextQuestion() {
 </script>
 
 <style>
+/* Start of Custom Radio Button Input */
 
-    #message {
-        color: red;
-        font-size: 12pt;
-    }
+.input-container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  /* font-size: 22px; */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
 
-    .survey-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        /* border-radius: 25px; */
-        /* padding: 2em; */
-        /* box-shadow: 0px 0px 30px lightgrey; */
-    }
+/* Hide the browser's default radio button */
+.input-container input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 99;
+}
 
-    .survey-container > * {
-        margin: 10px 0;
-    }
+/* Create a custom radio button */
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #fff;
+    border-radius: 50%;
+    margin-right: 10px;
+}
 
-    .radio-item {
-        display: flex;
-    }
+.checkmark-box {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #fff;
+    margin-right: 10px;
+}
+
+/* On mouse-over, add a grey background color */
+.input-container:hover input~.checkmark,
+.input-container:hover input~.checkmark-box  {
+    background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.input-container input:checked~.checkmark,
+.input-container input:checked~.checkmark-box {
+    background-color: #2196F3;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after,
+.checkmark-box:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.input-container input:checked~.checkmark:after,
+.input-container input:checked~.checkmark-box:after {
+    display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.input-container .checkmark:after {
+    top: 5px;
+    left: 5px;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #EEE;
+}
+
+/* Style the checkmark/indicator */
+.input-container .checkmark-box:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+/* End of Custom Radio Button Input */
+
+#message {
+    color: red;
+    font-size: 12pt;
+}
+
+.survey-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* border-radius: 25px; */
+    padding: 0 2em;
+    /* box-shadow: 0px 0px 30px lightgrey; */
+}
+
+.survey-container>* {
+    margin: 10px 0;
+}
+
+.radio-item,
+.check-item {
+    display: flex;
+}
+
+.radio-item input,
+.check-item input {
+    margin-right: 5px;
+}
+
+textarea {
+    width: 500px;
+}
+
+.question-options {
+    font-size: 12pt;
+    max-width: 500px;
+    text-align: left;
+}
+
+.btn-row {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+.btn-nav {
+    padding: 5px 50px;
+    background-color: rgb(255, 255, 255);
+    font-size: 24pt;
+}
+
+.btn-nav:disabled {
+    background-color: inherit;
+}
+
+.option-text {
+    width: 100%;
+}
+
+@media only screen and (max-width: 500px) {
     
-    .radio-item input {
-        margin-right: 5px;
+    textarea {
+        max-width: 300px;
     }
 
-    textarea {
-        width: 100%;
-    }
+}
 
 </style>
 
@@ -213,25 +348,27 @@ async function nextQuestion() {
     <!-- <button id='survey' on:click={beginSurvey} tabindex="-1" focus>Click to take survey</button> -->
     <p id='question-number'>Question {questionNumber + 1} of {surveyInfo.length}</p>
     <p id='question'>{surveyInfo[questionNumber].question}</p>
-
+    <div class="question-options">
     {#if questionNumber === 0}
         
-            <div class="radio-group">
-                {#each surveyInfo[questionNumber].answerOptions as option}
-                    <div class="radio-item">
-                        <input type="radio" id={option} bind:group={surveyInfo[questionNumber].answer}  value={option}>
-                        <label for="name">{option}</label>
-                    </div>
-                {/each}
-            </div> 
+        <div class="radio-group">
+            {#each surveyInfo[questionNumber].answerOptions as option}
+                <div class="radio-item input-container">
+                    <input type="radio" id={option} bind:group={surveyInfo[questionNumber].answer}  value={option}>
+                    <span class="checkmark"></span>
+                    <label for="name" class="option-text">{option}</label>
+                </div>
+            {/each}
+        </div> 
         
 
     {:else if questionNumber === 1}
         
             <div class="radio-group">
                 {#each surveyInfo[questionNumber].answerOptions as option}
-                    <div class="radio-item">
+                    <div class="radio-item input-container">
                         <input type="radio" id={option} bind:group={surveyInfo[questionNumber].answer}  value={option}>
+                        <span class="checkmark"></span>
                         <label for="name">{option}</label>
                     </div>
                 {/each}
@@ -242,8 +379,9 @@ async function nextQuestion() {
         
             <div class="radio-group">
                 {#each surveyInfo[questionNumber].answerOptions as option}
-                    <div class="radio-item">
+                    <div class="radio-item input-container">
                         <input type="radio" id={option} bind:group={surveyInfo[questionNumber].answer}  value={option}>
+                        <span class="checkmark"></span>
                         <label for="name">{option}</label>
                     </div>
                 {/each}
@@ -254,8 +392,9 @@ async function nextQuestion() {
         
             <div class="check-group">
                 {#each surveyInfo[questionNumber].answerOptions as option}
-                    <div class="check-item">
+                    <div class="check-item input-container">
                         <input type="checkbox"  id={option} bind:group={usesCheckboxAnswers} value={option}>
+                        <span class="checkmark-box"></span>
                         <label >{option}</label>
                         {#if option == 'Other'}
                             <input type="text" name={option} id={option} bind:value={surveyInfo[questionNumber].other}>
@@ -268,8 +407,9 @@ async function nextQuestion() {
         
             <div class="radio-group">
                 {#each surveyInfo[questionNumber].answerOptions as option}
-                    <div class="radio-item">
+                    <div class="radio-item input-container">
                         <input type="radio" id={option} bind:group={surveyInfo[questionNumber].answer}  value={option}>
+                        <span class="checkmark"></span>
                         <label for="name">{option}</label>
                     </div>
                 {/each}
@@ -281,10 +421,10 @@ async function nextQuestion() {
     {:else}
         <div>Error: Input for this survey question has not been accounted for. (index:{questionNumber} of surveyInfo.  Component: Survey.svelte)</div>
     {/if}
-
-    <div>
-        <button class="btn" id='prev' on:click={prevQuestion} disabled>←</button>
-        <button class="btn" id='next' on:click={nextQuestion}  >→</button>
+    </div>
+    <div class="btn-row">
+        <button class="btn btn-nav" id='prev' on:click={prevQuestion} disabled>←</button>
+        <button class="btn btn-nav" id='next' on:click={nextQuestion}  >→</button>
     </div>
     <div>
         <p id='message'></p>
