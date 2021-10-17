@@ -160,11 +160,13 @@ ul > li {
 
 .btn-blue:hover,
 .btn-blue:focus,
+.btn-red:hover,
+.btn-red:focus,
 .btn-green:hover,
 .btn-green:focus,
 .btn-dark:hover,
 .btn-dark:focus {
-  color: #ffffff;
+  color: #000;
 }
 
 /*****************************************************
@@ -458,7 +460,7 @@ input[type="email"]:focus {
   color: black;
 } */
 
-#header .header_iphone {
+/* #header .header_iphone {
   position: absolute;
   bottom: -310px;
   left: 50%;
@@ -471,7 +473,7 @@ input[type="email"]:focus {
 
 #header .video-btn i {
   margin-right: 15px;
-}
+} */
 
 /*****************************************************
 *** Features ***
@@ -981,15 +983,9 @@ input[type="email"]:focus {
 /*****************************************************
 *** Footer ***
 *****************************************************/
-#footer {
-  color: #8c8f94;
-  font-size: 16px;
-}
 
-#footer .footer-container {
-  padding-top: 120px;
-  padding-bottom: 120px;
-}
+
+
 
 #footer .copyright-container {
   padding-top: 20px;
@@ -1069,13 +1065,13 @@ input[type="email"]:focus {
 
 /*** start - added by Colby Hemond  **/
 
-/* main > h1 {
-  padding-top: 3em;
-} */
-
-main {
-  padding-bottom: 3em;
+main > h1 {
+  padding-top: 100px;
 }
+
+/* main {
+  padding-top: 100px;
+} */
 
 /***  end - added by Colby Hemond  **/
 
@@ -1258,11 +1254,11 @@ Responsive Styles
   #header {
     padding: 160px 0 460px;
   }
-  #header .header_iphone {
+  /* #header .header_iphone {
     bottom: -220px;
     margin-left: -140px;
     width: 280px;
-  }
+  } */
   /*** Ready to Buy  ***/
   #ready-to-buy .form-group .btn,
   #subscribe .form-group .btn {
