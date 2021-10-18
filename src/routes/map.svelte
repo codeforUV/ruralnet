@@ -1,6 +1,22 @@
 <script>
+  import ApiMap from '../components/APIMap.svelte';
   import ResultsMap from '../components/ResultsMap.svelte';
   import TestResultsList from '../components/TestResultsList.svelte';
+
+  const findData = async () => {
+        const resp = await fetch('speedDB/speedDB.json');
+        const data = await resp.json();
+        if (resp.ok) {
+            console.log('Data Found');
+            // console.log(data.docs[1]);
+            // buildPointGraphic(data.docs[1])
+            return data.docs;
+        } else {
+            return [];
+        }
+    };
+
+    const promise = findData()
 
 </script>
 
@@ -121,7 +137,26 @@
 
   <div id="map" class="map-container">
     <h2>Map of All Speed Tests</h2>
-    <ResultsMap />
+    {#await promise}
+        <p>Loading Results Map...</p>
+    {:then docs}
+        {#if docs.length === 0}
+          <p>Looks like you haven't tested yet. <a href="/index">Take a test.</a></p>
+        {:else}
+        <small>
+          <a
+            href="https://codeforamerica.maps.arcgis.com/apps/webappviewer/index.html?id=c67c46ce5e69421faf833305a681138a"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View larger map
+          </a>
+        </small>
+          <ApiMap speedData={docs} />
+        {/if}
+    {:catch err}
+        <p class="error">{err.message}</p>
+    {/await}
     <div class="explination-container">
       <h3>User Submitted Speeds</h3>
       <div class="legend">
@@ -166,4 +201,8 @@
   </div>
   
 </div>
+
+
+
+
 
