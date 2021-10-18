@@ -161,10 +161,11 @@
 
 <style>
     #viewDiv {
-        padding: 0;
+        padding: 0 10px;
         margin: 0;
-        min-height: 600px;
-        min-width: 600px;
+        min-height: 400px;
+        min-width: 200px;
+        width: 100%;
       }
 </style>
 

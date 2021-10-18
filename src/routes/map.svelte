@@ -131,13 +131,32 @@
 <h1>Results</h1>
 
 <!-- <button on:click={handleJumpToSpeedResults}>Jump to past speedtest results</button> -->
-<!-- <a id="jump-to-link" href='/map#your-results'>Jump to past speedtest results</a>
+<a id="jump-to-link" href='/map#your-results'>Jump to past speedtest results</a>
 
 <div class="results-container">
 
   <div id="map" class="map-container">
     <h2>Map of All Speed Tests</h2>
-    <ResultsMap />
+    {#await promise}
+        <p>Loading Results Map...</p>
+    {:then docs}
+        {#if docs.length === 0}
+          <p>Looks like you haven't tested yet. <a href="/index">Take a test.</a></p>
+        {:else}
+        <small>
+          <a
+            href="https://codeforamerica.maps.arcgis.com/apps/webappviewer/index.html?id=c67c46ce5e69421faf833305a681138a"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View larger map
+          </a>
+        </small>
+          <ApiMap speedData={docs} />
+        {/if}
+    {:catch err}
+        <p class="error">{err.message}</p>
+    {/await}
     <div class="explination-container">
       <h3>User Submitted Speeds</h3>
       <div class="legend">
@@ -181,19 +200,9 @@
     <TestResultsList/>  
   </div>
   
-</div> -->
+</div>
 
-{#await promise}
-        <p>Loading...</p>
-    {:then docs}
-        {#if docs.length === 0}
-          <p>Looks like you haven't tested yet. <a href="/index">Take a test.</a></p>
-        {:else}
-          <ApiMap speedData={docs} />
-        {/if}
-    {:catch err}
-        <p class="error">{err.message}</p>
-    {/await}
+
 
 
 
