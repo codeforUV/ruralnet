@@ -117,6 +117,18 @@ ul > li {
   box-shadow: none;
 }
 
+.btn-sm {
+  font-size: 14px;
+  font-weight: 400;
+  padding: 5px 10px;
+  text-decoration: none;
+  color: #26272d;
+  border: 1px solid rgba(38, 39, 45, 0.1);
+  border-radius: 30px;
+  -moz-border-radius: 30px;
+  -webkit-border-radius: 30px;
+}
+
 .btn-lg {
   padding: 14px 48px;
 }
@@ -148,11 +160,13 @@ ul > li {
 
 .btn-blue:hover,
 .btn-blue:focus,
+.btn-red:hover,
+.btn-red:focus,
 .btn-green:hover,
 .btn-green:focus,
 .btn-dark:hover,
 .btn-dark:focus {
-  color: #ffffff;
+  color: #000;
 }
 
 /*****************************************************
@@ -160,12 +174,12 @@ ul > li {
 *****************************************************/
 input[type="text"],
 input[type="email"] {
-  width: 502px;
-  height: 50px;
+  /* width: 502px;
+  height: 50px; */
   max-width: 100%;
   border: 1px solid rgba(38, 39, 45, 0.2);
-  padding: 16px 26px;
-  font-size: 16px;
+  padding: 9px 15px;
+  font-size: 12px;
   background-color: transparent;
   padding-right: 148px;
   border-radius: 30px;
@@ -446,7 +460,7 @@ input[type="email"]:focus {
   color: black;
 } */
 
-#header .header_iphone {
+/* #header .header_iphone {
   position: absolute;
   bottom: -310px;
   left: 50%;
@@ -459,7 +473,7 @@ input[type="email"]:focus {
 
 #header .video-btn i {
   margin-right: 15px;
-}
+} */
 
 /*****************************************************
 *** Features ***
@@ -969,15 +983,9 @@ input[type="email"]:focus {
 /*****************************************************
 *** Footer ***
 *****************************************************/
-#footer {
-  color: #8c8f94;
-  font-size: 16px;
-}
 
-#footer .footer-container {
-  padding-top: 120px;
-  padding-bottom: 120px;
-}
+
+
 
 #footer .copyright-container {
   padding-top: 20px;
@@ -1057,13 +1065,13 @@ input[type="email"]:focus {
 
 /*** start - added by Colby Hemond  **/
 
-/* main > h1 {
-  padding-top: 3em;
-} */
-
-main {
-  padding-bottom: 3em;
+main > h1 {
+  padding-top: 100px;
 }
+
+/* main {
+  padding-top: 100px;
+} */
 
 /***  end - added by Colby Hemond  **/
 
@@ -1246,11 +1254,11 @@ Responsive Styles
   #header {
     padding: 160px 0 460px;
   }
-  #header .header_iphone {
+  /* #header .header_iphone {
     bottom: -220px;
     margin-left: -140px;
     width: 280px;
-  }
+  } */
   /*** Ready to Buy  ***/
   #ready-to-buy .form-group .btn,
   #subscribe .form-group .btn {
