@@ -41,17 +41,10 @@
       <a href="." class="closes-menu"><p>RuralNet</p></a>
       <ul>
           <!-- <li><a aria-current={segment === undefined ? 'page' : undefined} href=".">Home</a></li> -->
-<<<<<<< HEAD
-          <li><a aria-current={segment === 'about' ? 'page' : undefined} href="about">About</a></li>
-          <!-- <li><a aria-current={segment === 'speed' ? 'page' : undefined} href="speed">Speed Test</a></li> -->
-          <!-- <li><a aria-current={segment === 'yourTests' ? 'page' : undefined} href="yourTests">Your Speedtests</a></li> -->
-          <li><a aria-current={segment === 'map' ? 'page' : undefined} href="map">Results Map</a></li>
-=======
           <li class="closes-menu"><a aria-current={segment === 'about' ? 'page' : undefined} href="about">About</a></li>
           <!-- <li><a aria-current={segment === 'speed' ? 'page' : undefined} href="speed">Speed Test</a></li> -->
           <!-- <li><a aria-current={segment === 'yourTests' ? 'page' : undefined} href="yourTests">Your Speedtests</a></li> -->
           <li class="closes-menu"><a aria-current={segment === 'map' ? 'page' : undefined} href="map">Results Map</a></li>
->>>>>>> 707c93710e5c61b1fd6c7eca177871adbec69e66
           <!-- <li><a href="speed" class="btn btn-blue"> Test Your Speed</a></li> -->
       </ul>
 
