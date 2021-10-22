@@ -2,23 +2,60 @@
     reuslts must be passed into this component when constructed
 -->
 <script>
+
     export let testResult;  // a SpeedTestResult instance
-    export let id = "";
+
     const testLocation = new LocationUtility(testResult);
-    var locationInput;
-    async function fixLocation() {
+
+    let locationInput = '';
+    let saved = false
+    let editLocation = false;
+    let promptText = ''
+
+    async function prompt(promptString) {
+        promptText = promptString
+        setTimeout(() => {
+            promptText = ''
+        }, 3000);
+    }
+
+    async function handleSave() {
         let success = await testLocation.updateLocation(locationInput);
         if (success === true) {
-            document.getElementById(`chastise${id}`).textContent = "Location updated!";
+            saved = true
+            locationInput = ''
+            prompt('Saved!')
+            editLocation = !editLocation
+            testResult = testResult;  
         } else {
-            document.getElementById(`chastise${id}`).textContent = "Um... that's not a place. Check that it's correct and try again.";
+            prompt('Location not updated')
         }
-        testResult = testResult;  // thanks to binding, this will update the display in the parent component
     }
-</script>
 
-<!-- <h2>Update Test {id + 1} Location</h2> -->
-<!-- <p>Input either a 5-digit zip code, or the name of your city and state</p> -->
+    
+    function handleEditLocation() {
+        editLocation = true;
+    }
+
+    function handleCancel() {
+        editLocation = false
+        promptText = ''
+    }
+
+</script>
+<style>
+    button {
+        margin: 5px;
+    }
+</style>
+
+
+{#if editLocation}
+<button class="btn-sm btn-red" on:click={handleCancel}>Cancel</button>
+<button class="btn-sm btn-blue" on:click={handleSave}>Save</button>
+<span>{promptText}</span>
 <input type="text" bind:value={locationInput} placeholder="Zip Code or City & State (Ex: Barre, VT)">
-<button class="btn-sm btn-blue" on:click={fixLocation}>Update Location</button>
-<p id="chastise{id}"></p>
+{:else}
+<button class="btn-sm btn-blue" on:click={handleEditLocation}>Edit Location</button>
+<span>{promptText}</span>
+{/if}
