@@ -47,6 +47,10 @@
     button {
         margin: 5px;
     }
+
+    input {
+        background-color: white;
+    }
 </style>
 
 

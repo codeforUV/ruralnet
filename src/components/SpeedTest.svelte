@@ -3,6 +3,7 @@
     import { createEventDispatcher } from 'svelte';
     import FeatherIcon from './FeatherIcon.svelte';
     import LoadingSpinner from './LoadingSpinner.svelte';
+import LocationUpdate from './LocationUpdate.svelte';
 
 
     export let logging = false
@@ -20,6 +21,7 @@
     let loading = false
     let finished = false
     let noPastResults = false
+    let initialLoadOfScreen = true
 
     const dispatch = createEventDispatcher();
 
@@ -45,9 +47,10 @@
                 do {
                     time += 10
                     setTimeout(() => {  updateResults(speedTest.pageInterface) }, time)
-                } while (time <= 10000)
+                } while (time <= 15000)
                     }
         })
+        console.log(speedTest);
         if (speedTest.pageInterface) {
             if (speedTest.pageInterface.results === null){
                 noPastResults = true
@@ -59,7 +62,7 @@
     })
 
     const updateResults = async (pageInterface) => {
-        results = pageInterface.getResults()
+        results = pageInterface.results
         ping = Math.round(results.ping * 10) / 10
         downloadSpeed = Math.round(results.downloadSpeed * 10) / 10
         uploadSpeed = Math.round(results.uploadSpeed * 10) / 10
@@ -73,18 +76,14 @@
         loading = true
         start = false
         noPastResults = false
+        initialLoadOfScreen = false
 
         ping = 0
         downloadSpeed = 0
         uploadSpeed = 0
+        location = ''
 
         speedTest.startTest()
-
-        // let time = 5000
-        // do {
-        //     time += 10
-        //     setTimeout(() => {  updateResults(speedTest.pageInterface) }, time)
-        // } while (time <= 10000)
 
     }
 
@@ -92,12 +91,13 @@
         speedTest.abortTest();
     }
 
+
 </script>
 
 <style>
 
     .results {
-        margin: 0 0 2em 0;
+        margin-top: 2em;
     }
 
     .status {
@@ -114,9 +114,10 @@
 
     .speed-metrics-row {
         display: flex;
-        justify-content: space-evenly;
+        flex-wrap: wrap;
+        justify-content: center;
         margin: 0 0 1em 0;
-        min-height: 70px
+        min-height: 70px;
     }
 
     .speed-metric {
@@ -135,12 +136,12 @@
     .location {
         color: #666;
         font-size: 12pt;
+        margin-bottom: 2em;
     }
 
     #start-speed-test:hover {
         cursor: pointer;
-    }
-    
+    }    
 
 </style>
 
@@ -169,6 +170,9 @@
     {#if noPastResults === true}
         <div></div>
     {:else}
+    {#if initialLoadOfScreen}
+        <p>Last Speed Test Results:</p>
+    {/if}
     <div class="speed-metrics-row">
         {#if ping}
             <div class="speed-metric">
@@ -190,9 +194,14 @@
         {/if}
         </div>
 
-        <div >
-            <p class="location">{location}</p>
-        </div>
+        
     {/if}
 </div>
     
+<div >
+    <p class="location">{location}</p>
+    <!-- {#if !initialLoadOfScreen}
+        <LocationUpdate bind:testResult={results}/>
+    {/if} -->
+    
+</div>
