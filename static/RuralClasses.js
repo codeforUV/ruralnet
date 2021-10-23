@@ -92,7 +92,7 @@ class RuralTest {
         this.finished = false;
         this._state = 0;
         this.chunkSize = 100;
-        this.testOrder = "P_D";
+        this.testOrder = "IPDU"; //order in which tests will be performed as a string. D=Download, U=Upload, P=Ping+Jitter, I=IP, _=1 second delay
         if(!componentIds) {
             componentIds = {
                 // ids of elements that that speedtest wants to write information to
@@ -383,9 +383,9 @@ class LocationUtility {
             newLocation = newLocation.replaceAll(/\s+/g, "").toLowerCase();
         } 
         if (goodFormat) {
-            let verified = await LocationUtility.verifyLocationInput(newLocation);
-            if (verified.verified) {
-                this.results.location = verified;
+            let location = await LocationUtility.verifyLocationInput(newLocation);
+            if (location.verified) {
+                this.results.location = location;
                 this.results.postTest(true);
                 return true;
             } else {
