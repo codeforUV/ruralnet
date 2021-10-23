@@ -58,7 +58,7 @@
     margin: 1em 0;
   }
 
-  @media only screen and (max-width: 500px) {
+  @media only screen and (max-width: 650px) {
     .jumbotron-content-background {
       
       padding: 1em;
