@@ -20,15 +20,7 @@
             location.reload();
         }
     };
-    var locationEdit = false;
-    function locationButton() {
-        if (locationEdit) {
-            document.getElementById(`locationExpander${id}`).textContent = "Edit Location";
-        } else {
-            document.getElementById(`locationExpander${id}`).textContent = "Cancel";
-        }
-        locationEdit = !locationEdit;
-    }
+
 
     let ping = testData._content.ping
     let downloadSpeed = testData._content.downloadSpeed
@@ -70,31 +62,28 @@
 <!-- <p id='result{id}'>{testData.toString()}</p> -->
 <!-- <p id='done{id}'>{testData.metaDataString()}</p> -->
 <ul>
-{#if ping}
-<li>Ping: {ping}</li>
-{/if}
-{#if downloadSpeed}
-<li>Download: {downloadSpeed}</li>
-{/if}
-{#if uploadSpeed}
-<li>Upload: {uploadSpeed}</li>
-{/if}
+    {#if ping}
+    <li>Ping: {ping} ms</li>
+    {/if}
+    {#if downloadSpeed}
+    <li>Download: {downloadSpeed} Mbps</li>
+    {/if}
+    {#if uploadSpeed}
+    <li>Upload: {uploadSpeed} Mbps</li>
+    {/if}
 
-{#if internetProvider}
-<li>Internet Provider: {internetProvider}</li>
-{/if}
-{#if userLocation}
-<li>Location: <strong>{userLocation}</strong></li>
-{:else}
-<li><strong>No Location Found</strong></li>
-{/if}
+    {#if internetProvider}
+    <li>Internet Provider: {internetProvider}</li>
+    {/if}
+    {#if testData._content.city}
+    <li>Location: <strong>{testData._content.city}</strong></li>
+    {:else}
+    <li><strong>No Location Found</strong></li>
+    {/if}
 </ul>
 
-{#if allowEdit}
-    <button class="btn-sm btn-blue" id='locationExpander{id}' on:click={locationButton}>Edit Location</button>
+{#if allowEdit} 
+    <LocationUpdate bind:testResult={testData}/>
 {/if}
-{#if locationEdit}
-    <svelte:component this={LocationUpdate} bind:testResult={testData} id={id}/>
-{/if}
-
+    
 </div>

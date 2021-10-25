@@ -28,7 +28,8 @@
         <ol>
         {#each docs as test, i}
             <li>
-                <svelte:component this={TestResult} testData={new RuralTestResult(test)} id={i}/>  <!--If IDE warns here, ignore it-->
+                <!-- svelte-ignore missing-declaration -->
+                <TestResult testData={new RuralTestResult(test)} id={i}/>
             </li>
         {/each}
         </ol>
