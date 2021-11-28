@@ -1,34 +1,6 @@
 <script>
   export let segment;
-
 </script>
-
-<!-- <nav>
-  <ul>
-    <li><a aria-current={segment === undefined ? 'page' : undefined} href=".">Home</a></li>
-    <li>
-      <a aria-current={segment === 'about' ? 'page' : undefined} href="about">About</a>
-    </li>
-    <li>
-      <a aria-current={segment === 'database' ? 'page' : undefined} href="database">Test Database</a>
-    </li>
-    <li>
-      <a aria-current={segment === 'newSpeed' ? 'page' : undefined} href="newSpeed">Measure Speed</a>
-    </li>
-    <li>
-      <a aria-current={segment === 'yourTests' ? 'page' : undefined} href="yourTests">Your Speed Test Results</a>
-    </li>
-    <li>
-      <a aria-current={segment === 'speedDatabase' ? 'page' : undefined} href="speedDatabase">All Speed Test Results</a>
-    </li>
-    <li>
-      <a aria-current={segment === 'map' ? 'page' : undefined} href="map">Results Map</a>
-    </li>
-    <li>
-      <a aria-current={segment === 'map' ? 'page' : undefined} href="map">Results Map</a>
-    </li>
-  </ul>
-</nav> -->
 
 <header id="main-nav">
   <div class="container-fluid">
@@ -40,12 +12,16 @@
       <div class="logo"><img src="images/logo-white.png" alt=""></div> -->
       <a href="." class="closes-menu"><p>RuralNet</p></a>
       <ul>
-          <!-- <li><a aria-current={segment === undefined ? 'page' : undefined} href=".">Home</a></li> -->
-          <li class="closes-menu"><a aria-current={segment === 'about' ? 'page' : undefined} href="about">About</a></li>
-          <!-- <li><a aria-current={segment === 'speed' ? 'page' : undefined} href="speed">Speed Test</a></li> -->
-          <!-- <li><a aria-current={segment === 'yourTests' ? 'page' : undefined} href="yourTests">Your Speedtests</a></li> -->
-          <li class="closes-menu"><a aria-current={segment === 'map' ? 'page' : undefined} href="map">Results Map</a></li>
-          <!-- <li><a href="speed" class="btn btn-blue"> Test Your Speed</a></li> -->
+        <!-- <li><a aria-current={segment === undefined ? 'page' : undefined} href=".">Home</a></li> -->
+        <li class="closes-menu">
+          <a aria-current={segment === 'about' ? 'page' : undefined} href="about">About</a>
+        </li>
+        <!-- <li><a aria-current={segment === 'speed' ? 'page' : undefined} href="speed">Speed Test</a></li> -->
+        <!-- <li><a aria-current={segment === 'yourTests' ? 'page' : undefined} href="yourTests">Your Speedtests</a></li> -->
+        <li class="closes-menu">
+          <a aria-current={segment === 'map' ? 'page' : undefined} href="map">Results Map</a>
+        </li>
+        <!-- <li><a href="speed" class="btn btn-blue"> Test Your Speed</a></li> -->
       </ul>
 
       <div class="slide_out_menu_footer">
@@ -66,7 +42,9 @@
           <li><a aria-current={segment === 'about' ? 'page' : undefined} href="about">About</a></li>
           <!-- <li><a aria-current={segment === 'speed' ? 'page' : undefined} href="speed">Speed Test</a></li> -->
           <!-- <li><a aria-current={segment === 'yourTests' ? 'page' : undefined} href="yourTests">Your Speedtests</a></li> -->
-          <li><a aria-current={segment === 'map' ? 'page' : undefined} href="map">Results Map</a></li>
+          <li>
+            <a aria-current={segment === 'map' ? 'page' : undefined} href="map">Results Map</a>
+          </li>
         </ul>
       </div>
 
@@ -78,7 +56,7 @@
     </div>
   </div>
 </header>
-<!-- //Main Nav -->
 
+<!-- //Main Nav -->
 <style>
 </style>

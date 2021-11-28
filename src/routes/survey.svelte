@@ -1,22 +1,21 @@
 <script>
-  
-import Survey from '../components/Survey.svelte';
+  import Survey from '../components/Survey.svelte';
 
   let finished = false;
 
   const findSurveys = async () => {
-      const resp = await fetch('/survey.json');
-      const data = await resp.json();
-      if (resp.ok) {
-        console.log('Server response object:');
-        console.log(resp);
-        console.log('Response JSON parsed:');
-        console.log(data);
-        return data.docs;
-      }
-  }
+    const resp = await fetch('/survey.json');
+    const data = await resp.json();
+    if (resp.ok) {
+      console.log('Server response object:');
+      console.log(resp);
+      console.log('Response JSON parsed:');
+      console.log(data);
+      return data.docs;
+    }
+  };
 
-  let promise = findSurveys().catch(err=>console.log(err));
+  let promise = findSurveys().catch((err) => console.log(err));
 
   // Delete the survey locally and on the database.
   const deleteSurvey = async (id) => {
@@ -33,7 +32,6 @@ import Survey from '../components/Survey.svelte';
       promise = await findSurveys();
     }
   };
-  
 </script>
 
 <svelte:head>
@@ -53,7 +51,7 @@ import Survey from '../components/Survey.svelte';
       {#each docs as survey (survey._id)}
         <ul>
           <p>Survey data logged to console</p>
-         
+
           <svg
             on:click={() => deleteSurvey(survey._id)}
             xmlns="http://www.w3.org/2000/svg"
@@ -65,7 +63,8 @@ import Survey from '../components/Survey.svelte';
             stroke="#607D8B"
             fill="none"
             stroke-linecap="round"
-            stroke-linejoin="round">
+            stroke-linejoin="round"
+          >
             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
             <rect x="4" y="4" width="16" height="16" rx="2" />
             <path d="M10 10l4 4m0 -4l-4 4" />

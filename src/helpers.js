@@ -4,8 +4,13 @@
  */
 
 function getRequestIP(req) {
-  let requestIP = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.headers['HTTP_CLIENT_IP'] || req.headers['X-Real-IP'] || req.headers['HTTP_X_FORWARDED_FOR'];
-  if (requestIP.substr(0, 7) === "::ffff:") {
+  let requestIP =
+    req.headers['x-forwarded-for'] ||
+    req.connection.remoteAddress ||
+    req.headers['HTTP_CLIENT_IP'] ||
+    req.headers['X-Real-IP'] ||
+    req.headers['HTTP_X_FORWARDED_FOR'];
+  if (requestIP.substr(0, 7) === '::ffff:') {
     requestIP = requestIP.substr(7);
   }
   return requestIP;

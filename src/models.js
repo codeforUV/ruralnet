@@ -36,10 +36,12 @@ const SurveySubmissionsSchema = new Schema({
   address: String,
   city: String,
   state: String,
-  answers: [{
-    questionId: String,
-    answer: String
-  }]
+  answers: [
+    {
+      questionId: String,
+      answer: String,
+    },
+  ],
 });
 
 const Dummy = mongoose.model('Dummy', DummySchema);

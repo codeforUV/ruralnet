@@ -6,14 +6,11 @@
     and better performance/ new features
 -->
 <script>
-import SpeedTest from "../components/SpeedTest.svelte";
-
-
+  import SpeedTest from '../components/SpeedTest.svelte';
 </script>
 
 <!-- <h1 id='title'>New Speed Test</h1> -->
-<SpeedTest logging="true"/>
+<SpeedTest logging="true" />
 
 <h2>Test Log</h2>
-<ol id="log">
-</ol>
+<ol id="log" />

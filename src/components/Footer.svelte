@@ -5,10 +5,10 @@
   <div class="container footer-container">
     <div class="row">
       <!-- <div class="col-md-3"> -->
-        <!-- <img class="logo" src="images/logo.png" alt=""> -->
-        <!-- <p>Social</p> -->
-        <!-- <a href="#" class="app_download"><img src="images/app-store-download.png" alt=""></a> -->
-        <!-- <ul class="socials">
+      <!-- <img class="logo" src="images/logo.png" alt=""> -->
+      <!-- <p>Social</p> -->
+      <!-- <a href="#" class="app_download"><img src="images/app-store-download.png" alt=""></a> -->
+      <!-- <ul class="socials">
           <li><a href="https://twitter.com"><i class="fa fa-twitter" /></a></li>
           <li><a href="https://facebook.com"><i class="fa fa-facebook" /></a></li>
         </ul> -->
@@ -29,7 +29,6 @@
           <li><a href="https://www.codeforamerica.org/">Code for America</a></li>
           <li><a href="about/privacy">Privacy policy</a></li>
         </ul>
-
       </div>
       <!-- <div class="col-md-2 col-sm-4 col-xs-6 footer-links">
         <ul>
@@ -43,26 +42,20 @@
 </footer>
 
 <style>
-
-  #header {
-    padding: 0 !important;
+  #footer {
+    background-color: #3f4041;
+    color: #f1f1f1;
+    font-size: 16px;
   }
 
-#footer {
-  background-color: #3f4041;
-  color: #f1f1f1;
-  font-size: 16px;
-}
-
-#footer .footer-container {
-  padding-top: 20px;
-  padding-bottom: 20px;
-}
+  #footer .footer-container {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
 
   .footer-links {
     display: flex;
     flex-direction: column;
-    
   }
 
   .footer-links ul {

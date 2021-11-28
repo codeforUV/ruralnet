@@ -20,6 +20,6 @@ export async function get(req, res, next) {
     res.writeHead(500, {
       'Content-Type': 'application/json',
     });
-    res.end(JSON.stringify({ ipAddress: reqIP, err: "Probably exceeded ipinfo.io rate limit"}));
+    res.end(JSON.stringify({ ipAddress: reqIP, err: 'Probably exceeded ipinfo.io rate limit' }));
   }
 }

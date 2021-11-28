@@ -1,47 +1,42 @@
 <!--A component to display the results of a test
     either live during test or on a page that lists results-->
 <script>
-    import LocationUpdate from './LocationUpdate.svelte';
-    //import SpeedTestResult from '../../static/RuralClasses.js'
-    export let testData;  // a RuralTestResult instance
-    export let id = "";  // if multiple instances of this component exist on a page, use this id to reference elements by id 
-    export let allowEdit = true;
-    async function deleteItem(id) {
-        console.log(id);
-        const resp = await fetch('speedDB/speedDB.json', {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ id }),
-        });
-        if (resp.ok) {
-            console.log('item deleted');
-            location.reload();
-        }
-    };
+  import LocationUpdate from './LocationUpdate.svelte';
+  //import SpeedTestResult from '../../static/RuralClasses.js'
+  export let testData; // a RuralTestResult instance
+  export let id = ''; // if multiple instances of this component exist on a page, use this id to reference elements by id
+  export let allowEdit = true;
+  async function deleteItem(id) {
+    console.log(id);
+    const resp = await fetch('speedDB/speedDB.json', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id }),
+    });
+    if (resp.ok) {
+      console.log('item deleted');
+      location.reload();
+    }
+  }
 
-
-    let ping = testData._content.ping
-    let downloadSpeed = testData._content.downloadSpeed
-    let uploadSpeed = testData._content.uploadSpeed
-    let testDateTime = new Date(`${testData._content.date}T${testData._content.time}Z`).toLocaleString()
-    let internetProvider = testData._content.internetProvider
-    let userLocation = testData._content.city
-
+  let ping = testData._content.ping;
+  let downloadSpeed = testData._content.downloadSpeed;
+  let uploadSpeed = testData._content.uploadSpeed;
+  let testDateTime = new Date(
+    `${testData._content.date}T${testData._content.time}Z`
+  ).toLocaleString();
+  let internetProvider = testData._content.internetProvider;
+  let userLocation = testData._content.city;
 </script>
 
-<style>
-    .test-result {
-        margin: 1em 0;
-    }
-</style>
-
 <div class="test-result">
-<!-- <p>Test Result {btoa(testData._content._id)} -->
-    <p>Speed Test: {testDateTime}
+  <!-- <p>Test Result {btoa(testData._content._id)} -->
+  <p>
+    Speed Test: {testDateTime}
     {#if allowEdit}
-    <svg
+      <svg
         on:click={() => deleteItem(testData._content._id)}
         xmlns="http://www.w3.org/2000/svg"
         class="icon icon-tabler icon-tabler-square-x"
@@ -52,38 +47,44 @@
         stroke="#607D8B"
         fill="none"
         stroke-linecap="round"
-        stroke-linejoin="round">
+        stroke-linejoin="round"
+      >
         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
         <rect x="4" y="4" width="16" height="16" rx="2" />
         <path d="M10 10l4 4m0 -4l-4 4" />
-    </svg>
+      </svg>
     {/if}
-</p>
-<!-- <p id='result{id}'>{testData.toString()}</p> -->
-<!-- <p id='done{id}'>{testData.metaDataString()}</p> -->
-<ul>
+  </p>
+  <!-- <p id='result{id}'>{testData.toString()}</p> -->
+  <!-- <p id='done{id}'>{testData.metaDataString()}</p> -->
+  <ul>
     {#if ping}
-    <li>Ping: {ping} ms</li>
+      <li>Ping: {ping} ms</li>
     {/if}
     {#if downloadSpeed}
-    <li>Download: {downloadSpeed} Mbps</li>
+      <li>Download: {downloadSpeed} Mbps</li>
     {/if}
     {#if uploadSpeed}
-    <li>Upload: {uploadSpeed} Mbps</li>
+      <li>Upload: {uploadSpeed} Mbps</li>
     {/if}
 
     {#if internetProvider}
-    <li>Internet Provider: {internetProvider}</li>
+      <li>Internet Provider: {internetProvider}</li>
     {/if}
     {#if testData._content.city}
-    <li>Location: <strong>{testData._content.city}</strong></li>
+      <li>Location: <strong>{testData._content.city}</strong></li>
     {:else}
-    <li><strong>No Location Found</strong></li>
+      <li><strong>No Location Found</strong></li>
     {/if}
-</ul>
+  </ul>
 
-{#if allowEdit} 
-    <LocationUpdate bind:testResult={testData}/>
-{/if}
-    
+  {#if allowEdit}
+    <LocationUpdate bind:testResult={testData} />
+  {/if}
 </div>
+
+<style>
+  .test-result {
+    margin: 1em 0;
+  }
+</style>
