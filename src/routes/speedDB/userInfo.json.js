@@ -8,9 +8,9 @@ export async function get(req, res, next) {
     // requestIP = "199.21.137.7";
     requestIP = process.env.DEV_IP;
   }
-  let userID = getUserCookie(req);
+  const userID = getUserCookie(req);
   console.log(`IP:USER: ${requestIP} | ${userID}`);
-  const prevTest = await SpeedTest.findOne({ ipAddress: requestIP, userID: userID });
+  const prevTest = await SpeedTest.findOne({ ipAddress: requestIP, userID });
   if (prevTest && userID) {
     res.writeHead(200, {
       'Content-Type': 'application/json',
